@@ -1,0 +1,176 @@
+{
+	"pages": [ //pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
+		{
+			"path": "pages/index/index",
+			"style": {
+				"navigationBarTitleText": "桥隧之家",//设置页面标题文字
+				"onReachBottomDistance":100,
+				"navigationStyle":"custom"
+			}
+		}
+        ,{
+            "path" : "pages/secondHand/secondHand",
+            "style" : {
+							"navigationStyle":"custom"
+						}
+        }
+        ,{
+            "path" : "pages/secondHand-publish/secondHand-publish",
+            "style" : {
+							"navigationBarTitleText": "发布"
+						}
+        }
+        ,{
+            "path" : "pages/publish-success/publish-success",
+            "style" : {
+							"navigationBarTitleText": "发布成功"
+						}
+        }
+        ,{
+            "path" : "pages/secondHand-detail/secondHand-detail",
+            "style" : {
+							"navigationBarTitleText": "详情"
+						}
+        }
+        ,{
+            "path" : "pages/secondHand-share/secondHand-share",
+            "style" : {
+							"navigationBarTitleText": "分享"
+						}
+        }
+        ,{
+            "path" : "pages/secondHand-detailCompany/secondHand-detailCompany",
+            "style" : {
+							"navigationBarTitleText": "详情"
+						}
+        }
+        ,{
+            "path" : "pages/labour/labour",
+            "style" : {
+							"navigationStyle":"custom"
+						}
+        }
+        ,{
+            "path" : "pages/labour-publish/labour-publish",
+            "style" : {
+							"navigationBarTitleText": "发布"
+						}
+        }
+        ,{
+            "path" : "pages/labour-detail/labour-detail",
+            "style" : {
+							"navigationBarTitleText": "详情"
+						}
+        }
+        ,{
+            "path" : "pages/labour-share/labour-share",
+            "style" : {
+							"navigationBarTitleText": "分享"
+						}
+        }
+        ,{
+            "path" : "pages/contentUs/contentUs",
+            "style" : {
+							"navigationBarTitleText": "联系我们"
+						}
+        }
+        ,{
+            "path" : "pages/information/information",
+            "style" : {
+							"navigationBarTitleText": "平台信息"
+						}
+        }
+        ,{
+            "path" : "pages/newsDetail/newsDetail",
+            "style" : {
+							"navigationBarTitleText": "详情"
+						}
+        }
+        ,{
+            "path" : "pages/business/business",
+            "style" : {
+							"navigationStyle":"custom"
+						}
+        }
+        ,{
+            "path" : "pages/business-publish/business-publish",
+            "style" : {
+							"navigationBarTitleText": "商务通名片"
+						}
+        }
+        ,{
+            "path" : "pages/user/user",
+            "style" : {
+							"navigationBarTitleText": "我的"
+						}
+        }
+        ,{
+            "path" : "pages/user-secondHand/user-secondHand",
+            "style" : {
+							"navigationBarTitleText": "二手交易信息"
+						}
+        }
+        ,{
+            "path" : "pages/user-secondHandIndex/user-secondHandIndex",
+            "style" : {
+							"navigationBarTitleText": "我的主页"
+						}
+        }
+        ,{
+            "path" : "pages/user-labour/user-labour",
+            "style" : {
+							"navigationBarTitleText": "劳务招聘信息"
+						}
+        }
+        ,{
+            "path" : "pages/user-business/user-business",
+            "style" : {
+							"navigationBarTitleText": "商务通名片"
+						}
+        }
+        ,{
+            "path" : "pages/user-collection/user-collection",
+            "style" : {
+							"navigationBarTitleText": "我的收藏"
+						}
+        }
+        ,{
+            "path" : "pages/user-opinion/user-opinion",
+            "style" : {
+							"navigationBarTitleText": "意见反馈"
+						}
+        }
+        ,{
+            "path" : "pages/user-workersRecord/user-workersRecord",
+            "style" : {
+							"navigationBarTitleText": "用工不良记录"
+						}
+        }
+        ,{
+            "path" : "pages/user-workersSreach/user-workersSreach",
+            "style" : {
+							"navigationBarTitleText": "用工不良记录"
+						}
+        }
+        ,{
+            "path" : "pages/user-sreachResult/user-sreachResult",
+            "style" : {
+							"navigationBarTitleText": "用工不良记录"
+						}
+        }
+    ],
+	"globalStyle": {
+		//"navigationStyle":"custom",
+		"navigationBarTextStyle": "white",
+		"navigationBarTitleText": "",
+		"navigationBarBackgroundColor": "#51A9E9"
+	},
+	"condition": { //模式配置，仅开发期间生效
+		"current": 0, //当前激活的模式(list 的索引项)
+		"list": [{
+			"name": "", //模式名称
+			"path": "", //启动页面，必选
+			"query": "" //启动参数，在页面的onLoad函数里面得到
+		}]
+	}
+}
