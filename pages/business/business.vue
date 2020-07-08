@@ -1,13 +1,13 @@
 <template>
-	<view class="h-100">
+	<view class="h-100 d-flex flex-column">
 		<view class="head p-3 bg-mcolor font-36 colorf d-flex a-center z-index100" :style="{paddingTop:statusBar+23 +'px'}" @click="Router.redirectTo({route:{path:'/pages/business-publish/business-publish'}})">
 			<image src="../../static/images/businessl-icon1.png" class="icon1"></image>
 			<view>免费发布</view>
 		</view>
-		 <!--  -->
-		<view class="d-flex h-100 con" :style="{marginTop:statusBar+64 +'px'}">
+		 <!--  --> <!-- :style="{marginTop:statusBar+64 +'px'}" -->
+		<view class="d-flex h-100 con flex-1">
 			<!-- 左边 -->
-			<view class="list font-28 color2 d-flex flex-column a-center j-center">
+			<view class="list font-28 color2 overflow-a">
 				<view class="d-flex a-center j-center" :class="listCurr==0?'on':''" @click="changeList(0)"><image src="../../static/images/businessl-icon.png" class="icon2"></image>搜索</view>
 				<view :class="listCurr==1?'on':''" @click="changeList(1)">为您推荐</view>
 				<view :class="listCurr==2?'on':''" @click="changeList(2)">管棚施工</view>
@@ -15,10 +15,9 @@
 				<view :class="listCurr==4?'on':''" @click="changeList(4)">桥梁机械</view>
 				<view :class="listCurr==5?'on':''" @click="changeList(5)">物资</view>
 				<view :class="listCurr==6?'on':''" @click="changeList(6)">材料</view>
-				<view class="flex-1"></view>
 			</view>
 			<!-- 右边 -->
-			<view class="flex-1 bg-white h-100" v-show="listCurr==1">
+			<view class="flex-1 bg-white h-100 overflow-a" v-show="listCurr==1">
 				<view class="rounded shadow m-2 px-2">
 					<view class="Mcolor font-30 py-3">贵阳**物资有限公司</view>
 					<view class="d-flex a-center j-sb line-h pb-3 borderB-e1">
@@ -56,7 +55,7 @@
 						<view class="color6">业务范围：</view>
 						<view class="color2 flex-1">
 							<view>隧道防水板、爬焊机、爬焊机配件、电焊机、热熔机、LED灯等桥隧物资、代理小挖机、柳工装载机</view>
-							<view class="d-flex a-center j-sb flex-wrap">
+							<view class="d-flex a-center flex-wrap imgBox">
 								<image src="../../static/images/second-handl-img1.png" class="img"></image>
 								<image src="../../static/images/second-handl-img1.png" class="img"></image>
 								<image src="../../static/images/second-handl-img1.png" class="img"></image>
@@ -122,7 +121,7 @@
 		
 		
 		
-		<view style="height: 100rpx;width: 100%;"></view>
+		<!-- <view style="height: 100rpx;width: 100%;"></view> -->
 		<!-- 底部 -->
 		<view class="footer"> 
 			<view class="item" @click="Router.redirectTo({route:{path:'/pages/index/index'}})">
@@ -171,16 +170,17 @@
 </script>
 
 <style>
-page{background-color: #D8EDFE;height: 100%;}
+page{height: 100%;}
 .bg-f5{background-color: #f5f5f5;}
-.head{position: fixed;top: 0;left: 0;right: 0;}
+/* .head{position: fixed;top: 0;left: 0;right: 0;} */
 .icon1{width: 23rpx;height: 23rpx;margin-right: 10rpx;}
 .icon2{width: 24rpx;height: 24rpx;margin-right: 10rpx;}
 .icon3{width: 21rpx;height: 25rpx;}
-.img{width: 106rpx;height: 106rpx;margin-top: 20rpx;}
+.img{width: 106rpx;height: 106rpx;margin-top: 20rpx;margin-right: 20rpx;}
+.imgBox .img:nth-child(3n){margin-right: 0;}
 
 /* .listBox{width: 180rpx;} */
-.list{width: 180rpx;line-height: 100rpx;text-align: center;top: 0;height: 100%;}
+.list{background-color: #D8EDFE;width: 180rpx;line-height: 100rpx;text-align: center;top: 0;height: 100%;}
 .list view{width: 100%;}
 .list .on{background-color: #fff;}
 
@@ -193,4 +193,7 @@ page{background-color: #D8EDFE;height: 100%;}
 .search input{text-align: left;color: #222;font-size: 28rpx;flex: 1;}
 .search .ss{height: 80rpx;}
 .w3{width: 33.33%;}
+.overflow-a{overflow-y: auto;}
+
+.footer{position: static;}
 </style>

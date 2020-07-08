@@ -35,7 +35,8 @@
 		<view class="bg-f5">
 			<view class="bg-white px-3" @click="Router.redirectTo({route:{path:'/pages/labour-detail/labour-detail'}})">
 				<view class="font-30 color2 pt-4">隧道施工队继续开挖班，处置办，洞1千米长，三级围岩，有经验的队伍请来咨询</view>
-				<view class="d-flex j-sb flex-wrap py-3 imgBox">
+				<view class="d-flex flex-wrap py-3 imgBox">
+					<image src="../../static/images/laborl-img.png" mode=""></image>
 					<image src="../../static/images/laborl-img.png" mode=""></image>
 					<image src="../../static/images/laborl-img.png" mode=""></image>
 					<image src="../../static/images/laborl-img.png" mode=""></image>
@@ -143,8 +144,8 @@
 .head{position: fixed;top: 0;left: 0;right: 0;}
 .icon1{width: 23rpx;height: 23rpx;margin-right: 10rpx;}
 
-.ss{margin-top: 145rpx;}
-.ss input{border-right: 1px solid #e1e1e1;flex: 1;text-indent: 20rpx;}
+.ss{margin-top: 165rpx;}
+.ss input{border-right: 1px solid #e1e1e1;flex: 1;text-indent: 20rpx;font-size: 28rpx;text-align: left;}
 .ss input::-webkit-input-placeholder{color: #222!important;}
 
 .iconBox image{width: 110rpx;height: 110rpx ;}
@@ -153,7 +154,9 @@
 .nav .on{position: relative;color: #51A9E9;}
 .nav .on::before{content: ''; width: 100%;height: 2rpx;background-color: #51A9E9;position: absolute; bottom: 0;left: 0;}
 
-.imgBox image{width: 160rpx;height: 160rpx;}
+.imgBox image{width: 160rpx;height: 160rpx;margin-right: 17rpx;}
+.imgBox image:nth-child(4n){margin-right: 0;}
+.imgBox image:nth-child(n+5){margin-top: 20rpx;}
 .icon2{width: 21rpx;height: 25rpx;}
 
 .tagR{margin-right: 0;}

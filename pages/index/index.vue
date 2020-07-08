@@ -19,7 +19,7 @@
 		<!-- 推荐 -->
 		<view class="p-3 bg-white indexBox1">
 			<view class="d-flex a-center j-sb">
-				<view class="d-flex flex-column j-sb mr-3 h-100">
+				<view class="d-flex flex-column j-sb mr-3 h-100" @click="Router.redirectTo({route:{path:'/pages/newsDetail/newsDetail'}})">
 					<view class="font-30 color2 flex-1 mb-3 avoidOverflow2 tjTit">隧道佳乐湿喷机，多年口碑，品质保证</view>
 					<view class="d-flex a-center j-sb h-100 mt-3">
 						<view class="font-22 d-flex a-center">
@@ -41,9 +41,10 @@
 			</view>
 		</view>
 		
-		<view class="mt-2 p-3 bg-white indexBox2">
+		<view class="mt-2 p-3 bg-white indexBox2" @click="Router.redirectTo({route:{path:'/pages/newsDetail/newsDetail'}})">
 			<view class="font-30 color2">厂家直销各种胶皮手套、818止滑手套、线手套、电焊手套等各种施工手套</view>
-			<view class="d-flex a-center j-sb mt-3">
+			<view class="d-flex a-center mt-3 flex-wrap imgBox">
+				<image src="../../static/images/home-img1.png" mode=""></image>
 				<image src="../../static/images/home-img1.png" mode=""></image>
 				<image src="../../static/images/home-img1.png" mode=""></image>
 				<image src="../../static/images/home-img1.png" mode=""></image>
@@ -146,7 +147,9 @@ page{background-color: #f5f5f5;}
 .tjImg{width: 210rpx;height: 160rpx;}
 .icon2{width: 27rpx!important;height: 27rpx!important;}
 
-.indexBox2 image{width: 210rpx;height: 160rpx;}
+.imgBox image{width: 210rpx;height: 160rpx;margin-right: 31rpx;}
+.imgBox image:nth-child(3n){margin-right: 0;}
+.imgBox image:nth-child(n+4){margin-top: 20rpx;}
 
 .video{height: 340rpx;width: 100%;}
 

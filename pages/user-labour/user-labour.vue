@@ -24,7 +24,7 @@
 					<!-- <image src="../../static/images/i releasel-icon1.png" class="icon1"></image> -->
 					<view class="bg-white px-3 flex-1" @click="Router.redirectTo({route:{path:'/pages/labour-detail/labour-detail'}})">
 						<view class="font-30 color2 pt-4">隧道施工队继续开挖班，处置办，洞1千米长，三级围岩，有经验的队伍请来咨询</view>
-						<view class="d-flex j-sb flex-wrap pt-3 imgBox">
+						<view class="d-flex flex-wrap pt-3 imgBox">
 							<image src="../../static/images/laborl-img.png" mode=""></image>
 							<image src="../../static/images/laborl-img.png" mode=""></image>
 							<image src="../../static/images/laborl-img.png" mode=""></image>
@@ -133,7 +133,8 @@
 
 .oh view{width: 33.33%;}
 
-.imgBox image{width: 145rpx;height: 145rpx;}
+.imgBox image{width: 145rpx;height: 145rpx;margin-right: 20rpx;}
+.imgBox image:nth-child(4n){margin-right: 0;}
 .icon2{width: 21rpx;height: 25rpx;}
 .tagR{margin-right: 0;}
 </style>

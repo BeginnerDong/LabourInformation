@@ -6,18 +6,24 @@
 		</view>
 		
 		<!-- 搜索 -->
-		<view class="border-e1 rounded bg-white font-28 mx-3 py-2 d-flex a-center j-sb ss">
+		<view class="border-e1 rounded bg-white font-28 mx-3 py-2 d-flex a-center j-sb z-index1000 ss">
 			<input type="text" placeholder="风管" />
 			<view class="px-2">搜索</view>
 		</view>
 		
 		<!-- nav -->
-		<view class="font-28 color2 d-flex a-center j-sb borderB-e1 nav">
+		<view class="font-28 color2 d-flex a-center j-sb borderB-e1 z-index1000 nav">
 			<view class="item" :class="navCurr==1?'on':''" @click="changeCurr('nav',1)">全部</view>
 			<view class="item" :class="navCurr==2?'on':''" @click="changeCurr('nav',2)">出售</view>
 			<view class="item" :class="navCurr==3?'on':''" @click="changeCurr('nav',3)">求购</view>
-			<view class="item d-flex a-center j-center" :class="navCurr==4?'on':''" @click="changeCurr('nav',4)">分类<image src="../../static/images/second-handl-icon.png" mode=""></image></view>
-			<view class="item d-flex a-center j-center" :class="navCurr==5?'on':''" @click="changeCurr('nav',5)">所在地<image src="../../static/images/second-handl-icon.png" mode=""></image></view>
+			<view class="item d-flex a-center j-center" :class="navCurr==4?'on':''" @click="changeCurr('nav',4)">分类
+				<image src="../../static/images/labor releasel-icon1.png" v-if="navCurr==4"></image>
+				<image src="../../static/images/labor releasel-icon2.png" v-else></image>
+			</view>
+			<view class="item d-flex a-center j-center" :class="navCurr==5?'on':''" @click="changeCurr('nav',5)">所在地
+				<image src="../../static/images/labor releasel-icon1.png" v-if="navCurr==5"></image>
+				<image src="../../static/images/labor releasel-icon2.png" v-else></image>
+			</view>
 		</view>
 		
 		<!-- 列表 -->
@@ -42,7 +48,7 @@
 			</view>
 			
 			<view class="item d-flex a-center j-sb p-3 bg-white mb-2" @click="Router.redirectTo({route:{path:'/pages/secondHand-detail/secondHand-detail'}})">
-				<view class="font-50 colorf text-center itemConL">求购</view>
+				<image src="../../static/images/second-handl-img.png" mode=""></image>
 				<view class="itemCon flex-1 ml-2">
 					<view class="color3 font-30 avoidOverflow2 tit">需要一台220挖机，有合适的记得联系我</view>
 					<view class="font-24 color6 d-flex a-center j-sb mt-3 line-h">
@@ -80,7 +86,7 @@
 		</view>
 		
 		
-		<view class="oh bg-mask position-fixed top-0 left-0 right-0" :style="{paddingTop:statusBar+65 +'px'}" v-show="navCurr==4 && navCurr==5" @click="changeCurr('oh',0)">
+		<view class="oh bg-mask position-fixed top-0 left-0 right-0" :style="{marginTop:statusBar+155 +'px'}" v-show="navCurr==4 || navCurr==5" @click="changeCurr('oh',0)">
 			<!-- 分类 -->
 			<view class="classfiy font-26 color2 line-h text-center d-flex" v-show="navCurr==4">
 				<view class="left">
@@ -122,7 +128,7 @@
 		<view class="py-5 font-26 color9 text-center">没有更多内容了</view>
 		<view style="height: 100rpx;width: 100%;"></view>
 		<!-- 底部 -->
-		<view class="footer"> 
+		<view class="footer z-index100"> 
 			<view class="item" @click="Router.redirectTo({route:{path:'/pages/index/index'}})">
 				<image src="../../static/images/nabar1.png" mode=""></image>
 				<view>首页</view>
@@ -184,10 +190,10 @@ page{background-color: #f5f5f5;}
 .icon1{width: 23rpx;height: 23rpx;margin-right: 10rpx;}
 
 .ss{margin-top: 175rpx;}
-.ss input{border-right: 1px solid #e1e1e1;flex: 1;text-indent: 20rpx;}
+.ss input{border-right: 1px solid #e1e1e1;flex: 1;padding-left: 20rpx;font-size: 28rpx;text-align: left;box-sizing: border-box;}
 .ss input::-webkit-input-placeholder{color: #222!important;}
 
-.nav image{width: 13rpx;height: 6rpx;margin-left: 8rpx;}
+.nav image{width: 18rpx;height: 9rpx;margin-left: 8rpx;}
 .nav .item{width: 20%;line-height: 90rpx;text-align: center;}
 .nav .on{position: relative;color: #51A9E9;}
 .nav .on::before{content: ''; width: 100%;height: 2rpx;background-color: #51A9E9;position: absolute; bottom: 0;left: 0;}

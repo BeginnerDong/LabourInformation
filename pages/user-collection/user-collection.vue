@@ -106,7 +106,7 @@
 				<!-- <image src="../../static/images/i releasel-icon1.png" class="icon5"></image> -->
 				<view class="pl-2 flex-1" @click="Router.redirectTo({route:{path:'/pages/labour-detail/labour-detail'}})">
 					<view class="font-30 color2 pt-4">隧道施工队继续开挖班，处置办，洞1千米长，三级围岩，有经验的队伍请来咨询</view>
-					<view class="d-flex j-sb flex-wrap py-3 imgBox">
+					<view class="d-flex flex-wrap py-3 imgBox">
 						<image src="../../static/images/laborl-img.png" mode=""></image>
 						<image src="../../static/images/laborl-img.png" mode=""></image>
 						<image src="../../static/images/laborl-img.png" mode=""></image>
@@ -178,7 +178,7 @@
 	export default {
 		data() {
 			return {
-				navCurr:4
+				navCurr:1
 			}
 		},
 		methods: {
@@ -216,7 +216,8 @@ page{background-color: #f5f5f5;}
 .list .itemCon .tit{/* width: 480rpx; */line-height: 1.2;}
 .list .itemConL{width: 180rpx;height: 180rpx;line-height: 180rpx;background-color: #9DD6FF;}
 
-.imgBox image{width: 145rpx;height: 145rpx;}
+.imgBox image{width: 145rpx;height: 145rpx;margin-right: 19rpx;}
+.imgBox image:nth-child(4n){margin-right: 0;}
 
 .btn{width: 120rpx;line-height: 40rpx;}
 .img{width: 106rpx;height: 106rpx;margin-top: 20rpx;margin-right: 20rpx;}

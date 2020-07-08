@@ -85,8 +85,7 @@
 						<view class="li py-3" @click="changeCurr('classfiy',4)" :class="classCurr==4?'on':''">路基</view>
 					</view>
 					<view class="right flex-1 bg-white">
-						<view class="li on">西安<image src="../../static/images/used to releasel-icon5.png" class="icon5"></image></view>
-						<view class="li">挖掘机司机</view>
+						<view class="li on">挖掘机司机<image src="../../static/images/used to releasel-icon5.png" class="icon5"></image></view>
 						<view class="li">推土机司机</view>
 						<view class="li">装载机司机</view>
 						<view class="li">出渣机司机</view>

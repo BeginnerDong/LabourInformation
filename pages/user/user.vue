@@ -8,10 +8,12 @@
 				<text class="tag tagUser position-absolute">高级用户</text>
 			</view>
 		</view>
+		<!-- 高级用户显示 -->
 		<view class="font-24 p-3 oh">
 			桥隧之家是一个完全免费的信息发布平台，只要您符合条件就可以免费开通相关权限和认证。
 			<text class="Mcolor">详情>></text>
 		</view>
+		<!-- 普通用户显示 -->
 		<!-- <view class="font-28 color2 d-flex j-sb a-center py-4 px-3 bg-white mt-2">
 			<view>我的二手交易信息主页</view>
 			<view class="Mcolor" @click="changeHand()">免费开通</view>

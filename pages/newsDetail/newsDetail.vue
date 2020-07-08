@@ -1,6 +1,6 @@
 <template>
 	<view class="px-3">
-		<view class="font-40 color2 pt-4">隧道佳乐湿喷机，多年口碑品质保证</view>
+		<view class="font-40 color2 pt-4 font-w">隧道佳乐湿喷机，多年口碑品质保证</view>
 		
 		<view class="d-flex a-center j-sb pb-1">
 			<view class="d-flex a-center">
