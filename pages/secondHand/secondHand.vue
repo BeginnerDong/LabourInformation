@@ -1,26 +1,27 @@
 <template>
 	<view>
-		<view class="head p-3 bg-mcolor font-36 colorf d-flex a-center z-index100" :style="{paddingTop:statusBar+23 +'px'}" @click="Router.redirectTo({route:{path:'/pages/secondHand-publish/secondHand-publish'}})">
+		<view class="head p-3 bg-mcolor font-36 colorf d-flex a-center z-index100" :style="{paddingTop:statusBar+23 +'px'}"
+		 @click="checkLogin">
 			<image src="../../static/images/businessl-icon1.png" class="icon1"></image>
 			<view>免费发布</view>
 		</view>
 		
 		<!-- 搜索 -->
 		<view class="border-e1 rounded bg-white font-28 mx-3 py-2 d-flex a-center j-sb z-index1000 ss">
-			<input type="text" placeholder="风管" />
-			<view class="px-2">搜索</view>
+			<input type="text" placeholder="输入关键词搜索" v-model="title"/>
+			<view class="px-2" @click="search">搜索</view>
 		</view>
 		
 		<!-- nav -->
 		<view class="font-28 color2 d-flex a-center j-sb borderB-e1 z-index1000 nav">
-			<view class="item" :class="navCurr==1?'on':''" @click="changeCurr('nav',1)">全部</view>
-			<view class="item" :class="navCurr==2?'on':''" @click="changeCurr('nav',2)">出售</view>
-			<view class="item" :class="navCurr==3?'on':''" @click="changeCurr('nav',3)">求购</view>
-			<view class="item d-flex a-center j-center" :class="navCurr==4?'on':''" @click="changeCurr('nav',4)">分类
+			<view class="item" :class="navCurr==1?'on':''" @click="changeCurr(1)">全部</view>
+			<view class="item" :class="navCurr==2?'on':''" @click="changeCurr(2)">出售</view>
+			<view class="item" :class="navCurr==3?'on':''" @click="changeCurr(3)">求购</view>
+			<view class="item d-flex a-center j-center" :class="navCurr==4?'on':''" @click="changeCurr(4)">分类
 				<image src="../../static/images/labor releasel-icon1.png" v-if="navCurr==4"></image>
 				<image src="../../static/images/labor releasel-icon2.png" v-else></image>
 			</view>
-			<view class="item d-flex a-center j-center" :class="navCurr==5?'on':''" @click="changeCurr('nav',5)">所在地
+			<view class="item d-flex a-center j-center" :class="navCurr==5?'on':''" @click="changeCurr(5)">所在地
 				<image src="../../static/images/labor releasel-icon1.png" v-if="navCurr==5"></image>
 				<image src="../../static/images/labor releasel-icon2.png" v-else></image>
 			</view>
@@ -28,96 +29,60 @@
 		
 		<!-- 列表 -->
 		<view class="list">
-			<view class="item d-flex a-center j-sb p-3 bg-white mb-2" @click="Router.redirectTo({route:{path:'/pages/secondHand-detail/secondHand-detail'}})">
-				<image src="../../static/images/second-handl-img1.png" mode=""></image>
+			<view class="item d-flex a-center j-sb p-3 bg-white mb-2" v-for="(item,index) of mainData"
+			:key="item.id" :data-id="item.id"
+			@click="Router.navigateTo({route:{path:'/pages/secondHand-detail/secondHand-detail?id='+$event.currentTarget.dataset.id}})">
+				<image :src="item.mainImg&&item.mainImg[0]?item.mainImg[0].url:''" mode=""></image>
 				<view class="itemCon flex-1 ml-2">
-					<view class="color3 font-30 avoidOverflow2 tit">隧道佳乐湿喷机2017年的信号HSC-2513，只用了一个工地，机子还是很不错的</view>
+					<view class="color3 font-30 avoidOverflow2 tit">
+						{{item.title}}
+					</view>
 					<view class="font-24 color6 d-flex a-center j-sb mt-3 line-h">
-						<view>贵阳**有限公司 <view class="tag tagName">已实名认证</view></view>
-						<view>贵阳</view>
+						<view>{{item.name}}<view class="tag tagName" v-if="item.user&&item.user[0]&&item.user[0].behavior==2">已实名认证</view></view>
+						<view>{{item.city?item.city.title:''}}</view>
 					</view>
 					<view class="d-flex a-center j-sb h-100 mt-3">
 						<view class="font-22 d-flex a-center">
-							<view class="tag tagB">出售</view>
-							<view class="tag tagO">湿喷机</view>
-							<view class="tag tagR">置顶</view>
+							<view class="tag tagB" v-if="item.behavior==1">出售</view>
+							<view class="tag tagG" v-if="item.behavior==2">求购</view>
+							<view class="tag tagO">{{item.label?item.label.title:''}}</view>
+							<view class="tag tagR" v-if="item.top>0">置顶</view>
+							<view class="tag tagY" v-if="item.invalid_time<now">信息已失效</view>
 						</view>
-						<view class="font-22 color9">1小时前</view>
-					</view>
-				</view>
-			</view>
-			
-			<view class="item d-flex a-center j-sb p-3 bg-white mb-2" @click="Router.redirectTo({route:{path:'/pages/secondHand-detail/secondHand-detail'}})">
-				<image src="../../static/images/second-handl-img.png" mode=""></image>
-				<view class="itemCon flex-1 ml-2">
-					<view class="color3 font-30 avoidOverflow2 tit">需要一台220挖机，有合适的记得联系我</view>
-					<view class="font-24 color6 d-flex a-center j-sb mt-3 line-h">
-						<view>林先生<view class="tag tagName">已实名认证</view></view>
-						<view>遵义</view>
-					</view>
-					<view class="d-flex a-center j-sb h-100 mt-3">
-						<view class="font-22 d-flex a-center">
-							<view class="tag tagG">求购</view>
-							<view class="tag tagO">湿喷机</view>
-						</view>
-						<view class="font-22 color9">昨天</view>
-					</view>
-				</view>
-			</view>
-			
-			<view class="item d-flex a-center j-sb p-3 bg-white mb-2" @click="Router.redirectTo({route:{path:'/pages/secondHand-detail/secondHand-detail'}})">
-				<image src="../../static/images/second-handl-img1.png" mode=""></image>
-				<view class="itemCon flex-1 ml-2">
-					<view class="color3 font-30 avoidOverflow2 tit">隧道佳乐湿喷机2017年的信号HSC-2513，只用了一个工地，机子还是很不错的</view>
-					<view class="font-24 color6 d-flex a-center j-sb mt-3 line-h">
-						<view>林先生<view class="tag tagName">已实名认证</view></view>
-						<view>昆明</view>
-					</view>
-					<view class="d-flex a-center j-sb h-100 mt-3">
-						<view class="font-22 d-flex a-center">
-							<view class="tag tagB">出售</view>
-							<view class="tag tagO">湿喷机</view>
-							<view class="tag tagY">信息已失效</view>
-						</view>
-						<view class="font-22 color9">7-23</view>
+						<view class="font-22 color9">{{Utils.formatMsgTime(item.update_time)}}</view>
 					</view>
 				</view>
 			</view>
 		</view>
 		
 		
-		<view class="oh bg-mask position-fixed top-0 left-0 right-0" :style="{marginTop:statusBar+155 +'px'}" v-show="navCurr==4 || navCurr==5" @click="changeCurr('oh',0)">
+		<view class="oh bg-mask position-fixed top-0 left-0 right-0"  @click="closeMask" :style="{marginTop:statusBar+155 +'px'}" v-show="menuShow||cityShow">
 			<!-- 分类 -->
-			<view class="classfiy font-26 color2 line-h text-center d-flex" v-show="navCurr==4">
+			<view class="classfiy font-26 color2 line-h text-center d-flex" v-show="menuShow">
 				<view class="left">
-					<view class="li py-3" @click="changeCurr('classfiy',1)" :class="classCurr==1?'on':''">隧道</view>
-					<view class="li py-3" @click="changeCurr('classfiy',2)" :class="classCurr==2?'on':''">机械手/司机</view>
-					<view class="li py-3" @click="changeCurr('classfiy',3)" :class="classCurr==3?'on':''">桥梁</view>
-					<view class="li py-3" @click="changeCurr('classfiy',4)" :class="classCurr==4?'on':''">路基</view>
+					<view class="li py-3" v-for="(item,index) of menuData" :key="item.id"
+					 @click="changeMenuIndex(index)" :class="menuIndex==index?'on':''">{{item.title}}</view>
 				</view>
 				<view class="right flex-1 bg-white">
-					<view class="li on">挖掘机司机<image src="../../static/images/used to releasel-icon5.png" class="icon5"></image></view>
-					<view class="li">推土机司机</view>
-					<view class="li">装载机司机</view>
-					<view class="li">出渣机司机</view>
+					<view class="li" :class="menuIdIndex==index?'on':''" @click="chooseMenuId(index)" v-for="(item,index) of menuData[menuIndex].children" 
+					:key="item.id">{{item.title}}
+						<image src="../../static/images/used to releasel-icon5.png" class="icon5" v-if="menuIdIndex==index"></image>
+					</view>
 				</view>
 			</view>
 			
 			<!-- 所在地 -->
-			<view class="classfiy font-26 color2 line-h text-center d-flex" v-show="navCurr==5">
+			<view class="classfiy font-26 color2 line-h text-center d-flex" v-show="cityShow">
 				<view class="left">
-					<view class="li py-3" @click="changeCurr('address',1)" :class="addCurr==1?'on':''">福建</view>
-					<view class="li py-3" @click="changeCurr('address',2)" :class="addCurr==2?'on':''">陕西</view>
-					<view class="li py-3" @click="changeCurr('address',3)" :class="addCurr==3?'on':''">贵州</view>
-					<view class="li py-3" @click="changeCurr('address',4)" :class="addCurr==4?'on':''">上海</view>
+					<view class="li py-3" v-for="(item,index) of cityData" :key="item.id"
+					 @click="changeCityIndex(index)" :class="cityIndex==index?'on':''">{{item.title}}</view>
 				</view>
 				<view class="right flex-1 bg-white">
-					<view class="li on">西安<image src="../../static/images/used to releasel-icon5.png" class="icon5"></image></view>
-					<view class="li">咸阳</view>
-					<view class="li">宝鸡</view>
-					<view class="li">汉中</view>
-					<view class="li">安康</view>
-					<view class="li">渭南</view>
+					<view class="li" :class="cityIdIndex==index?'on':''" @click="chooseCityId(index)" 
+					v-for="(item,index) of cityData[cityIndex].children"
+					:key="item.id">{{item.title}}
+						<image src="../../static/images/used to releasel-icon5.png" class="icon5" v-if="cityIdIndex==index"></image>
+					</view>
 				</view>
 			</view>
 			
@@ -164,22 +129,260 @@
 				navCurr:1,
 				classCurr:1,
 				addCurr:1,
-				ohCurr:0
+				ohCurr:0,
+				mainData:[],
+				now:0,
+				Utils:this.$Utils,
+				searchItem:{
+					thirdapp_id: 2,
+					type: 1,
+					user_type:0
+				},
+				menuShow:false,
+				cityShow:false,
+				menuData:[],
+				cityData:[],
+				menuIndex:0,
+				menuIdIndex:-1,
+				cityIndex:0,
+				cityIdIndex:-1,
+				title:''
 			}
 		},
+		
+		onLoad() {
+			const self = this;
+			self.now = Date.parse(new Date()) / 1000;
+			self.paginate = self.$Utils.cloneForm(self.$AssetsConfig.paginate);
+			self.$Utils.loadAll(['getMainData','getMenuData','getCityData'], self);
+		},
+		
+		onReachBottom() {
+			console.log('onReachBottom')
+			const self = this;
+			if (!self.isLoadAll && uni.getStorageSync('loadAllArray')) {
+				self.paginate.currentPage++;
+				self.getMainData()
+			};
+		},
+		
+		onPullDownRefresh() {
+			const self=  this;
+			
+		},
+		
 		methods: {
-			changeCurr(type,i){
+			
+			search(){
 				const self = this;
-				if(type == 'nav'){
-					self.navCurr = i;
-				}else if(type == 'classfiy'){
-					self.classCurr = i;
-				}else if(type == 'address'){
-					self.addCurr = i;
-				}else if(type == 'oh'){
-					self.ohCurr = i;
+				if(self.title!=''){
+					self.searchItem.title = ['LIKE',['%'+self.title+'%']],
+					self.getMainData(true)
+				}else{
+					self.$Utils.showToast('请输入关键词', 'none')
 				}
-			}
+			},
+			
+			changeMenuIndex(index){
+				const self = this;
+				self.menuIndex = index
+			},
+			
+			chooseMenuId(index){
+				const self = this;
+				uni.setStorageSync('canClick', false);
+				self.menuIdIndex = index;
+				delete self.searchItem.behavior;
+				delete self.searchItem.menu_id;
+				self.searchItem.menu_id = self.menuData[self.menuIndex].children[self.menuIdIndex].id;
+				self.navCurr = 4;
+				self.getMainData(true)
+			},
+			
+		
+			
+			changeCityIndex(index){
+				const self = this;
+				self.cityIndex = index
+			},
+			
+			chooseCityId(index){
+				const self = this;
+				uni.setStorageSync('canClick', false);
+				self.cityIdIndex = index;
+				delete self.searchItem.behavior;
+				delete self.searchItem.menu_id;
+				self.searchItem.location = self.cityData[self.cityIndex].children[self.cityIdIndex].id;
+				self.navCurr = 5;
+				self.getMainData(true)
+			},
+			
+			
+			getMenuData() {
+				const self = this;		
+				const postData = {};
+				postData.searchItem = {
+					type:3
+				};
+				postData.order = {
+					listorder:'desc'
+				};
+				const callback = (res) => {
+					if (res.info.data.length > 0) {
+						self.menuData = res.info.data;
+					}
+					self.$Utils.finishFunc('getMenuData');
+				};
+				self.$apis.labelGet(postData, callback);
+			},
+			
+			getCityData() {
+				const self = this;		
+				const postData = {};
+				postData.searchItem = {
+					type:2
+				};
+				postData.order = {
+					listorder:'desc'
+				};
+				const callback = (res) => {
+					if (res.info.data.length > 0) {
+						self.cityData = res.info.data;
+					}
+					self.$Utils.finishFunc('getCityData');
+				};
+				self.$apis.labelGet(postData, callback);
+			},
+			
+			closeMask(){
+				const self = this;
+				self.menuShow = false;
+				self.cityShow = false;
+			},
+			
+			changeCurr(type){
+				const self = this;
+				uni.setStorageSync('canClick', false);
+				if(type==1){
+					self.navCurr = type;
+					delete self.searchItem.behavior;
+					delete self.searchItem.menu_id;
+					delete self.searchItem.location;
+					self.menuShow = false;
+					self.cityShow = false;
+					self.getMainData(true)
+				}else if(type==2){
+					self.navCurr = type;
+					self.searchItem.behavior = 1
+					self.menuShow = false;
+					self.cityShow = false;
+					self.getMainData(true)
+				}else if(type==3){
+					self.navCurr = type;
+					self.searchItem.behavior = 2
+					self.menuShow = false;
+					self.cityShow = false;
+					self.getMainData(true)
+				}else if(type==4){
+					self.menuShow = true
+				}else if(type==5){
+					self.cityShow = true
+				}
+			},
+			
+			
+			getMainData(isNew) {
+				const self = this;
+				if (isNew) {
+					self.mainData = [];
+					self.paginate = {
+						count: 0,
+						currentPage: 1,
+						is_page: true,
+						pagesize: 10
+					}
+				};
+				const postData = {};
+				postData.tokenFuncName = 'getProjectToken';
+				postData.paginate = self.$Utils.cloneForm(self.paginate);
+				postData.searchItem = self.$Utils.cloneForm(self.searchItem);
+				postData.order  = {
+					listorder:'desc',
+					update_time:'desc'
+				};
+				postData.getAfter = {
+					user:{
+						tableName:'User',
+						middleKey:'user_no',
+						key:'user_no',
+						searchItem:{
+							status:1
+						},
+						condition:'=',
+						//info:['headImgUrl']
+					},
+					label:{
+						tableName:'Label',
+						middleKey:'menu_id',
+						key:'id',
+						searchItem:{
+							status:1
+						},
+						condition:'=',
+						info:['title']
+					},
+					city:{
+						tableName:'Label',
+						middleKey:'location',
+						key:'id',
+						searchItem:{
+							status:1
+						},
+						condition:'=',
+						info:['title']
+					},
+					log: {
+						token: uni.getStorageSync('user_token'),
+						tableName: 'Log',
+						middleKey: 'id',
+						key: 'relation_id',
+						searchItem: {
+							status: ['in', [1, -1]],
+							user_no: uni.getStorageSync('user_info').user_no,
+							relation_table: 'Message'
+						},
+						condition: '='
+					}
+				}
+				
+				const callback = (res) => {
+					if (res.info.data.length > 0) {
+						self.mainData.push.apply(self.mainData, res.info.data);
+					};
+					uni.setStorageSync('canClick', true);
+					self.$Utils.finishFunc('getMainData');
+				};
+				self.$apis.messageGet(postData, callback);
+			},
+			
+			checkLogin(){
+				const self = this;
+				if(!uni.getStorageSync('user_info')||uni.getStorageSync('user_info').headImgUrl==''){
+					uni.showModal({
+						title:'提示',
+						content:'您未登录，是否立即登录',
+						success(res) {
+							if(res.confirm){
+								self.Router.redirectTo({route:{path:'/pages/user/user'}})
+							}
+						}
+					})
+				}else{
+					self.Router.navigateTo({route:{path:'/pages/secondHand-publish/secondHand-publish'}})
+				}
+			},
+			
+			
 		}
 	}
 </script>
