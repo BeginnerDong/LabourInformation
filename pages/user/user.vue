@@ -18,7 +18,8 @@
 		<!-- 高级用户显示 -->
 		<view class="font-24 p-3 oh">
 			桥隧之家是一个完全免费的信息发布平台，只要您符合条件就可以免费开通相关权限和认证。
-			<text class="Mcolor">详情>></text>
+			<text class="Mcolor"
+			@click="Router.navigateTo({route:{path:'/pages/platformInfor/platformInfor'}})">详情>></text>
 		</view>
 		<view v-if="userData.nickname">
 			<!-- 普通用户显示 -->

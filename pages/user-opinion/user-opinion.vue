@@ -5,9 +5,17 @@
 			<view class="d-flex a-center j-sb color2 pb-4 line-h font-32">提意见或建议</view>
 			<textarea value="" placeholder="请填写800个字以内的内容" class="border-e1 p-2 font-30"/>
 		</view>
-		<view class="font-30 color2 d-flex j-sb a-center py-4 px-3 bg-white">
-			<view>联系我们</view>
-			<image src="../../static/images/used to releasel-icon3.png" class="icon1"></image>
+		<view class="font-30 color2 py-4 px-3 bg-white">
+			<view>添加图片</view>
+			<!-- 添加图片 -->
+			<view class="uploadImg d-flex a-center">
+				<view class="position-relative">
+					<image src="../../static/images/laborl-img.png" mode=""></image>
+					<image src="../../static/images/used to releasel-icon1.png" class="icon2"></image>
+				</view>
+				<image src="../../static/images/used to releasel-icon.png" mode=""></image>
+			</view>
+			
 		</view>
 		
 		<button class="btn400" open-type="getUserInfo" @getuserinfo="Utils.stopMultiClick(submit)">提交</button>
@@ -90,5 +98,5 @@
 page{background-color: #f5f5f5;}
 textarea{width: 100%;box-sizing: border-box;height: 600rpx;}
 .icon1{width: 12rpx;height: 21rpx;}
-.btn400{margin-top: 130rpx;}
+.btn400{margin: 130rpx auto 80rpx;}
 </style>

@@ -139,7 +139,13 @@
 				"navigationBarTitleText": "用工不良记录"
 			}
 		}
-	],
+	    ,{
+            "path" : "pages/platformInfor/platformInfor",
+            "style" : {
+							"navigationBarTitleText": "平台信息"
+						}
+        }
+    ],
 	"globalStyle": {
 		//"navigationStyle":"custom",
 		"navigationBarTextStyle": "white",
