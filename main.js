@@ -33,7 +33,7 @@ $Router.beforeEach((navType, to) => {
 		})
 		return;
 	}; */
-	console.log('url',$Utils.objParseUrlAndParam(to.route.path, to.query))
+	//console.log('url',$Utils.objParseUrlAndParam(to.route.path, to.query))
 	uni[navType]({
 		url: $Utils.objParseUrlAndParam(to.route.path, to.query)
 	})

@@ -9,8 +9,8 @@
 		<!-- 搜索 -->
 		<view class="bg-f5 px-3 pt-2">
 			<view class="border-e1 rounded font-28 px-3 py-2 d-flex a-center j-sb ss">
-				<input type="text" value="" />
-				<view class="px-2">搜索</view>
+				<input type="text" v-model="keywords"/>
+				<view class="px-2" @click="search">搜索</view>
 			</view>
 		</view>
 		
@@ -43,7 +43,7 @@
 					
 				</view>
 				<view class="d-flex a-center j-sb pb-3">
-					<view>
+					<view class="d-flex a-center">
 						<view class="tag tagB" v-if="item.behavior==1">招工人</view>
 						<view class="tag tagB" v-if="item.behavior==2">招队伍</view>
 						<view class="tag tagG" v-if="item.behavior==3">工人找活</view>
@@ -58,12 +58,12 @@
 					</view>
 				</view>	
 				<view class="line-h-md py-4 font-24 color6 dashedBorder">
-					<view v-if="item.behavior==1" v-for="(c_item,c_index) in item.passage_array" :key="index">{{c_item.name}}，{{c_item.num}}名，
+					<view v-if="item.behavior==1" v-for="(c_item,c_index) in item.passage_array" :key="c_index">{{c_item.name}}，{{c_item.num}}名，
 					{{c_item.money!=''?'月工资'+c_item.money:'待遇面议'}}</view>
-					<view v-if="item.behavior==2" v-for="(c_item,c_index) in item.passage_array" :key="index">{{c_item.name}}，{{c_item.num}}支队伍，
+					<view v-if="item.behavior==2" v-for="(c_item,c_index) in item.passage_array" :key="c_index">{{c_item.name}}，{{c_item.num}}支队伍，
 					{{c_item.money!=''?'月工资'+c_item.money:'待遇面议'}}</view>
 					<view v-if="item.behavior==3">求职岗位：{{item.description}},期待工资：{{item.salary}}</view>
-					<view v-if="item.behavior==4">我能承包：<span :key="index" v-for="(c_item,c_index) in item.passage_array">{{c_item.name}}</span></view>
+					<view v-if="item.behavior==4">我能承包：<span :key="c_index" v-for="(c_item,c_index) in item.passage_array">{{c_item.name}}</span></view>
 				</view>
 			</view>
 		
@@ -149,7 +149,8 @@
 				cityShow:false,
 				cityIndex:0,
 				cityIdIndex:-1,
-				cityData:[]
+				cityData:[],
+				keywords:''
 			}
 		},
 		
@@ -170,6 +171,17 @@
 		},
 		
 		methods: {
+			
+			search(){
+				const self = this;
+				uni.setStorageSync('canClick', true);
+				if(self.keywords==''){
+					uni.setStorageSync('canClick', true);
+					self.$Utils.showToast('请输入关键词搜索', 'none')
+				}else{
+					self.getMainData(true)
+				}
+			},
 			
 			changeBehavior(type){
 				const self = this;
@@ -261,9 +273,12 @@
 				postData.tokenFuncName = 'getProjectToken';
 				postData.paginate = self.$Utils.cloneForm(self.paginate);
 				postData.searchItem = self.$Utils.cloneForm(self.searchItem);
-				postData.order  = {
+				/* postData.order  = {
 					listorder:'desc',
 					update_time:'desc'
+				}; */
+				if(self.keywords!=''){
+					postData.keywords = self.keywords
 				};
 				postData.getAfter = {
 					city:{
@@ -275,17 +290,18 @@
 						},
 						condition:'=',
 						info:['title']
-					},
+					},	
 				}
 				const callback = (res) => {
 					if (res.info.data.length > 0) {
 						self.mainData.push.apply(self.mainData, res.info.data);
 					};
 					self.total = res.info.total;
+					
 					uni.setStorageSync('canClick', true);
 					self.$Utils.finishFunc('getMainData');
 				};
-				self.$apis.messageGet(postData, callback);
+				self.$apis.searchLabour(postData, callback);
 			},
 			
 			

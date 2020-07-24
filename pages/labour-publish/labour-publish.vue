@@ -125,8 +125,9 @@
 				</view>
 				<view class="d-flex a-center pb-2" v-for="(item,index) of myTeam" :key="index">
 					<input type="text" placeholder="请填写" v-model="item.name" class="text-left border-e1 rounded color2 pl-1 borderBox"/>
+					<view class="font-28 Rcolor" v-if="index>0" @click="deleteMyTeam(index)">删除</view>
 				</view>
-				<view class="d-flex a-center j-center py-4" @click="deleteMyTeam(index)">
+				<view class="d-flex a-center j-center py-4" @click="addMyTeam">
 					<image src="../../static/images/labor%20releasel-icon.png" class="icon3"></image>
 					<view class="pl-2 font-26 Mcolor">继续添加</view>
 				</view>
@@ -219,17 +220,61 @@
 					}
 				],
 				Utils:this.$Utils,
+				isEdit:false
 			}
 		},
 		
 		
-		onLoad() {
+		onLoad(options) {
 			const self = this;
 			self.paginate = self.$Utils.cloneForm(self.$AssetsConfig.paginate);
 			self.$Utils.loadAll(['getCityData'], self);
+			if(options.id){
+				self.isEdit = true
+				self.getMessageData(options.id)
+			}
 		},
 		
 		methods: {
+			
+			getMessageData(id) {
+				const self = this;		
+				const postData = {};
+				postData.tokenFuncName = 'getProjectToken';
+				postData.searchItem = {
+					id:id,
+					user_no:uni.getStorageSync('user_info').user_no
+				};
+				const callback = (res) => {
+					if (res.info.data.length > 0) {
+						self.messageData = res.info.data[0];
+						self.submitData.title = self.messageData.title;
+						self.submitData.name = self.messageData.name;
+						self.submitData.phone = self.messageData.phone;
+						self.submitData.mainImg = self.messageData.mainImg;
+						self.submitData.behavior = self.messageData.behavior;
+						self.submitData.location = self.messageData.location;
+						self.submitData.passage_array = self.messageData.passage_array;
+						self.submitData.salary = self.messageData.salary;
+						self.submitData.description = self.messageData.description;
+						//console.log(self.$Utils.findItemInTwoArray(self.cityData,self.submitData.location))
+						self.cityIndex = self.$Utils.findItemInTwoArray(self.cityData,self.submitData.location)[0];
+						self.cityIdIndex = self.$Utils.findItemInTwoArray(self.cityData,self.submitData.location)[1];
+						if(self.submitData.behavior == 1){
+							self.worker = self.submitData.passage_array
+						}else if(self.submitData.behavior == 2){
+							self.team = self.submitData.passage_array
+						}else if(self.submitData.behavior == 4){
+							self.myTeam = self.submitData.passage_array
+						}
+					}
+					self.$Utils.finishFunc('getMessageData');
+				};
+				self.$apis.messageGet(postData, callback);
+			},
+			
+
+			
 			
 			submit() {
 				const self = this;
@@ -259,11 +304,41 @@
 						self.$Utils.showToast('请输入真实有效的手机号', 'none', 1000)
 						return;
 					}
-					self.messageAdd();
+					if(self.isEdit){
+						self.messageUpdate()
+					}else{
+						self.messageAdd();
+					}
 				} else {
 					uni.setStorageSync('canClick', true);
 					self.$Utils.showToast('请补全必须信息', 'none')
 				};
+			},
+			
+			messageUpdate() {
+				const self = this;
+				uni.setStorageSync('canClick', false);
+				const postData = {};
+				postData.tokenFuncName = 'getProjectToken';
+				postData.data = {};
+				postData.data = self.$Utils.cloneForm(self.submitData);
+				postData.searchItem = {
+					id:self.messageData.id
+				};
+				const callback = (data) => {				
+					if (data.solely_code == 100000) {					
+						self.$Utils.showToast('修改成功', 'none', 1000)
+						setTimeout(function() {
+							uni.navigateBack({
+								delta:1
+							})
+						}, 1000);
+					} else {
+						uni.setStorageSync('canClick', true);
+						self.$Utils.showToast(data.msg, 'none', 1000)
+					}	
+				};
+				self.$apis.messageUpdate(postData, callback);
 			},
 			
 			messageAdd() {
@@ -305,7 +380,7 @@
 			
 			addTeam(){
 				const self = this;
-				self.worker.push({
+				self.team.push({
 					name:'',
 					num:'',
 					money:''
@@ -314,21 +389,21 @@
 			
 			deleteTeam(index){
 				const self = this;
-				self.worker.splice(parseInt(index),1)
+				self.team.splice(parseInt(index),1)
 			},
 			
 			addMyTeam(){
 				const self = this;
-				self.worker.push({
-					name:'',
-					num:'',
-					money:''
-				})
+				self.myTeam.push(
+					{
+						name:''
+					}
+				)
 			},
 			
 			deleteMyTeam(index){
 				const self = this;
-				self.worker.splice(parseInt(index),1)
+				self.myTeam.splice(parseInt(index),1)
 			},
 			
 			showChoose(e){

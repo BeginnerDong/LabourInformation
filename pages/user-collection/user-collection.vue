@@ -174,6 +174,7 @@
 	</view>
 </template>
 
+
 <script>
 	export default {
 		data() {
@@ -181,18 +182,78 @@
 				navCurr:1
 			}
 		},
+		
+		
+		onLoad() {
+			const self = this;
+			//self.$Utils.loadAll(['getMainData'], self);
+		},
+		
 		methods: {
 			changeNav(i){
 				const self = this;
 				self.navCurr = i
 			},
-			showToast(){
+			
+			
+			getMainData(isNew) {
 				const self = this;
-				uni.showModal({
-					title:'提示',
-					content:'确定删除该条信息？'
-				})
-			}
+				if (isNew) {
+					self.mainData = [];
+					self.paginate = {
+						count: 0,
+						currentPage: 1,
+						is_page: true,
+						pagesize: 10
+					}
+				};
+				const postData = {};
+				postData.tokenFuncName = 'getProjectToken';
+				postData.paginate = self.$Utils.cloneForm(self.paginate);
+				postData.searchItem = self.$Utils.cloneForm(self.searchItem);
+				postData.searchItem.user_no = uni.getStorageSync('user_info').user_no;
+				postData.order  = {
+					listorder:'desc',
+					update_time:'desc'
+				};
+				postData.getAfter = {
+					label:{
+						tableName:'Label',
+						middleKey:'menu_id',
+						key:'id',
+						searchItem:{
+							status:1
+						},
+						condition:'=',
+						info:['title']
+					},
+					city:{
+						tableName:'Label',
+						middleKey:'location',
+						key:'id',
+						searchItem:{
+							status:1
+						},
+						condition:'=',
+						info:['title']
+					},
+				}
+			
+				const callback = (res) => {
+					if (res.info.data.length > 0) {
+						self.mainData.push.apply(self.mainData, res.info.data);
+						for (var i = 0; i < self.mainData.length; i++) {
+							self.mainData[i].create_time = self.mainData[i].create_time.substr(0,10);
+							self.mainData[i].update_time = self.mainData[i].update_time.substr(0,10);
+							self.mainData[i].choose = false
+						}
+					};
+					self.isShowChoose = false;
+					uni.setStorageSync('canClick', true);
+					self.$Utils.finishFunc('getMainData');
+				};
+				self.$apis.articleGet(postData, callback);
+			},
 		}
 	}
 </script>

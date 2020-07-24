@@ -14,7 +14,7 @@
 		
 		<view class="px-3 bg-white">
 			<view class="font-30 color3 pt-5">
-				{{mainData.title}}
+				{{mainData.title?mainData.title:''}}
 			</view>
 			<view class="d-flex a-center">
 				<image src="../../static/images/detailsl-icon.png" class="icon1"></image>
@@ -90,7 +90,7 @@
 				<view class="py-4">分享给</view>
 				<view class="d-flex a-center j-sb share m-a mb-5 pt-3">
 					<view class="font-26 pb-1"><image src="../../static/images/sharel-icon.png" class="img1"></image><view>微信好友</view></view>
-					<view class="font-26 pb-1" @click="Router.redirectTo({route:{path:'/pages/labour-share/labour-share'}})"><image src="../../static/images/sharel-icon1.png" class="img2"></image><view>微信朋友圈</view></view>
+					<view class="font-26 pb-1" @click="Router.navigateTo({route:{path:'/pages/labour-share/labour-share?id='+mainData.id}})"><image src="../../static/images/sharel-icon1.png" class="img2"></image><view>微信朋友圈</view></view>
 				</view>
 				<view class="font-26 py-3 bg-colorf5 mt-5 z-index100" @click="changeShare()">取消</view>
 			</view>
@@ -117,10 +117,29 @@
 			self.id = options.id;
 			self.now = Date.parse(new Date()) / 1000;
 			
-			self.$Utils.loadAll(['getMainData'], self);
+			self.$Utils.loadAll(['getMainData','getQrCode'], self);
 		},
 		
 		methods: {
+			
+			getQrCode() {
+				const self = this;
+				const postData = {};
+				postData.tokenFuncName = 'getProjectToken'
+				postData.qrInfo = {
+					scene: self.id,
+					//page: 'pages/labour-share/labour-share',
+				};
+				postData.output = 'url';
+				postData.ext = 'png';
+				const callback = (res) => {
+					if (res.solely_code == 100000) {
+						uni.setStorageSync('labourQr',res.info.url)
+					}
+					self.$Utils.finishFunc('getQrCode');
+				};
+				self.$apis.getQrCode(postData, callback);
+			},
 			
 			checkLogin(){
 				const self = this;

@@ -21,7 +21,7 @@ class Router {
 	}
 
 	redirectTo(to) {
-		console.log('redirectTo')
+		//console.log('redirectTo')
 		this.callBack("redirectTo", to);
 	}
 

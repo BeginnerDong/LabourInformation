@@ -181,12 +181,12 @@ export default {
 	finishFunc(funcName) {
 		uni.setStorageSync('canClick', true);
 		var loadArray = uni.getStorageSync('loadAllArray');
-		console.log('loadArray', loadArray)
+		//console.log('loadArray', loadArray)
 		if (loadArray && loadArray.length > 0) {
 			var length = loadArray.indexOf(funcName);
 			if (length >= 0) {
 				loadArray.splice(length, 1);
-				console.log('finishFunc')
+				//console.log('finishFunc')
 				uni.setStorageSync('loadAllArray', loadArray);
 				if (uni.getStorageSync('loadAllArray').length == 0) {
 					uni.hideLoading();
@@ -468,6 +468,31 @@ export default {
 		for (var i = 0; i < array.length; i++) {
 			if (array[i][fieldName] == field) {
 				return [i, array[i]];
+			}
+		};
+		return false;
+	},
+	
+	findItemInOfText(array, text) {
+		console.log('array',array)
+		for (var i = 0; i < array.length; i++) {
+			for (var j = 0; j < array[i].children.length; j++) {
+				if(array[i].children[j].title == text){
+					return array[i].children[j].id;
+				}
+			}
+		};
+		return false;
+	},
+	
+	findItemInTwoArray(array, field) {
+		console.log('array',array)
+		console.log('field',field)
+		for (var i = 0; i < array.length; i++) {
+			for (var j = 0; j < array[i].children.length; j++) {
+				if(array[i].children[j].id == field){
+					return [i,j];
+				}
 			}
 		};
 		return false;

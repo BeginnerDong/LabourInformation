@@ -35,7 +35,7 @@ class Token {
 		if(uni.getStorageSync('token_expire_time')&&parseInt(uni.getStorageSync('token_expire_time'))<parseInt(new Date().getTime())){
 			pass = false;
 		};
-		console.log('new Date().getTime()',parseInt(new Date().getTime()));
+		//console.log('new Date().getTime()',parseInt(new Date().getTime()));
 		if(!pass){
 	        var params = {
 	            thirdapp_id:2,

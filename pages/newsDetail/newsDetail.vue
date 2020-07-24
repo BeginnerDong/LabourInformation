@@ -165,6 +165,12 @@
 						condition: '='
 					}
 				};
+				postData.saveFunction = [{
+					FuncName: 'viewArticle',
+					searchItem:{
+						id:self.searchItem.id
+					}
+				}];
 				const callback = (res) => {
 					if (res.info.data.length > 0) {
 						self.mainData = res.info.data[0];

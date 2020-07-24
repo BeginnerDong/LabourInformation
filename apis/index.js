@@ -2,9 +2,22 @@ import http from "./http.js";
 import config from "@/config/index.config.js";
 
 
+
 export default {
 
-
+	
+	getQrCode(param, callback) {
+		var allParams = {
+			url: 'Base/Qr/ProgramQrGet',
+			type: 'post',
+			data: param,
+			sCallback: function(data) {
+				callback && callback(data);
+			}
+		};
+		http.HTTP(allParams);
+	},
+	
 	WxJssdk(param, callback) {
 
 		var allParams = {
@@ -17,7 +30,34 @@ export default {
 		};
 		http.HTTP(allParams);
 	},
-
+	
+	
+	
+	
+	searchLabour(param, callback) {
+		var allParams = {
+			url: 'Project/Solely/searchLabour',
+			type: 'post',
+			data: param,
+			sCallback: function(data) {
+				callback && callback(data);
+			}
+		};
+		http.HTTP(allParams);
+	},
+	
+	searchCard(param, callback) {
+		var allParams = {
+			url: 'Project/Solely/searchCard',
+			type: 'post',
+			data: param,
+			sCallback: function(data) {
+				callback && callback(data);
+			}
+		};
+		http.HTTP(allParams);
+	},
+	
 	registerSuper(param, callback) {
 
 		var allParams = {
@@ -30,7 +70,19 @@ export default {
 		};
 		http.HTTP(allParams);
 	},
-
+	
+	searchBad(param, callback) {
+	
+		var allParams = {
+			url: 'Project/Solely/searchBad',
+			type: 'post',
+			data: param,
+			sCallback: function(data) {
+				callback && callback(data);
+			}
+		};
+		http.HTTP(allParams);
+	},
 
 	bindShop(param, callback) {
 
@@ -512,6 +564,17 @@ export default {
 		http.HTTP(allParams);
 	},
 	
+	logGet(param, callback) {
+		var allParams = {
+			url: 'Common/Log/get',
+			type: 'post',
+			data: param,
+			sCallback: function(data) {
+				callback && callback(data);
+			}
+		};
+		http.HTTP(allParams);
+	},
 	
 	messageAdd(param, callback) {
 		var allParams = {

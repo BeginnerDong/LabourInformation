@@ -27,7 +27,7 @@
 			</view>
 			<view class="d-flex a-center j-sb py-4 borderB-f5 px-3">
 				<view class="font-28 color2">手机号</view>
-				<input type="text" placeholder="请填写" v-model="submitData.phone"/>
+				<input type="text" placeholder="请填写" v-model="submitData.phone" @blur="checkPhone" />
 			</view>
 			
 			<view class="py-4 borderB-f5 px-3">
@@ -84,10 +84,10 @@
 					</view>
 				</view>
 			</view>
-			<view class="Rcolor font-22 text-center py-4">如果没有您想要的分类请添加微信客服（微信号：zdv223568）</view>
+			<view class="Rcolor font-22 text-center py-4">如果没有您想要的分类请添加微信客服（微信号：{{kefu}}）</view>
 			
-			<view class="my-5" @click="messageAdd">
-				<view class="btn400">确认发布</view>
+			<view class="my-5" @click="submitDataTwo">
+				<view class="btn400">{{!isEdit?'确认发布':'确认修改'}}</view>
 			</view>
 		</view>
 		
@@ -168,18 +168,54 @@
 				conSalecityTitleArray:[],
 				
 				menuData:[],
-				menuIdArray:[]
+				menuIdArray:[],
+				isEdit:false,
+				kefu:''
 			}
 		},
 		
-		onLoad() {
+		onLoad(options) {
 			const self = this;
 			self.$Utils.loadAll(['getMenuData','getCityData'], self);
+			self.kefu = uni.getStorageSync('kefu');
+			if(options.type){
+				self.isEdit = true
+				self.getMessageData()
+			}
 		},
 		
 		
 		
 		methods: {
+			
+			checkPhone() {
+				const self = this;
+				const postData = {};
+				postData.tokenFuncName = 'getProjectToken';
+				postData.searchItem ={
+					thirdapp_id: 2,
+					type:2,
+					user_type:0,
+					phone:self.submitData.phone
+				};
+				postData.noShowLoading = true;
+				const callback = (res) => {
+					if (res.info.data.length > 0) {
+						uni.showModal({
+							title:'提示',
+							content:'你所填写的手机号'+self.submitData.phone+'已被使用，请更换手机号，或者联系平台客服（微信号:'+ self.kefu +'）进行处理',
+							showCancel:false,
+							confirmText:'我知道了',
+							success(res) {
+								if(res.confirm){
+									self.submitData.phone = ''
+								}
+							}
+						})
+					}
+				};
+				self.$apis.messageGet(postData, callback);
+			},
 			
 			submit() {
 				const self = this;
@@ -200,6 +236,106 @@
 					uni.setStorageSync('canClick', true);
 					self.$Utils.showToast('请补全本页必须信息', 'none')
 				};
+			},
+			
+			submitDataTwo(){
+				const self = this;
+				if(self.isEdit){
+					self.messageUpdate()
+				}else{
+					self.messageAdd();
+				}
+			},
+			
+			
+			messageUpdate() {
+				const self = this;
+				uni.setStorageSync('canClick', false);
+				if(self.menuIdArray.length==0){
+					uni.setStorageSync('canClick', true);
+					self.$Utils.showToast('至少选择一项分类', 'none')
+					return
+				};
+				const postData = {};
+				postData.searchItem = {
+					id:self.messageData.id
+				};
+				postData.tokenFuncName = 'getProjectToken';
+				postData.data = {};
+				postData.data = self.$Utils.cloneForm(self.submitData);
+				postData.saveAfter = [];
+				for (var i = 0; i < self.conSalecityTitleArray.length; i++) {
+					postData.saveAfter.push(
+						{
+							tableName: 'Relation',
+							FuncName: 'add',
+							data: {
+								res:{relation_one:'id'},
+								relation_two:self.conSalecityTitleArray[i],
+								thirdapp_id:2,
+								type:1
+							},
+						},
+					)	
+				};
+				if(self.conSalecityTitleArray.length==0){
+					postData.saveAfter.push(
+						{
+							tableName: 'Relation',
+							FuncName: 'add',
+							data: {
+								res:{relation_one:'id'},
+								relation_two:'全国',
+								thirdapp_id:2,
+								type:1
+							},
+						},
+					)	
+				};
+				if(self.willDeleteArray.length>0){
+					for (var i = 0; i < self.willDeleteArray.length; i++) {
+						postData.saveAfter.push(
+							{
+								tableName: 'Relation',
+								FuncName: 'update',
+								data: {
+									status:-1
+								},
+								searchItem:{
+									id:self.willDeleteArray[i]
+								}
+							},
+						)	
+					}
+				};
+				for (var i = 0; i < self.menuIdArray.length; i++) {
+					postData.saveAfter.push(
+						{
+							tableName: 'Relation',
+							FuncName: 'add',
+							data: {
+								res:{relation_one:'id'},
+								relation_two:self.menuIdArray[i],
+								thirdapp_id:2,
+								type:2
+							},
+						},
+					)	
+				};
+				const callback = (data) => {				
+					if (data.solely_code == 100000) {					
+						self.$Utils.showToast('修改成功', 'none', 1000)
+						setTimeout(function() {
+							uni.navigateBack({
+								delta:1
+							})
+						}, 1000);
+					} else {
+						uni.setStorageSync('canClick', true);
+						self.$Utils.showToast(data.msg, 'none', 1000)
+					}	
+				};
+				self.$apis.messageUpdate(postData, callback);
 			},
 			
 			messageAdd() {
@@ -422,6 +558,59 @@
 				};
 				self.$apis.labelGet(postData, callback);
 			},
+			
+			getMessageData() {
+				const self = this;		
+				const postData = {};
+				postData.tokenFuncName = 'getProjectToken';
+				postData.searchItem = {
+					type:2,
+					user_no:uni.getStorageSync('user_info').user_no
+				};
+				postData.getAfter = {
+					relation:{
+						tableName:'Relation',
+						middleKey:'id',
+						key:'relation_one',
+						searchItem:{
+							status:1,
+							//type:2
+						},
+						condition:'='
+					}
+				};
+				const callback = (res) => {
+					if (res.info.data.length > 0) {
+						self.messageData = res.info.data[0];
+						self.submitData.title = self.messageData.title;
+						self.submitData.name = self.messageData.name;
+						self.submitData.phone = self.messageData.phone;
+						self.submitData.description = self.messageData.description;
+						self.submitData.mainImg = self.messageData.mainImg;
+						self.submitData.location = self.messageData.location;
+						self.cityIndex = self.$Utils.findItemInTwoArray(self.cityData,self.submitData.location)[0];
+						self.cityIdIndex = self.$Utils.findItemInTwoArray(self.cityData,self.submitData.location)[1];
+						self.willDeleteArray = [];
+						for (var i = 0; i < self.messageData.relation.length; i++) {
+							self.willDeleteArray.push(self.messageData.relation[i].id)
+							if(self.messageData.relation[i].type == 2){
+								self.menuIdArray.push(parseInt(self.messageData.relation[i].relation_two))
+							}
+							if(self.messageData.relation[i].type == 1&&self.messageData.relation[i].relation_two!='全国'){
+								self.salecityTitleArray.push(self.messageData.relation[i].relation_two)
+							}
+						}
+						self.conSalecityTitleArray = self.salecityTitleArray;
+						for (var i = 0; i < self.salecityTitleArray.length; i++) {
+							self.salecityIdArray.push(self.$Utils.findItemInOfText(self.cityData,self.salecityTitleArray[i]))
+						};
+						console.log('self.menuIdArray',self.menuIdArray)
+					};
+					self.$Utils.finishFunc('getMessageData');
+				};
+				self.$apis.messageGet(postData, callback);
+			},
+			
 		}
 	}
 </script>

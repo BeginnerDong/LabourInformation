@@ -160,7 +160,7 @@
 		onLoad() {
 			const self = this;
 			self.paginate = self.$Utils.cloneForm(self.$AssetsConfig.paginate);
-			self.$Utils.loadAll(['getNoticeData','getMainData','getSliderData'], self);
+			self.$Utils.loadAll(['getNoticeData','getMainData','getSliderData','getUserData'], self);
 		},
 
 		onReachBottom() {
@@ -173,6 +173,22 @@
 		},
 
 		methods: {
+			
+			getUserData() {
+				const self = this;
+				const postData = {};
+				postData.tokenFuncName = 'getProjectToken';
+				postData.refreshToken = true;
+				const callback = (res) => {
+					if (res.info.data.length > 0) {
+						self.userData = res.info.data[0];
+						uni.setStorageSync('kefu',uni.getStorageSync('user_info').thirdApp.phone)
+					}
+					uni.setStorageSync('canClick', true);
+					self.$Utils.finishFunc('getUserData');
+				};
+				self.$apis.userGet(postData, callback);
+			},
 			
 			getNoticeData() {
 				const self = this;

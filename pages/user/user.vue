@@ -27,7 +27,7 @@
 				<view class="Mcolor" @click="changeHand()">免费开通</view>
 			</view>
 			<view class="font-30 color2 d-flex j-sb a-center py-4 px-3 bg-white borderB-e1" 
-			v-if="userData.behavior==2" @click="Router.navigateTo({route:{path:'/pages/user-secondHandIndex/user-secondHandIndex'}})">
+			@click="Router.navigateTo({route:{path:'/pages/user-secondHandIndex/user-secondHandIndex'}})">
 				<view>我的二手交易信息主页</view>
 				<image src="../../static/images/used to releasel-icon3.png" class="icon2"></image>
 			</view>
@@ -43,7 +43,8 @@
 				<view>劳务招聘信息</view>
 				<image src="../../static/images/used to releasel-icon3.png" class="icon2"></image>
 			</view>
-			<view class="font-30 color2 d-flex j-sb a-center py-4 px-3 bg-white" @click="Router.navigateTo({route:{path:'/pages/user-business/user-business'}})">
+			<view class="font-30 color2 d-flex j-sb a-center py-4 px-3 bg-white" 
+			@click="Router.navigateTo({route:{path:'/pages/business-publish/business-publish?type=isMe'}})">
 				<view>商务通信息</view>
 				<image src="../../static/images/used to releasel-icon3.png" class="icon2"></image>
 			</view>
@@ -53,7 +54,7 @@
 			</view>
 
 			<!-- ----------高级用户显示------------- -->
-			<view v-if="userData.behavior==1">
+			<view>
 				<view class="font-30 Mcolor py-4 px-3 bg-white mt-2 borderB-f5 d-flex a-center">
 					<image src="../../static/images/about-icon1.png" class="icon3"></image>
 					<view class="pl-2">用工不良记录</view>
@@ -84,7 +85,7 @@
 			<view class="bg-mask px-4" v-show="hand_show">
 				<view class="font-28 color2 bg-white m-a text-center rounded10" style="margin-top: 370rpx;">
 					<view class="pb-2 pt-5">免费开通二手交易主页，请联系微信客服</view>
-					<view class="Rcolor pb-2">微信号：nhd55866</view>
+					<view class="Rcolor pb-2">微信号：{{kefu}}</view>
 					<view>加微信备注：开通主页</view>
 					<view class="Mcolor font-30 mt-5 py-4 borderT-e1" @click="changeHand()">确认</view>
 				</view>
@@ -129,13 +130,15 @@
 				hand_show: false,
 				userData: {},
 				showAll:false,
-				Utils:this.$Utils
+				Utils:this.$Utils,
+				kefu:''
 			}
 		},
 
 		onLoad() {
 			const self = this;
 			//self.$Utils.loadAll(['getUserData'], self);
+			self.kefu = uni.getStorageSync('kefu');
 			if(uni.getStorageSync('user_token')&&uni.getStorageSync('user_info').headImgUrl!=''){
 				self.$Utils.loadAll(['getUserData'], self);
 			}else{
@@ -164,6 +167,9 @@
 				const self = this;
 				const postData = {};
 				postData.tokenFuncName = 'getProjectToken';
+				postData.searchItem = {
+					user_no:uni.getStorageSync('user_info').user_no
+				};
 				if(!wx.getStorageSync('user_info')||wx.getStorageSync('user_info').headImgUrl==''||!wx.getStorageSync('user_info').headImgUrl){
 				  postData.refreshToken = true;
 				};

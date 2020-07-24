@@ -27,7 +27,7 @@
 				<view class="d-flex a-center">
 					<view class="d-flex a-center"  @click="Utils.stopMultiClick(collect)">
 						<image :src="mainData.log&&mainData.log.length>0&&mainData.log[0].status==1?'../../static/images/detailsl-icon1.png':'../../static/images/detailsl-icon5.png'" class="icon2"></image>
-						<view class="pl-1">{{mainData.log&&mainData.log.length>0&&mainData.log[0].status==1?'已收藏':'未收藏'}}</view>
+						<view class="pl-1">{{mainData.log&&mainData.log.length>0&&mainData.log[0].status==1?'已收藏':'我要收藏'}}</view>
 					</view>
 					<view class="d-flex a-center ml-5" @click="changeShare()">
 						<image src="../../static/images/detailsl-icon2.png" class="icon2"></image>
@@ -40,7 +40,7 @@
 					<view class="tag tagB" v-if="mainData.behavior==1">出售</view>
 					<view class="tag tagG" v-if="mainData.behavior==2">求购</view>
 					<view class="tag tagO">{{mainData.label?mainData.label.title:''}}</view>
-					<view class="tag tagP">{{mainData.behavior?(mainData.behavior==1?'售价':'求购价'):''}}：{{mainData.price==''?'面议':mainData.price}}</view>
+					<view class="tag tagP">{{mainData.behavior?(mainData.behavior==1?'售价':'求购价'):''}}:{{mainData.price==''?'面议':mainData.price}}</view>
 				</view>
 				<view class="d-flex a-center">
 					<image src="../../static/images/detailsl-icon3.png" class="icon4"></image>
@@ -68,7 +68,7 @@
 			<view class="d-flex a-center py-4 borderB-f5 color6">
 			{{mainData.user&&mainData.user[0]&&mainData.user[0]?mainData.user[0].info.company:''}}<view class="tag tagName">已实名认证</view></view>
 			<view class="bg-white py-4 d-flex a-start">
-				<image src="../../static/images/detailsl-img.png" class="userImg"></image>
+				<image :src="mainData.user&&mainData.user[0]&&mainData.user[0]?mainData.user[0].headImgUrl:''" class="userImg"></image>
 				<view class="ml-3 flex-1">
 					<view class="font-26 color2 pb-4 flex-1 d-flex a-center">
 						<view class="pr-4">{{mainData.name?mainData.name:''}}</view>
@@ -82,7 +82,7 @@
 			</view>
 			<view class="Mcolor font-24 text-center d-flex a-center j-sa pb-4 ">
 				<view class="Mborder rounded10 btn" 
-				@click="Router.navigateTo({route:{path:'/pages/secondHand-detailCompany/secondHand-detailCompany?user_no='+mainData.user[0].user_no}})">公司主页</view>
+				@click="Router.navigateTo({route:{path:'/pages/secondHand-detailCompany/secondHand-detailCompany?user_no='+mainData.user_no}})">公司主页</view>
 				<view class="Mborder rounded10 btn" @click="callPhone">拨打电话</view>
 			</view>
 		</view>
@@ -125,7 +125,7 @@
 				<view class="py-4">分享给</view>
 				<view class="d-flex a-center j-sb share m-a mb-5 pt-3">
 					<view class="font-26 pb-1"><image src="../../static/images/sharel-icon.png" class="img1"></image><view>微信好友</view></view>
-					<view class="font-26 pb-1" @click="Router.redirectTo({route:{path:'/pages/secondHand-share/secondHand-share'}})"><image src="../../static/images/sharel-icon1.png" class="img2"></image><view>微信朋友圈</view></view>
+					<view class="font-26 pb-1" @click="Router.navigateTo({route:{path:'/pages/secondHand-share/secondHand-share?id='+mainData.id}})"><image src="../../static/images/sharel-icon1.png" class="img2"></image><view>微信朋友圈</view></view>
 				</view>
 				<view class="font-26 py-3 bg-colorf5 mt-5 z-index100" @click="changeShare()">取消</view>
 			</view>
@@ -154,10 +154,29 @@
 			self.id = options.id;
 			self.now = Date.parse(new Date()) / 1000;
 			
-			self.$Utils.loadAll(['getMainData'], self);
+			self.$Utils.loadAll(['getMainData','getQrCode'], self);
 		},
 		
 		methods: {
+			
+			getQrCode() {
+				const self = this;
+				const postData = {};
+				postData.tokenFuncName = 'getProjectToken'
+				postData.qrInfo = {
+					scene: self.id,
+					//page: 'pages/secondHand-detail/secondHand-detail',
+				};
+				postData.output = 'url';
+				postData.ext = 'png';
+				const callback = (res) => {
+					if (res.solely_code == 100000) {
+						uni.setStorageSync('secondHandQr',res.info.url)
+					}
+					self.$Utils.finishFunc('getQrCode');
+				};
+				self.$apis.getQrCode(postData, callback);
+			},
 			
 			callPhone(){
 				const self = this;
@@ -245,7 +264,8 @@
 						middleKey:'user_no',
 						key:'user_no',
 						searchItem:{
-							status:1
+							status:1,
+							user_type:0
 						},
 						condition:'=',
 						//info:['headImgUrl']
@@ -306,7 +326,8 @@
 				};
 				postData.searchItem = {
 					thirdapp_id: 2,
-					user_type:0
+					user_type:0,
+					type:1
 				};
 				postData.order  = {
 					listorder:'desc'

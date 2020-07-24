@@ -69,7 +69,7 @@
 		</view>
 		
 		<view class="bg-white py-5" @click="Utils.stopMultiClick(submit)">
-			<view class="btn400">确认发布</view>
+			<view class="btn400">{{!isEdit?'确认发布':'确认修改'}}</view>
 		</view>
 		
 		
@@ -85,7 +85,7 @@
 					<view class="bg-mcolor colorf rounded10 yesBtn" @click="confirmMenu()">确认</view>
 				</view>
 				
-				<view class="Rcolor px-3 py-2 bg-white font-22 text-center">没有您要的分类请联系客服进行增加分类（微信号：njshd55886）</view>
+				<view class="Rcolor px-3 py-2 bg-white font-22 text-center">没有您要的分类请联系客服进行增加分类（微信号：{{kefu}}）</view>
 				<view class="classfiy font-26 color2 line-h text-center d-flex">
 					<view class="left">
 						<view class="li py-3" v-for="(item,index) of menuData" :key="item.id"
@@ -154,13 +154,20 @@
 				menuIdIndex:-1,
 				cityIndex:0,
 				cityIdIndex:-1,
-				Utils:this.$Utils
+				Utils:this.$Utils,
+				isEdit:false,
+				kefu:''
 			}
 		},
 		
-		onLoad() {
+		onLoad(options) {
 			const self = this;
 			self.$Utils.loadAll(['getUserInfoData','getMenuData','getCityData'], self);
+			self.kefu = uni.getStorageSync('kefu');
+			if(options.id){
+				self.isEdit = true
+				self.getMessageData(options.id)
+			}
 		},
 		
 		methods: {
@@ -181,8 +188,12 @@
 						uni.setStorageSync('canClick', true);
 						self.$Utils.showToast('请输入真实有效的手机号', 'none', 1000)
 						return;
+					};
+					if(self.isEdit){
+						self.messageUpdate()
+					}else{
+						self.messageAdd();
 					}
-					self.messageAdd();
 				} else {
 					uni.setStorageSync('canClick', true);
 					self.$Utils.showToast('请补全信息', 'none')
@@ -220,6 +231,44 @@
 					}	
 				};
 				self.$apis.messageAdd(postData, callback);
+			},
+			
+			messageUpdate() {
+				const self = this;
+				const postData = {};
+				postData.tokenFuncName = 'getProjectToken';
+				postData.data = {};
+				postData.data = self.$Utils.cloneForm(self.submitData);
+				postData.searchItem = {
+					id:self.messageData.id
+				};
+				postData.saveAfter = [
+					{
+						tableName: 'UserInfo',
+						FuncName: 'update',
+						searchItem:{
+							user_no:uni.getStorageSync('user_info').user_no
+						},
+						data: {
+							name:self.submitData.name,
+							phone:self.submitData.phone
+						},
+					},
+				];
+				const callback = (data) => {				
+					if (data.solely_code == 100000) {					
+						self.$Utils.showToast('修改成功', 'none', 1000)
+						setTimeout(function() {
+							uni.navigateBack({
+								delta:1
+							})
+						}, 1000);
+					} else {
+						uni.setStorageSync('canClick', true);
+						self.$Utils.showToast(data.msg, 'none', 1000)
+					}	
+				};
+				self.$apis.messageUpdate(postData, callback);
 			},
 			
 			changeMenuIndex(index){
@@ -357,6 +406,34 @@
 				self.tips_show = false
 			},
 			
+			getMessageData(id) {
+				const self = this;		
+				const postData = {};
+				postData.tokenFuncName = 'getProjectToken';
+				postData.searchItem = {
+					id:id,
+					user_no:uni.getStorageSync('user_info').user_no
+				};
+				const callback = (res) => {
+					if (res.info.data.length > 0) {
+						self.messageData = res.info.data[0];
+						self.submitData.title = self.messageData.title;
+						self.submitData.name = self.messageData.name;
+						self.submitData.phone = self.messageData.phone;
+						self.submitData.mainImg = self.messageData.mainImg;
+						self.submitData.behavior = self.messageData.behavior;
+						self.submitData.menu_id = self.messageData.menu_id;
+						self.submitData.location = self.messageData.location;
+						//console.log(self.$Utils.findItemInTwoArray(self.cityData,self.submitData.location))
+						self.cityIndex = self.$Utils.findItemInTwoArray(self.cityData,self.submitData.location)[0];
+						self.cityIdIndex = self.$Utils.findItemInTwoArray(self.cityData,self.submitData.location)[1];
+						self.menuIndex = self.$Utils.findItemInTwoArray(self.menuData,self.submitData.menu_id)[0];
+						self.menuIdIndex = self.$Utils.findItemInTwoArray(self.menuData,self.submitData.menu_id)[1];
+					}
+					self.$Utils.finishFunc('getMessageData');
+				};
+				self.$apis.messageGet(postData, callback);
+			},
 
 		}
 	}

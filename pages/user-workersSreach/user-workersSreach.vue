@@ -8,16 +8,16 @@
 					<image src="../../static/images/the queryl-icon.png" class="icon1"></image>
 					<view class="pl-2">粘贴</view>
 				</view>
-				<view class="font-24 color6 d-flex a-center">
+				<view class="font-24 color6 d-flex a-center" @click="deleteText">
 					<image src="../../static/images/the queryl-icon1.png" class="icon1"></image>
 					<view class="pl-2">清空</view>
 				</view>
 			</view>
 			
 			<view class="position-relative">
-				<textarea value="" placeholder=" " />
-				<view class="position-absoluteXY color9 font-24 p-3 line-h-lg">
-					<view>请输入要查询的名字/省份证号或手机号</view>
+				<textarea value="" placeholder=" " v-model="text"/>
+				<view class="position-absoluteXY color9 font-24 p-3 line-h-lg" style="top: -4px;" v-if="text==''">
+					<view>请输入要查询的名字/身份证号或手机号</view>
 					<view>一行一条信息，否则查询不准</view>
 					<view>可批量查询，长按可粘贴</view>
 					<view class="pt-5">实例格式：</view>
@@ -30,7 +30,7 @@
 			
 		</view>
 			
-		<view class="btn400">提交</view>
+		<view class="btn400" @click="Utils.stopMultiClick(submit)">提交</view>
 		
 	</view>
 </template>
@@ -39,10 +39,52 @@
 	export default {
 		data() {
 			return {
-				
+				text:'',
+				infoArray:[],
+				Utils:this.$Utils,
 			}
 		},
+		
+		onLoad() {
+			const self = this;
+			uni.setStorageSync('canClick', true);
+		},
+		
 		methods: {
+			
+			deleteText(){
+				const self = this;
+				self.text = '';
+			},
+			
+			submit() {
+				const self = this;
+				uni.setStorageSync('canClick', false);
+				self.infoArray = self.text.split(/[(\r\n)\r\n]+/);
+				console.log('self.infoArray',self.infoArray)
+				if(self.infoArray.length==0||self.infoArray[0]==''){
+					self.$Utils.showToast('信息填写不合规', 'none', 1000);
+					uni.setStorageSync('canClick', true);
+					return
+				};
+				self.searchBad();
+			},
+			
+			searchBad() {
+				const self = this;
+				const postData = {};
+				postData.tokenFuncName = 'getProjectToken';
+				postData.keywords = JSON.stringify(self.infoArray);
+				const callback = (data) => {				
+					if (data.solely_code == 100000) {					
+						uni.setStorageSync('canClick', true);
+					} else {
+						uni.setStorageSync('canClick', true);
+						self.$Utils.showToast(data.msg, 'none', 1000)
+					}	
+				};
+				self.$apis.searchBad(postData, callback);
+			},
 			
 		}
 	}
