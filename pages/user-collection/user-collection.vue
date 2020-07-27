@@ -10,7 +10,7 @@
 			
 		</view>
 		
-		<view class="font-30 color2 p-3 d-flex a-center j-sb borderB-e1">
+		<view class="font-30 color2 p-3 d-flex a-center j-sb borderB-e1 choose">
 			<view>选择</view>
 			<view class="Mcolor borderR-f5" @click="showToast()">删除</view>
 		</view>
@@ -43,6 +43,65 @@
 							<image src="../../static/images/home-icon2.png" class="icon2"></image>
 							<view class="font-24 color6 pl-1">性价比较高，可以对比一下其他品牌</view>
 						</view>
+					</view>
+				</view>
+			</view>
+			
+			<view class="d-flex a-center px-3 pb-3 borderB-e1">
+				<!-- <image src="../../static/images/i releasel-icon.png" class="icon5"></image> -->
+				<image src="../../static/images/i releasel-icon1.png" class="icon5"></image>
+				<view class="flex-1 ml-2 pt-3">
+					<view class="bg-white indexBox1 flex-1">
+						<view class="d-flex a-center j-sb">
+							<view class="h-100 w-100">
+								<view class="font-30 color2 flex-1 mb-3 pb-3 avoidOverflow2 tjTit">隧道佳乐湿喷机，多年口碑，品质保证</view>
+								<view class="d-flex a-center j-sb h-100 mt-3">
+									<view class="font-22 d-flex a-center">
+										<view class="tag tag1">导购</view>
+										<view class="tag tag1">湿喷机</view>
+										<view class="tag tag2">推荐</view>
+									</view>
+									<view class="d-flex a-center">
+										<image src="../../static/images/home-icon.png" class="icon1"></image>
+										<view class="font-24 color6 pl-1">252</view>
+									</view>
+								</view>
+							</view>
+						</view>
+						<view class="bg-f5 d-flex a-center p-1 mt-4">
+							<image src="../../static/images/home-icon2.png" class="icon2"></image>
+							<view class="font-24 color6 pl-1">性价比较高，可以对比一下其他品牌</view>
+						</view>
+					</view>
+				</view>
+			</view>
+			
+			<view class="d-flex a-center px-3 pb-3 borderB-e1">
+				<!-- <image src="../../static/images/i releasel-icon.png" class="icon5"></image> -->
+				<image src="../../static/images/i releasel-icon1.png" class="icon5"></image>
+				<view class="flex-1 ml-2">
+					<view class="pt-3 bg-white indexBox2" 
+					@click="Router.navigateTo({route:{path:'/pages/newsDetail/newsDetail?id='+$event.currentTarget.dataset.id}})">
+						<view class="font-30 color2">隧道佳乐湿喷机，多年口碑，品质保证</view>
+						<view class="d-flex a-center mt-3 flex-wrap imgBox">
+							<image src="../../static/images/home-img.png" mode=""></image>
+							<image src="../../static/images/home-img.png" mode=""></image>
+							<image src="../../static/images/home-img.png" mode=""></image>
+						</view>
+						<view class="d-flex a-center j-sb h-100 mt-3">
+							<view class="font-22 d-flex a-center">
+								<view class="tag tag1">批发</view>
+							</view>
+							<view class="d-flex a-center">
+								<image src="../../static/images/home-icon.png" class="icon1"></image>
+								<view class="font-24 color6 pl-1">565985</view>
+							</view>
+						</view>
+						<view class="bg-f5 d-flex a-center p-1 mt-4">
+							<image src="../../static/images/home-icon2.png" class="icon2"></image>
+							<view class="font-24 color6 pl-1">6265</view>
+						</view>
+					</view>
 					</view>
 				</view>
 				
@@ -370,9 +429,11 @@
 
 <style>
 page{background-color: #f5f5f5;}
+.nav{position: fixed;top: 0;right: 0;left: 0;}
 .nav .item{width: 25%;line-height: 90rpx;text-align: center;}
 .nav .on{position: relative;color: #51A9E9;}
 .nav .on::before{content: ''; width: 100%;height: 2rpx;background-color: #51A9E9;position: absolute; bottom: 0;left: 0;}
+.choose{margin-top: 90rpx;}
 
 .icon1{width: 30rpx!important;height: 22rpx!important;}
 /* .tjTit{width: 480rpx;} */
@@ -380,7 +441,6 @@ page{background-color: #f5f5f5;}
 .icon2{width: 27rpx!important;height: 27rpx!important;}
 .icon4{width: 21rpx;height: 25rpx;}
 .icon5{width: 40rpx;height: 40rpx;}
-.indexBox2 image{width: 210rpx;height: 160rpx;}
 .video{height: 340rpx;width: 100%;}
 
 .list .item image{width: 180rpx;height: 180rpx;}
@@ -389,6 +449,8 @@ page{background-color: #f5f5f5;}
 
 .imgBox image{width: 145rpx;height: 145rpx;margin-right: 19rpx;}
 .imgBox image:nth-child(4n){margin-right: 0;}
+.indexBox2 image{width: 192rpx;height: 160rpx;margin-right: 31rpx;}
+.indexBox2 image:nth-child(3n) {margin-right: 0;}
 
 .btn{width: 120rpx;line-height: 40rpx;}
 .img{width: 106rpx;height: 106rpx;margin-top: 20rpx;margin-right: 20rpx;}

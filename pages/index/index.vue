@@ -1,13 +1,13 @@
 <template>
 	<view>
-		<view class="head px-3 bg-mcolor z-index100" :style="{paddingTop:statusBar +'px'}">
+		<view class="head px-3 bg-mcolor z-index100 line-h" :style="{paddingTop:statusBar +'px'}">
 			<view class="font-36 colorf d-flex a-center py-2">桥隧之家</view>
 			<!-- <view class="colorf font-24 top overflow-h">欢迎来到桥隧之家，在这里您可以买卖二手设备，劳务招聘，在这里您可以买卖二手设备，劳务招聘</view> -->
 			<uni-notice-bar background-color="#51A9E9" color="#fff" single="true" scrollable="true" v-if="text!=''" :text="text"></uni-notice-bar>
 		</view>
 
 		<!-- banner -->
-		<view class="banner">
+		<view class="banner" :style="{marginTop:statusBar*2+130 +'rpx'}">
 			<swiper class="swiper-box" indicator-dots="indicatorDots" autoplay="autoplay" interval="3000" indicator-active-color="#fff">
 				<block v-for="(item,index) in sliderData" :key="index">
 					<swiper-item class="swiper-item">
@@ -277,6 +277,7 @@
 	page {
 		background-color: #f5f5f5;
 	}
+	.head{position: fixed;top: 0;left: 0;right: 0;}
 
 	.top {
 		height: 65rpx;
