@@ -55,6 +55,12 @@
 					<view class="d-flex font-24 pt-3">
 						<view class="color6">业务范围：</view>
 						<view class="color2 flex-1">{{item.description}}</view>
+						<view class="color2 flex-1">
+							<view>{{item.description}}</view>
+							<view class="d-flex a-center flex-wrap" v-if="item.mainImg.length>0">
+								<image v-for="(c_item,c_index) of item.mainImg" :key="c_index" :src="item.url" class="img"></image>
+							</view>
+						</view>
 					</view>
 					<view class="d-flex font-24 pt-3">
 						<view class="color6">销售区域：</view>

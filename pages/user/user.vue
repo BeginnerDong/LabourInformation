@@ -27,7 +27,7 @@
 				<view>我的二手交易信息主页</view>
 				<view class="Mcolor" @click="changeHand()">免费开通</view>
 			</view>
-			<view class="font-30 color2 d-flex j-sb a-center py-4 px-3 bg-white borderB-e1" 
+			<view class="font-30 color2 d-flex j-sb a-center py-4 px-3 bg-white borderB-e1" v-if="userData.behavior==2"
 			@click="Router.navigateTo({route:{path:'/pages/user-secondHandIndex/user-secondHandIndex'}})">
 				<view>我的二手交易信息主页</view>
 				<image src="../../static/images/used to releasel-icon3.png" class="icon2"></image>
@@ -55,7 +55,7 @@
 			</view>
 
 			<!-- ----------高级用户显示------------- -->
-			<view>
+			<view v-if="userData.behavior==1">
 				<view class="font-30 Mcolor py-4 px-3 bg-white mt-2 borderB-f5 d-flex a-center">
 					<image src="../../static/images/about-icon1.png" class="icon3"></image>
 					<view class="pl-2">用工不良记录</view>

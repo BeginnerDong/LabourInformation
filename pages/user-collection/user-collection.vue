@@ -5,15 +5,16 @@
 		<view class="font-28 color2 d-flex a-center j-sb borderB-e1 bg-f5 shadow-sm nav">
 			<view class="item" :class="navCurr==1?'on':''" @click="changeNav(1)">咨询</view>
 			<view class="item" :class="navCurr==2?'on':''" @click="changeNav(2)">二手信息</view>
-			<view class="item" :class="navCurr==3?'on':''" @click="changeNav(3)">招聘信息</view>
-			<view class="item" :class="navCurr==4?'on':''" @click="changeNav(4)">商务通</view>
+			<view class="item" :class="navCurr==3?'on':''" @click="changeNav(3)">商务通</view>
+			<view class="item" :class="navCurr==4?'on':''" @click="changeNav(4)">招聘信息</view>
+			
 		</view>
 		
 		<view class="font-30 color2 p-3 d-flex a-center j-sb borderB-e1">
 			<view>选择</view>
 			<view class="Mcolor borderR-f5" @click="showToast()">删除</view>
 		</view>
-		
+		 
 		<!-- 咨询 -->
 		<view class="pt-3 bg-white" v-show="navCurr==1">
 			<view class="d-flex a-center px-3 pb-3 borderB-e1">
@@ -74,96 +75,106 @@
 		</view>
 		
 		<!-- 二手信息 -->
-		<view class="list" v-show="navCurr==2">
+		<view class="list" v-show="navCurr==2" v-for="(item,index) of mainData" :key="id">
 			<view class="d-flex a-center px-3 pb-3 bg-white">
 				<image src="../../static/images/i releasel-icon.png" class="icon5"></image>
 				<!-- <image src="../../static/images/i releasel-icon1.png" class="icon5"></image> -->
-				<view class="item d-flex a-center j-sb py-3 pl-2 bg-white flex-1" @click="Router.redirectTo({route:{path:'/pages/secondHand-detail/secondHand-detail'}})">
-					<image src="../../static/images/second-handl-img1.png" mode=""></image>
+				<view class="item d-flex a-center j-sb py-3 pl-2 bg-white flex-1" :data-id="item.id"
+			@click="Router.navigateTo({route:{path:'/pages/secondHand-detail/secondHand-detail?id='+$event.currentTarget.dataset.id}})">
+					<image :src="item.mainImg&&item.mainImg[0]?item.mainImg[0].url:''" mode=""></image>
 					<view class="itemCon flex-1 ml-2">
-						<view class="color3 font-30 avoidOverflow2 tit">隧道佳乐湿喷机2017年的信号HSC-2513，只用了一个工地，机子还是很不错的</view>
+						<view class="color3 font-30 avoidOverflow2 tit">{{item.title}}</view>
 						<view class="font-24 color6 d-flex a-center j-sb mt-3 line-h">
-							<view>贵阳**有限公司 <view class="tag tagName">已实名认证</view></view>
-							<view>贵阳</view>
+							<view>{{item.name}}<view class="tag tagName" v-if="item.user&&item.user[0]&&item.user[0].behavior==2">已实名认证</view></view>
+							<view>{{item.city?item.city.title:''}}</view>
 						</view>
 						<view class="d-flex a-center j-sb h-100 mt-3">
 							<view class="font-22 d-flex a-center">
-								<view class="tag tagB">出售</view>
-								<view class="tag tagO">湿喷机</view>
-								<view class="tag tagR">置顶</view>
+								<view class="tag tagB" v-if="item.behavior==1">出售</view>
+								<view class="tag tagG" v-if="item.behavior==2">求购</view>
+								<view class="tag tagO">{{item.label?item.label.title:''}}</view>
+								<view class="tag tagR" v-if="item.top>0">置顶</view>
+								<view class="tag tagY" v-if="item.invalid_time<now">信息已失效</view>
 							</view>
-							<view class="font-22 color9">1小时前</view>
+							<view class="font-22 color9">{{Utils.formatMsgTime(item.update_time)}}</view>
 						</view>
 					</view>
 				</view>
 			</view>
 		</view>
+
 		
 		<!-- 招聘信息 -->
-		<view v-show="navCurr==3" class="bg-white">
+		<view v-show="navCurr==4" class="bg-white" v-for="(item,index) of mainData"
+		:key="item.id" >
 			<view class="d-flex a-center px-3">
 				<image src="../../static/images/i releasel-icon.png" class="icon5"></image>
 				<!-- <image src="../../static/images/i releasel-icon1.png" class="icon5"></image> -->
-				<view class="pl-2 flex-1" @click="Router.redirectTo({route:{path:'/pages/labour-detail/labour-detail'}})">
-					<view class="font-30 color2 pt-4">隧道施工队继续开挖班，处置办，洞1千米长，三级围岩，有经验的队伍请来咨询</view>
+				<view class="pl-2 flex-1" :data-id="item.id"
+		@click="Router.navigateTo({route:{path:'/pages/labour-detail/labour-detail?id='+$event.currentTarget.dataset.id}})">
+					<view class="font-30 color2 pt-4">{{item.title}}</view>
 					<view class="d-flex flex-wrap py-3 imgBox">
-						<image src="../../static/images/laborl-img.png" mode=""></image>
-						<image src="../../static/images/laborl-img.png" mode=""></image>
-						<image src="../../static/images/laborl-img.png" mode=""></image>
-						<image src="../../static/images/laborl-img.png" mode=""></image>
+						<image v-for="(c_item,c_index) in item.mainImg" :key="c_index"  :src="c_item.url" mode=""></image>
+						
 					</view>
 					<view class="d-flex a-center j-sb">
 						<view>
-							<view class="tag tagB">招队伍</view>
-							<view class="tag tagY">信息已失效</view>
+							<view class="tag tagB" v-if="item.behavior==1">招工人</view>
+							<view class="tag tagB" v-if="item.behavior==2">招队伍</view>
+							<view class="tag tagG" v-if="item.behavior==3">工人找活</view>
+							<view class="tag tagG" v-if="item.behavior==4">队伍找活</view>
+							<view class="tag tagY" v-if="item.invalid_time<now">信息已失效</view>
+							<view v-if="item.price!=''"><text class="tag tagR">介绍费</text><text class="tag tagO">{{item.price}}</text></view>
 						</view>
 						<view class="d-flex a-center">
 							<image src="../../static/images/detailsl-icon3.png" class="icon4"></image>
-							<view class="font-24 color6 pl-1">西安</view>
-							<view class="font-24 color6 pl-2">4-23</view>
+							<view class="font-24 color6 pl-1">{{item.city?item.city.title:''}}</view>
+							<view class="font-24 color6 pl-2">{{Utils.formatMsgTime(item.update_time)}}</view>
 						</view>
 					</view>
 					<view class="line-h-md py-4 font-24 color6 dashedBorder">
-						<view>开挖班，1支队伍，待遇面议</view>
-						<view>初支班，1支队伍，待遇面议</view>
+						<view v-if="item.behavior==1" v-for="(c_item,c_index) in item.passage_array" :key="c_index">{{c_item.name}}，{{c_item.num}}名，
+						{{c_item.money!=''?'月工资'+c_item.money:'待遇面议'}}</view>
+						<view v-if="item.behavior==2" v-for="(c_item,c_index) in item.passage_array" :key="c_index">{{c_item.name}}，{{c_item.num}}支队伍，
+						{{c_item.money!=''?'月工资'+c_item.money:'待遇面议'}}</view>
+						<view v-if="item.behavior==3">求职岗位：{{item.description}},期待工资：{{item.salary}}</view>
+						<view v-if="item.behavior==4">我能承包：<span :key="c_index" v-for="(c_item,c_index) in item.passage_array">{{c_item.name}}</span></view>
 					</view>
 				</view>
 			</view>
 		</view>
-		
+
 		<!-- 商务通 -->
-		<view v-show="navCurr==4" class="bg-white">
+		<view v-show="navCurr==3" class="bg-white" v-for="(item,index) of mainData" :key="item.id">
 			<view  class="d-flex a-center px-3">
 				<image src="../../static/images/i releasel-icon.png" class="icon5"></image>
 				<!-- <image src="../../static/images/i releasel-icon1.png" class="icon5"></image> -->
 				<view class="flex-1 ml-2">
-					<view class="Mcolor font-30 py-3">贵阳**物资有限公司</view>
+					<view class="Mcolor font-30 py-3">{{item.title}}</view>
 					<view class="d-flex a-center j-sb line-h pb-3 borderB-e1">
-						<view><text class="borderR-e1 pr-2 mr-2">张经理</text>15868472893</view>
+						<view><text class="borderR-e1 pr-2 mr-2">{{item.name}}</text>{{item.phone}}</view>
 						<view class="d-flex a-center">
 							<image src="../../static/images/detailsl-icon3.png" class="icon4"></image>
-							<view class="font-24 color6 pl-1">西安</view>
+							<view class="font-24 color6 pl-1">{{item.city?item.city.title:''}}</view>
 						</view>
 					</view>
 					<view class="d-flex font-24 pt-3">
 						<view class="color6">业务范围：</view>
 						<view class="color2 flex-1">
-							<view>隧道防水板、爬焊机、爬焊机配件、电焊机、热熔机、LED灯等桥隧物资、代理小挖机、柳工装载机</view>
-							<view class="d-flex a-center flex-wrap">
-								<image src="../../static/images/second-handl-img1.png" class="img"></image>
-								<image src="../../static/images/second-handl-img1.png" class="img"></image>
-								<image src="../../static/images/second-handl-img1.png" class="img"></image>
+							<view>{{item.description}}</view>
+							<view class="d-flex a-center flex-wrap" v-if="item.mainImg.length>0">
+								<image v-for="(c_item,c_index) of item.mainImg" :key="c_index" :src="item.url" class="img"></image>
 							</view>
 						</view>
 					</view>
 					<view class="d-flex font-24 pt-3">
 						<view class="color6">销售区域：</view>
-						<view class="color2 flex-1">全国</view>
+						<view class="color2 mr-1" :key="c_item.id" v-for="(c_item,c_index) in item.relation">{{c_item.relation_two}}</view>
 					</view>
 					<view class="font-22 Mcolor text-center d-flex a-center j-end pt-3">
-						<view class="btn Mborder rounded ml-5">拨打电话</view>
+						<view class="btn Mborder rounded ml-5"  @click="callPhone(index)">拨打电话</view>
 					</view>
-					<view class="font-22 color2 py-3">不实信息投诉</view>
+					<view class="font-22 color2 py-3" @click="Router.navigateTo({route:{path:'/pages/user-opinion/user-opinion'}})">不实信息投诉</view>
 				</view>
 			</view>
 		</view>
@@ -179,20 +190,60 @@
 	export default {
 		data() {
 			return {
-				navCurr:1
+				navCurr:1,
+				mainData:[],
+				searchItem:{
+					type:1,
+					behavior:1
+				},
+				searchItemTwo:{
+					type:1,
+					type:0
+				},
+				Utils:this.$Utils,
+				now:0
 			}
 		},
 		
 		
+		
+		
 		onLoad() {
 			const self = this;
-			//self.$Utils.loadAll(['getMainData'], self);
+			self.now = Date.parse(new Date()) / 1000;
+			self.paginate = self.$Utils.cloneForm(self.$AssetsConfig.paginate);
+			self.$Utils.loadAll(['getMainData'], self);
+		},
+		
+		onReachBottom() {
+			console.log('onReachBottom')
+			const self = this;
+			if (!self.isLoadAll && uni.getStorageSync('loadAllArray')) {
+				self.paginate.currentPage++;
+				self.getMainData()
+			};
 		},
 		
 		methods: {
+			
+			callPhone(index) {
+				const self = this;
+				uni.makePhoneCall({
+					phoneNumber: self.mainData[index].phone
+				})
+			},
+			
 			changeNav(i){
 				const self = this;
-				self.navCurr = i
+				if(self.navCurr!=i){
+					self.navCurr = i;
+					if(self.navCurr==1){
+						self.getMainData(true)
+					}else{
+						self.searchItemTwo.type =parseInt(self.navCurr) - 1;
+						self.getMessageData(true)
+					}
+				}
 			},
 			
 			
@@ -212,11 +263,66 @@
 				postData.paginate = self.$Utils.cloneForm(self.paginate);
 				postData.searchItem = self.$Utils.cloneForm(self.searchItem);
 				postData.searchItem.user_no = uni.getStorageSync('user_info').user_no;
-				postData.order  = {
-					listorder:'desc',
-					update_time:'desc'
-				};
 				postData.getAfter = {
+				}	
+				const callback = (res) => {
+					if (res.info.data.length > 0) {
+						self.mainData.push.apply(self.mainData, res.info.data);
+					};
+					self.$Utils.finishFunc('getMainData');
+				};
+				self.$apis.logGet(postData, callback);
+			},
+			
+			getMessageData(isNew) {
+				const self = this;
+				if (isNew) {
+					self.mainData = [];
+					self.paginate = {
+						count: 0,
+						currentPage: 1,
+						is_page: true,
+						pagesize: 10
+					}
+				};
+				const postData = {};
+				postData.tokenFuncName = 'getProjectToken';
+				postData.paginate = self.$Utils.cloneForm(self.paginate);
+				postData.searchItem = self.$Utils.cloneForm(self.searchItemTwo);
+				postData.searchItem.user_no = uni.getStorageSync('user_info').user_no;
+				postData.getBefore = {
+					log:{
+						tableName:'Log',
+						middleKey:'id',
+						key:'relation_id',
+						searchItem:{
+							relation_table:['in',['Message']]
+							
+						},
+						condition:'in'
+					}
+				}
+				postData.getAfter = {
+					relation: {
+						tableName: 'Relation',
+						middleKey: 'id',
+						key: 'relation_one',
+						searchItem: {
+							status: 1,
+							type: 1
+						},
+						condition: '=',
+					},
+					user:{
+						tableName:'User',
+						middleKey:'user_no',
+						key:'user_no',
+						searchItem:{
+							status:1
+						},
+						condition:'=',
+						//info:['headImgUrl']
+					},
 					label:{
 						tableName:'Label',
 						middleKey:'menu_id',
@@ -237,22 +343,26 @@
 						condition:'=',
 						info:['title']
 					},
+					log: {
+						token: uni.getStorageSync('user_token'),
+						tableName: 'Log',
+						middleKey: 'id',
+						key: 'relation_id',
+						searchItem: {
+							status: ['in', [1, -1]],
+							user_no: uni.getStorageSync('user_info').user_no,
+							relation_table: 'Message'
+						},
+						condition: '='
+					}
 				}
-			
 				const callback = (res) => {
 					if (res.info.data.length > 0) {
 						self.mainData.push.apply(self.mainData, res.info.data);
-						for (var i = 0; i < self.mainData.length; i++) {
-							self.mainData[i].create_time = self.mainData[i].create_time.substr(0,10);
-							self.mainData[i].update_time = self.mainData[i].update_time.substr(0,10);
-							self.mainData[i].choose = false
-						}
 					};
-					self.isShowChoose = false;
-					uni.setStorageSync('canClick', true);
-					self.$Utils.finishFunc('getMainData');
+					self.$Utils.finishFunc('getMessageData');
 				};
-				self.$apis.articleGet(postData, callback);
+				self.$apis.messageGet(postData, callback);
 			},
 		}
 	}

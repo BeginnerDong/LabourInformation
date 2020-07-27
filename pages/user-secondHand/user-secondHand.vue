@@ -161,6 +161,7 @@
 							const callback = (data) => {				
 								if (data.solely_code == 100000) {					
 									self.$Utils.showToast('操作成功', 'none', 1000)
+									self.isShowChoose = false;
 									setTimeout(function() {
 										self.getMainData(true);
 										
@@ -197,6 +198,7 @@
 							const callback = (data) => {				
 								if (data.solely_code == 100000) {					
 									self.$Utils.showToast('操作成功', 'none', 1000)
+									self.isShowChoose = false;
 									setTimeout(function() {
 										self.getMainData(true);
 										
@@ -266,7 +268,7 @@
 							self.mainData[i].choose = false
 						}
 					};
-					self.isShowChoose = false;
+					
 					uni.setStorageSync('canClick', true);
 					self.$Utils.finishFunc('getMainData');
 				};

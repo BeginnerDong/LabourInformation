@@ -160,7 +160,9 @@
 						searchItem: {
 							status: ['in', [1, -1]],
 							user_no: uni.getStorageSync('user_info').user_no,
-							relation_table: 'Article'
+							relation_table: 'Article',
+							behavior:1,
+							type:1
 						},
 						condition: '='
 					}
