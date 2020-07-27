@@ -327,10 +327,10 @@
 
 <style>
 .bg-f5{background-color: #f5f5f5;}
-.head{position: fixed;top: 0;left: 0;right: 0;}
+.head{position: sticky;top: 0;left: 0;right: 0;}
 .icon1{width: 23rpx;height: 23rpx;margin-right: 10rpx;}
 
-.ss{margin-top: 165rpx;}
+
 .ss input{border-right: 1px solid #e1e1e1;flex: 1;text-indent: 20rpx;font-size: 28rpx;text-align: left;}
 .ss input::-webkit-input-placeholder{color: #222!important;}
 

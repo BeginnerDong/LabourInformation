@@ -171,9 +171,8 @@
 				postData.searchItem = {
 					user_no:uni.getStorageSync('user_info').user_no
 				};
-				if(!wx.getStorageSync('user_info')||wx.getStorageSync('user_info').headImgUrl==''||!wx.getStorageSync('user_info').headImgUrl){
-				  postData.refreshToken = true;
-				};
+				
+				postData.refreshToken = true;
 				const callback = (res) => {
 					if (res.info.data.length > 0) {
 						self.userData = res.info.data[0]

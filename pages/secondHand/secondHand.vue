@@ -7,7 +7,7 @@
 		</view>
 		
 		<!-- 搜索 -->
-		<view class="border-e1 rounded bg-white font-28 mx-3 py-2 d-flex a-center j-sb z-index1000 ss">
+		<view class="border-e1 rounded bg-white font-28 mx-3 py-2 d-flex a-center j-sb z-index1000 ss mt-2">
 			<input type="text" placeholder="输入关键词搜索" v-model="title"/>
 			<view class="px-2" @click="search">搜索</view>
 		</view>
@@ -389,10 +389,10 @@
 
 <style>
 page{background-color: #f5f5f5;}
-.head{position: fixed;top: 0;left: 0;right: 0;}
+.head{position: sticky;top: 0;left: 0;right: 0;}
 .icon1{width: 23rpx;height: 23rpx;margin-right: 10rpx;}
 
-.ss{margin-top: 175rpx;}
+
 .ss input{border-right: 1px solid #e1e1e1;flex: 1;padding-left: 20rpx;font-size: 28rpx;text-align: left;box-sizing: border-box;}
 .ss input::-webkit-input-placeholder{color: #222!important;}
 

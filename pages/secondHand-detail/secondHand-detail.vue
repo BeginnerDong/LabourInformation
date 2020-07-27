@@ -165,7 +165,7 @@
 				postData.tokenFuncName = 'getProjectToken'
 				postData.qrInfo = {
 					scene: self.id,
-					//page: 'pages/secondHand-detail/secondHand-detail',
+					page: 'pages/secondHand-detail/secondHand-detail',
 				};
 				postData.output = 'url';
 				postData.ext = 'png';

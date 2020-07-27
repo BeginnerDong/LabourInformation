@@ -93,7 +93,7 @@
 			<view class="mb-2 p-3 bg-white indexBox3" v-if="item.style==4"> 
 				<view class="font-30 color2">{{item.title}}</view>
 				<view class="mt-3">
-					<video class="video" :src="item.mainImg&&item.mainImg[0]?item.mainImg[0].url:''" controls poster="../../static/images/home-img2.png">
+					<video class="video" :src="item.mainImg&&item.mainImg[0]?item.mainImg[0].url:''" controls>
 						
 					</video>
 				</view>

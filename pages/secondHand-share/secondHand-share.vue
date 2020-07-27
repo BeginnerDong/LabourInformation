@@ -20,7 +20,7 @@
 			<view class="py-3 font-32 color2 text-center">图片样式</view>
 			<view class="rounded10 overflow-h shadow pb-3">
 				<view class="d-flex flex-wrap pr-1">
-					<image src="../../static/images/second-handl-img2.png" class="img1"></image>
+					<image :src="mainData.mainImg&&mainData.mainImg[0]?mainData.mainImg[0].url:''" class="img1"></image>
 					<view class="p-2 color6 w-50">
 					{{mainData.title?mainData.title:''}}</view>
 					<view class="w-50 pt-3">

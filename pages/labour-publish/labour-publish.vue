@@ -462,7 +462,7 @@
 				const callback = (res) => {
 					console.log('res', res)
 					if (res.solely_code == 100000) {
-						self.submitData[type] = [];
+						//self.submitData[type] = [];
 						self.submitData[type].push({url:res.info.url,type:'image'})
 						console.log(self.submitData)
 					} else {
