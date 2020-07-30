@@ -1,5 +1,5 @@
 <template>
-	<view>
+	<view :class="menuShow||cityShow?'none':''">
 		<view class="head p-3 bg-mcolor font-36 colorf d-flex a-center z-index100" :style="{paddingTop:statusBar+23 +'px'}"
 		 @click="checkLogin">
 			<image src="../../static/images/businessl-icon1.png" class="icon1"></image>
@@ -56,14 +56,14 @@
 		</view>
 		
 		
-		<view class="oh bg-mask position-fixed top-0 left-0 right-0"  @click="closeMask" :style="{marginTop:statusBar+155 +'px'}" v-show="menuShow||cityShow">
+		<view class="oh bg-mask position-fixed d-flex flex-column"  :style="{marginTop:statusBar+172 +'px'}" v-show="menuShow||cityShow">
 			<!-- 分类 -->
 			<view class="classfiy font-26 color2 line-h text-center d-flex" v-show="menuShow">
 				<view class="left">
 					<view class="li py-3" v-for="(item,index) of menuData" :key="item.id"
 					 @click="changeMenuIndex(index)" :class="menuIndex==index?'on':''">{{item.title}}</view>
 				</view>
-				<view class="right flex-1 bg-white">
+				<view class="right flex-1 bg-white" @click="closeMask">
 					<view class="li" :class="menuIdIndex==index?'on':''" @click="chooseMenuId(index)" v-for="(item,index) of menuData[menuIndex].children" 
 					:key="item.id">{{item.title}}
 						<image src="../../static/images/used-to-releasel-icon5.png" class="icon5" v-if="menuIdIndex==index"></image>
@@ -77,7 +77,7 @@
 					<view class="li py-3" v-for="(item,index) of cityData" :key="item.id"
 					 @click="changeCityIndex(index)" :class="cityIndex==index?'on':''">{{item.title}}</view>
 				</view>
-				<view class="right flex-1 bg-white">
+				<view class="right flex-1 bg-white" @click="closeMask">
 					<view class="li" :class="cityIdIndex==index?'on':''" @click="chooseCityId(index)" 
 					v-for="(item,index) of cityData[cityIndex].children"
 					:key="item.id">{{item.title}}
@@ -85,6 +85,8 @@
 					</view>
 				</view>
 			</view>
+			
+			<view class="flex-1" @click="closeMask"></view>
 			
 		</view>
 		
@@ -393,7 +395,8 @@
 </script>
 
 <style>
-page{background-color: #f5f5f5;}
+page{background-color: #f5f5f5;height: 100%;}
+.none{height: 100%;overflow: hidden;}
 .head{position: sticky;top: 0;left: 0;right: 0;}
 .icon1{width: 23rpx;height: 23rpx;margin-right: 10rpx;}
 

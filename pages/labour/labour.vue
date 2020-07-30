@@ -1,5 +1,5 @@
 <template>
-	<view>
+	<view :class="cityShow?'none':''">
 		<view class="head px-3 py-2 bg-mcolor font-36 colorf d-flex a-center z-index100" :style="{paddingTop:statusBar+23 +'px'}" 
 		@click="checkLogin">
 			<image src="../../static/images/businessl-icon1.png" class="icon1"></image>
@@ -79,8 +79,8 @@
 		</view> -->
 		
 		
-		<view class="oh bg-mask position-fixed top-0 left-0 right-0"  
-		@click="closeMask" style="top: 78px;" v-show="cityShow">
+		<view class="oh bg-mask position-fixed d-flex flex-column"  :style="{marginTop:statusBar+172 +'px'}" 
+		style="top: 78px;" v-show="cityShow">
 			<!-- 所在地 -->
 			<view class="classfiy font-26 color2 line-h text-center d-flex">
 				<view class="left">
@@ -95,6 +95,8 @@
 					</view>
 				</view>
 			</view>
+			
+			<view class="flex-1" @click="closeMask"></view>
 			
 		</view>
 		
@@ -171,6 +173,11 @@
 		},
 		
 		methods: {
+			
+			closeMask(){
+				const self = this;
+				self.cityShow = false
+			},
 			
 			search(){
 				const self = this;
@@ -326,6 +333,8 @@
 </script>
 
 <style>
+page{height: 100%;}
+.none{height: 100%;overflow: hidden;}
 .bg-f5{background-color: #f5f5f5;}
 .head{position: sticky;top: 0;left: 0;right: 0;}
 .icon1{width: 23rpx;height: 23rpx;margin-right: 10rpx;}
