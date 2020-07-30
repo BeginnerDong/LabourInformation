@@ -19,7 +19,7 @@
 			<textarea v-model="submitData.content" maxlength="100" placeholder="请填写100个字以内的内容" class="w-100"/>
 		</view>
 		<view class="d-flex a-center py-4 px-3 bg-white" @click="upLoadImg('mainImg')">
-			<image :src="submitData.mainImg&&submitData.mainImg[0]?submitData.mainImg[0].url:'../../static/images/the queryl-icon2.png'" class="icon"></image>
+			<image :src="submitData.mainImg&&submitData.mainImg[0]?submitData.mainImg[0].url:'../../static/images/the-queryl-icon2.png'" class="icon"></image>
 			<view class="font-28 color2 pl-2">上传图片（选填）</view>
 		</view>
 		

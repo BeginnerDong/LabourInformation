@@ -3,11 +3,11 @@
 		
 		<view class="px-3">
 			<view class="py-4 borderB-e1 d-flex a-center">
-				<image src="../../static/images/contact usl-icon.png" class="icon"></image>
+				<image src="../../static/images/contact-usl-icon.png" class="icon"></image>
 				<view class="font-28 color2 pl-1">{{mainData.phone}}</view>
 			</view>
 			<view class="py-4 d-flex a-center">
-				<image src="../../static/images/contact usl-icon1.png" class="icon"></image>
+				<image src="../../static/images/contact-usl-icon1.png" class="icon"></image>
 				<view class="font-28 color2 pl-1">{{mainData.description}}</view>
 			</view>
 		</view>
@@ -45,18 +45,8 @@
 				const self = this;
 				const postData = {};
 				postData.searchItem = {
-					thirdapp_id:2
-				};
-				postData.getBefore = {
-					article:{
-						tableName:'Label',
-						middleKey:'menu_id',
-						key:'id',
-						searchItem:{
-							title: ['in', ['关于我们']],
-						},
-						condition:'in'
-					}
+					thirdapp_id:2,
+					menu_id:2
 				};
 				const callback = (res) => {
 					if (res.info.data.length > 0) {

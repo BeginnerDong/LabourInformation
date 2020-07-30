@@ -22,8 +22,8 @@
 		<view>
 			<view class="borderB-e1 py-4" v-for = "(item,index) of mainData" :key="item.id">
 				<view class="d-flex a-center ml-3">
-					<image @click="choose(index)" v-if="isShowChoose" :src="item.choose?'../../static/images/i releasel-icon1.png':'../../static/images/i releasel-icon.png'" class="icon1"></image>
-					<!-- <image src="../../static/images/i releasel-icon1.png" class="icon1"></image> -->
+					<image @click="choose(index)" v-if="isShowChoose" :src="item.choose?'../../static/images/i-releasel-icon1.png':'../../static/images/i-releasel-icon.png'" class="icon1"></image>
+					<!-- <image src="../../static/images/i-releasel-icon1.png" class="icon1"></image> -->
 					<view class="bg-white px-3 flex-1" @click="Router.redirectTo({route:{path:'/pages/labour-detail/labour-detail'}})">
 						<view class="font-30 color2 pt-4">{{item.title}}</view>
 						<view class="d-flex flex-wrap pt-3 imgBox">

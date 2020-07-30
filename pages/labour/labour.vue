@@ -91,7 +91,7 @@
 					<view class="li" :class="cityIdIndex==index?'on':''" @click="chooseCityId(index)" 
 					v-for="(item,index) of cityData[cityIndex].children"
 					:key="item.id">{{item.title}}
-						<image src="../../static/images/used to releasel-icon5.png" class="icon5" v-if="cityIdIndex==index"></image>
+						<image src="../../static/images/used-to-releasel-icon5.png" class="icon5" v-if="cityIdIndex==index"></image>
 					</view>
 				</view>
 			</view>

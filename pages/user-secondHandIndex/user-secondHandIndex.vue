@@ -4,8 +4,8 @@
 		<view class="font-30 color2 d-flex j-sb a-center py-4 px-3 bg-white">
 			<view>主页顶部图片</view>
 			<view class="d-flex a-center" @click="upLoadImg('mainImg')">
-				<image :src="submitData.mainImg&&submitData.mainImg[0]?submitData.mainImg[0].url:'../../static/images/the queryl-icon2.png'" class="icon1"></image>
-				<image src="../../static/images/used to releasel-icon3.png" class="icon2"></image>
+				<image :src="submitData.mainImg&&submitData.mainImg[0]?submitData.mainImg[0].url:'../../static/images/the-queryl-icon2.png'" class="icon1"></image>
+				<image src="../../static/images/used-to-releasel-icon3.png" class="icon2"></image>
 			</view>
 		</view>
 		<view class="font-30 color2 d-flex j-sb a-center py-4 px-3 bg-white mt-2 borderB-f5">

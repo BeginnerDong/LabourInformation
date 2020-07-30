@@ -30,7 +30,7 @@
 			<view class="font-30 color2 d-flex j-sb a-center py-4 px-3 bg-white borderB-e1" v-if="userData.behavior==2"
 			@click="Router.navigateTo({route:{path:'/pages/user-secondHandIndex/user-secondHandIndex'}})">
 				<view>我的二手交易信息主页</view>
-				<image src="../../static/images/used to releasel-icon3.png" class="icon2"></image>
+				<image src="../../static/images/used-to-releasel-icon3.png" class="icon2"></image>
 			</view>
 			<view class="font-30 Mcolor py-4 px-3 bg-white mt-2 borderB-e1 d-flex a-center">
 				<image src="../../static/images/about-icon.png" class="icon1"></image>
@@ -38,20 +38,20 @@
 			</view>
 			<view class="font-30 color2 d-flex j-sb a-center py-4 px-3 bg-white borderB-e1" @click="Router.navigateTo({route:{path:'/pages/user-secondHand/user-secondHand'}})">
 				<view>二手交易信息</view>
-				<image src="../../static/images/used to releasel-icon3.png" class="icon2"></image>
+				<image src="../../static/images/used-to-releasel-icon3.png" class="icon2"></image>
 			</view>
 			<view class="font-30 color2 d-flex j-sb a-center py-4 px-3 bg-white borderB-e1" @click="Router.navigateTo({route:{path:'/pages/user-labour/user-labour'}})">
 				<view>劳务招聘信息</view>
-				<image src="../../static/images/used to releasel-icon3.png" class="icon2"></image>
+				<image src="../../static/images/used-to-releasel-icon3.png" class="icon2"></image>
 			</view>
 			<view class="font-30 color2 d-flex j-sb a-center py-4 px-3 bg-white" 
 			@click="Router.navigateTo({route:{path:'/pages/business-publish/business-publish?type=isMe'}})">
 				<view>商务通信息</view>
-				<image src="../../static/images/used to releasel-icon3.png" class="icon2"></image>
+				<image src="../../static/images/used-to-releasel-icon3.png" class="icon2"></image>
 			</view>
 			<view class="font-30 color2 d-flex j-sb a-center py-4 px-3 bg-white mt-2" @click="Router.navigateTo({route:{path:'/pages/user-collection/user-collection'}})">
 				<view>我的收藏</view>
-				<image src="../../static/images/used to releasel-icon3.png" class="icon2"></image>
+				<image src="../../static/images/used-to-releasel-icon3.png" class="icon2"></image>
 			</view>
 
 			<!-- ----------高级用户显示------------- -->
@@ -75,11 +75,11 @@
 
 			<view class="font-30 color2 d-flex j-sb a-center py-4 px-3 bg-white mt-2 borderB-e1" @click="Router.navigateTo({route:{path:'/pages/user-opinion/user-opinion'}})">
 				<view>意见反馈</view>
-				<image src="../../static/images/used to releasel-icon3.png" class="icon2"></image>
+				<image src="../../static/images/used-to-releasel-icon3.png" class="icon2"></image>
 			</view>
 			<view class="font-30 color2 d-flex j-sb a-center py-4 px-3 bg-white" @click="Router.navigateTo({route:{path:'/pages/contentUs/contentUs'}})">
 				<view>联系我们</view>
-				<image src="../../static/images/used to releasel-icon3.png" class="icon2"></image>
+				<image src="../../static/images/used-to-releasel-icon3.png" class="icon2"></image>
 			</view>
 
 			<!-- 开通二手 -->

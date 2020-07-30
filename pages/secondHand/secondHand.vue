@@ -14,16 +14,16 @@
 		
 		<!-- nav -->
 		<view class="font-28 color2 d-flex a-center j-sb borderB-e1 z-index1000 nav">
-			<view class="item" :class="navCurr==1?'on':''" @click="changeCurr(1)">全部</view>
-			<view class="item" :class="navCurr==2?'on':''" @click="changeCurr(2)">出售</view>
-			<view class="item" :class="navCurr==3?'on':''" @click="changeCurr(3)">求购</view>
+			<view class="item" :class="navCurr==1?'on':''" @click="canClick?changeCurr(1):''">全部</view>
+			<view class="item" :class="navCurr==2?'on':''" @click="canClick?changeCurr(2):''">出售</view>
+			<view class="item" :class="navCurr==3?'on':''" @click="canClick?changeCurr(3):''">求购</view>
 			<view class="item d-flex a-center j-center" :class="navCurr==4?'on':''" @click="changeCurr(4)">分类
-				<image src="../../static/images/labor releasel-icon1.png" v-if="navCurr==4"></image>
-				<image src="../../static/images/labor releasel-icon2.png" v-else></image>
+				<image src="../../static/images/labor-releasel-icon1.png" v-if="navCurr==4"></image>
+				<image src="../../static/images/labor-releasel-icon2.png" v-else></image>
 			</view>
 			<view class="item d-flex a-center j-center" :class="navCurr==5?'on':''" @click="changeCurr(5)">所在地
-				<image src="../../static/images/labor releasel-icon1.png" v-if="navCurr==5"></image>
-				<image src="../../static/images/labor releasel-icon2.png" v-else></image>
+				<image src="../../static/images/labor-releasel-icon1.png" v-if="navCurr==5"></image>
+				<image src="../../static/images/labor-releasel-icon2.png" v-else></image>
 			</view>
 		</view>
 		
@@ -66,7 +66,7 @@
 				<view class="right flex-1 bg-white">
 					<view class="li" :class="menuIdIndex==index?'on':''" @click="chooseMenuId(index)" v-for="(item,index) of menuData[menuIndex].children" 
 					:key="item.id">{{item.title}}
-						<image src="../../static/images/used to releasel-icon5.png" class="icon5" v-if="menuIdIndex==index"></image>
+						<image src="../../static/images/used-to-releasel-icon5.png" class="icon5" v-if="menuIdIndex==index"></image>
 					</view>
 				</view>
 			</view>
@@ -81,7 +81,7 @@
 					<view class="li" :class="cityIdIndex==index?'on':''" @click="chooseCityId(index)" 
 					v-for="(item,index) of cityData[cityIndex].children"
 					:key="item.id">{{item.title}}
-						<image src="../../static/images/used to releasel-icon5.png" class="icon5" v-if="cityIdIndex==index"></image>
+						<image src="../../static/images/used-to-releasel-icon5.png" class="icon5" v-if="cityIdIndex==index"></image>
 					</view>
 				</view>
 			</view>
@@ -146,7 +146,8 @@
 				menuIdIndex:-1,
 				cityIndex:0,
 				cityIdIndex:-1,
-				title:''
+				title:'',
+				canClick:true
 			}
 		},
 		
@@ -262,6 +263,7 @@
 			
 			changeCurr(type){
 				const self = this;
+				self.canClick = false;
 				uni.setStorageSync('canClick', false);
 				if(type==1){
 					self.navCurr = type;
@@ -284,8 +286,10 @@
 					self.cityShow = false;
 					self.getMainData(true)
 				}else if(type==4){
+					self.cityShow = false;
 					self.menuShow = true
 				}else if(type==5){
+					self.menuShow = false;
 					self.cityShow = true
 				}
 			},
@@ -359,6 +363,7 @@
 					if (res.info.data.length > 0) {
 						self.mainData.push.apply(self.mainData, res.info.data);
 					};
+					self.canClick = true;
 					uni.setStorageSync('canClick', true);
 					self.$Utils.finishFunc('getMainData');
 				};

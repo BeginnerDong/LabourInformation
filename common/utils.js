@@ -771,11 +771,23 @@ export default {
 
 		var month = date.getMonth() + 1;
 		var strDate = date.getDate();
+		var hour = date.getHours();
+		var min = date.getMinutes();
+		var sec = date.getSeconds();
 		if (month >= 1 && month <= 9) {
 			month = "0" + month;
 		}
 		if (strDate >= 0 && strDate <= 9) {
 			strDate = "0" + strDate;
+		}
+		if (hour >= 0 && hour <= 9) {
+			hour = "0" + hour;
+		}
+		if (min >= 0 && min <= 9) {
+			min = "0" + min;
+		}
+		if (sec >= 0 && sec <= 9) {
+			sec = "0" + sec;
 		}
 		if (type == "ym") {
 			// 转年月
@@ -799,18 +811,37 @@ export default {
 		
 		var timeStamp = this.timeToTimestamp(timespan)*1000
 		var dateTime = new Date(timespan);
-
+		console.log('dateTime',dateTime)
 		var year = dateTime.getFullYear();
 		var month = dateTime.getMonth() + 1;
 		var day = dateTime.getDate();
 		var hour = dateTime.getHours();
 		var minute = dateTime.getMinutes();
 		var second = dateTime.getSeconds();
+		
+		if (month >= 1 && month <= 9) {
+			month = "0" + month;
+		}
+		if (day >= 0 && day <= 9) {
+			day = "0" + day;
+		}
+		if (hour >= 0 && hour <= 9) {
+			hour = "0" + hour;
+		}
+		if (minute >= 0 && minute <= 9) {
+			minute = "0" + minute;
+		}
+		if (second >= 0 && second <= 9) {
+			second = "0" + second;
+		}
 		var now = Date.parse(new Date());
 		var milliseconds = 0;
 		var timeSpanStr;
 		milliseconds = now - timeStamp;
 		
+		now = this.timeto(now,'ymd-hms')
+		now = new Date(now);
+		console.log('now',now)
 		if (milliseconds <= 1000 * 60 * 1) {
 			timeSpanStr = '刚刚';
 		} else if (1000 * 60 * 1 < milliseconds && milliseconds <= 1000 * 60 * 60) {

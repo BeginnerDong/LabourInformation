@@ -31,16 +31,16 @@
 				</view>
 				<view class="font-28 color2 d-flex a-center j-sb borderB-e1 z-index1000 nav" v-show="listCurr!=-2&&listCurr!=-1">
 					<view class="item d-flex a-center j-center" :class="navCurr==1?'on':''" @click="changeCurr(1)">分类
-						<image src="../../static/images/labor releasel-icon1.png" v-if="navCurr==1"></image>
-						<image src="../../static/images/labor releasel-icon2.png" v-else></image>
+						<image src="../../static/images/labor-releasel-icon1.png" v-if="navCurr==1"></image>
+						<image src="../../static/images/labor-releasel-icon2.png" v-else></image>
 					</view>
 					<view class="item d-flex a-center j-center" :class="navCurr==2?'on':''" @click="changeCurr(2)">销售区域
-						<image src="../../static/images/labor releasel-icon1.png" v-if="navCurr==2"></image>
-						<image src="../../static/images/labor releasel-icon2.png" v-else></image>
+						<image src="../../static/images/labor-releasel-icon1.png" v-if="navCurr==2"></image>
+						<image src="../../static/images/labor-releasel-icon2.png" v-else></image>
 					</view>
 					<view class="item d-flex a-center j-center" :class="navCurr==3?'on':''" @click="changeCurr(3)">所在地
-						<image src="../../static/images/labor releasel-icon1.png" v-if="navCurr==3"></image>
-						<image src="../../static/images/labor releasel-icon2.png" v-else></image>
+						<image src="../../static/images/labor-releasel-icon1.png" v-if="navCurr==3"></image>
+						<image src="../../static/images/labor-releasel-icon2.png" v-else></image>
 					</view>
 				</view>
 				<view class="rounded shadow m-2 px-2" v-for="(item,index) of mainData" :key="item.id">
@@ -55,11 +55,10 @@
 					<view class="d-flex font-24 pt-3">
 						<view class="color6">业务范围：</view>
 						<view class="color2 flex-1">{{item.description}}</view>
-						<view class="color2 flex-1">
-							<view>{{item.description}}</view>
-							<view class="d-flex a-center flex-wrap" v-if="item.mainImg.length>0">
-								<image v-for="(c_item,c_index) of item.mainImg" :key="c_index" :src="item.url" class="img"></image>
-							</view>
+					</view>
+					<view class="d-flex font-24 pt-3">
+						<view class="d-flex a-center flex-wrap" v-if="item.mainImg.length>0">
+							<image v-for="(c_item,c_index) of item.mainImg" :key="c_index" :src="item.url" class="img"></image>
 						</view>
 					</view>
 					<view class="d-flex font-24 pt-3">
@@ -92,7 +91,7 @@
 				<view class="right flex-1 bg-white">
 					<view class="li" :class="menuIdIndex==index?'on':''" @click="chooseMenuId(index)" v-for="(item,index) of menuData[menuIndex].children"
 					 :key="item.id">{{item.title}}
-						<image src="../../static/images/used to releasel-icon5.png" class="icon5" v-if="menuIdIndex==index"></image>
+						<image src="../../static/images/used-to-releasel-icon5.png" class="icon5" v-if="menuIdIndex==index"></image>
 					</view>
 				</view>
 			</view>
@@ -105,7 +104,7 @@
 				<view class="right flex-1 bg-white">
 					<view class="li" :class="cityIdIndex==index?'on':''" @click="chooseCityId(index)" v-for="(item,index) of cityData[cityIndex].children"
 					 :key="item.id">{{item.title}}
-						<image src="../../static/images/used to releasel-icon5.png" class="icon5" v-if="cityIdIndex==index"></image>
+						<image src="../../static/images/used-to-releasel-icon5.png" class="icon5" v-if="cityIdIndex==index"></image>
 					</view>
 				</view>
 			</view>
@@ -117,7 +116,7 @@
 				<view class="right flex-1 bg-white">
 					<view class="li" :class="citySaleIdIndex==index?'on':''" @click="chooseSaleCityId(index)" v-for="(item,index) of cityData[citySaleIndex].children"
 					 :key="item.id">{{item.title}}
-						<image src="../../static/images/used to releasel-icon5.png" class="icon5" v-if="citySaleIdIndex==index"></image>
+						<image src="../../static/images/used-to-releasel-icon5.png" class="icon5" v-if="citySaleIdIndex==index"></image>
 					</view>
 				</view>
 			</view>

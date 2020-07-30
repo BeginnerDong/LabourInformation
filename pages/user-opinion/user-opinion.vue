@@ -11,9 +11,9 @@
 			<view class="uploadImg d-flex a-center">
 				<view class="position-relative" v-for="(item,index) of submitData.mainImg" :key="index">
 					<image :src="item.url" mode=""></image>
-					<image src="../../static/images/used to releasel-icon1.png" @click="deleteImg(index)" class="icon2"></image>
+					<image src="../../static/images/used-to-releasel-icon1.png" @click="deleteImg(index)" class="icon2"></image>
 				</view>
-				<image v-if="submitData.mainImg.length<5" @click="upLoadImg('mainImg')" src="../../static/images/used to releasel-icon.png"
+				<image v-if="submitData.mainImg.length<5" @click="upLoadImg('mainImg')" src="../../static/images/used-to-releasel-icon.png"
 				 mode=""></image>
 			</view>
 			

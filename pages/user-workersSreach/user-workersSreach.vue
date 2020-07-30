@@ -5,11 +5,11 @@
 		<view class="bg-white px-3 pb-4">
 			<view class="py-4 d-flex a-center j-sb">
 				<view class="font-24 color6 d-flex a-center">
-					<image src="../../static/images/the queryl-icon.png" class="icon1"></image>
+					<image src="../../static/images/the-queryl-icon.png" class="icon1"></image>
 					<view class="pl-2">粘贴</view>
 				</view>
 				<view class="font-24 color6 d-flex a-center" @click="deleteText">
-					<image src="../../static/images/the queryl-icon1.png" class="icon1"></image>
+					<image src="../../static/images/the-queryl-icon1.png" class="icon1"></image>
 					<view class="pl-2">清空</view>
 				</view>
 			</view>

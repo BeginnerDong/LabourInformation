@@ -13,7 +13,7 @@
 		</view>
 		
 		<view class="px-3 bg-white">
-			<view class="font-30 color3 pt-5">
+			<view class="font-30 color3 pt-5 avoidOverflow4">
 				{{mainData.title?mainData.title:''}}
 			</view>
 			<view class="d-flex a-center">
@@ -114,13 +114,55 @@
 		
 		onLoad(options) {
 			const self = this;
-			self.id = options.id;
+			if(options.scene){
+				self.id = decodeURIComponent(options.scene)
+			}else{
+				self.id = options.id;
+			}
 			self.now = Date.parse(new Date()) / 1000;
-			
 			self.$Utils.loadAll(['getMainData','getQrCode'], self);
 		},
 		
+		
+		onShareAppMessage(ops) {
+			console.log(ops)
+			const self = this;
+			if (ops.from === 'button') {
+				return {
+					title:self.mainData.title,
+					path: '/pages/labour-detail/labour-detail?id='+self.mainData.id, //点击分享的图片进到哪一个页面
+					imageUrl:self.mainData&&self.mainData.mainImg&&self.mainData.mainImg[0]&&self.mainData.mainImg[0].url?self.mainData.mainImg[0].url:'',
+					success: function(res) {
+						// 转发成功
+						
+						console.log("转发成功:" + JSON.stringify(res));
+					},
+					fail: function(res) {
+						// 转发失败
+						console.log("转发失败:" + JSON.stringify(res));
+					}
+				}
+			}else{
+				return {
+					title:self.mainData.title,
+					path: '/pages/labour-detail/labour-detail?id='+self.mainData.id, //点击分享的图片进到哪一个页面
+					imageUrl:self.mainData&&self.mainData.mainImg&&self.mainData.mainImg[0]&&self.mainData.mainImg[0].url?self.mainData.mainImg[0].url:'',
+					success: function(res) {
+						// 转发成功
+						
+						console.log("转发成功:" + JSON.stringify(res));
+					},
+					fail: function(res) {
+						// 转发失败
+						console.log("转发失败:" + JSON.stringify(res));
+					}
+				}
+			}
+		},
+		
 		methods: {
+			
+			
 			
 			getQrCode() {
 				const self = this;

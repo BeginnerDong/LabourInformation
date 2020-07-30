@@ -23,9 +23,9 @@
 		<!-- 咨询 -->
 		<view class="pt-3 bg-white borderB-e1" v-show="navCurr==1" v-for="(item,index) of mainData" :key="item.id">
 			<view class="d-flex a-center px-3 pb-3"  v-if="item.style==2">
-				<!-- <image src="../../static/images/i releasel-icon.png" class="icon5"></image> -->
+				<!-- <image src="../../static/images/i-releasel-icon.png" class="icon5"></image> -->
 				<image @click="choose(index)" v-if="isShowChoose" 
-				:src="item.choose?'../../static/images/i releasel-icon1.png':'../../static/images/i releasel-icon.png'" class="icon5"></image>
+				:src="item.choose?'../../static/images/i-releasel-icon1.png':'../../static/images/i-releasel-icon.png'" class="icon5"></image>
 				<view class="flex-1 ml-2" :data-id = "item.id"
 					@click="Router.navigateTo({route:{path:'/pages/newsDetail/newsDetail?id='+$event.currentTarget.dataset.id}})">
 					<view class="bg-white indexBox1 flex-1">
@@ -54,9 +54,9 @@
 			</view>
 
 			<view class="d-flex a-center px-3 pb-3" v-if="item.style==1">
-				<!-- <image src="../../static/images/i releasel-icon.png" class="icon5"></image> -->
+				<!-- <image src="../../static/images/i-releasel-icon.png" class="icon5"></image> -->
 				<image @click="choose(index)" v-if="isShowChoose" 
-				:src="item.choose?'../../static/images/i releasel-icon1.png':'../../static/images/i releasel-icon.png'" class="icon5"></image>
+				:src="item.choose?'../../static/images/i-releasel-icon1.png':'../../static/images/i-releasel-icon.png'" class="icon5"></image>
 				<view class="flex-1 ml-2 pt-3" :data-id = "item.id"
 					@click="Router.navigateTo({route:{path:'/pages/newsDetail/newsDetail?id='+$event.currentTarget.dataset.id}})">
 					<view class="bg-white indexBox1 flex-1">
@@ -84,9 +84,9 @@
 			</view>
 
 			<view class="d-flex a-center px-3 pb-3"  v-if="item.style==3">
-				<!-- <image src="../../static/images/i releasel-icon.png" class="icon5"></image> -->
+				<!-- <image src="../../static/images/i-releasel-icon.png" class="icon5"></image> -->
 				<image @click="choose(index)" v-if="isShowChoose" 
-				:src="item.choose?'../../static/images/i releasel-icon1.png':'../../static/images/i releasel-icon.png'" class="icon5"></image>
+				:src="item.choose?'../../static/images/i-releasel-icon1.png':'../../static/images/i-releasel-icon.png'" class="icon5"></image>
 				<view class="flex-1 ml-2">
 					<view class="pt-3 bg-white indexBox2"  :data-id = "item.id"
 					@click="Router.navigateTo({route:{path:'/pages/newsDetail/newsDetail?id='+$event.currentTarget.dataset.id}})">
@@ -116,8 +116,8 @@
 
 			<view class="d-flex a-center px-3 pb-3 bg-white"  v-if="item.style==4">
 				<image @click="choose(index)" v-if="isShowChoose" 
-				:src="item.choose?'../../static/images/i releasel-icon1.png':'../../static/images/i releasel-icon.png'" class="icon5"></image>
-				<!-- <image src="../../static/images/i releasel-icon1.png" class="icon5"></image> -->
+				:src="item.choose?'../../static/images/i-releasel-icon1.png':'../../static/images/i-releasel-icon.png'" class="icon5"></image>
+				<!-- <image src="../../static/images/i-releasel-icon1.png" class="icon5"></image> -->
 				<view class="indexBox3 flex-1 ml-2 pt-3">
 					<view class="font-30 color2">{{item.title}}</view>
 					<view class="mt-3">
@@ -144,8 +144,8 @@
 		<view class="list borderB-e1" v-show="navCurr==2" v-for="(item,index) of mainData" :key="item.id">
 			<view class="d-flex a-center px-3 pb-3 bg-white">
 				<image @click="choose(index)" v-if="isShowChoose" 
-				:src="item.choose?'../../static/images/i releasel-icon1.png':'../../static/images/i releasel-icon.png'" class="icon5"></image>
-				<!-- <image src="../../static/images/i releasel-icon1.png" class="icon5"></image> -->
+				:src="item.choose?'../../static/images/i-releasel-icon1.png':'../../static/images/i-releasel-icon.png'" class="icon5"></image>
+				<!-- <image src="../../static/images/i-releasel-icon1.png" class="icon5"></image> -->
 				<view class="item d-flex a-center j-sb py-3 pl-2 bg-white flex-1" :data-id="item.id" @click="Router.navigateTo({route:{path:'/pages/secondHand-detail/secondHand-detail?id='+$event.currentTarget.dataset.id}})">
 					<image :src="item.mainImg&&item.mainImg[0]?item.mainImg[0].url:''" mode=""></image>
 					<view class="itemCon flex-1 ml-2">
@@ -176,8 +176,8 @@
 		<view v-show="navCurr==4" class="bg-white borderB-e1" v-for="(item,index) of mainData" :key="item.id">
 			<view class="d-flex a-center px-3">
 				<image @click="choose(index)" v-if="isShowChoose"
-				:src="item.choose?'../../static/images/i releasel-icon1.png':'../../static/images/i releasel-icon.png'" class="icon5"></image>
-				<!-- <image src="../../static/images/i releasel-icon1.png" class="icon5"></image> -->
+				:src="item.choose?'../../static/images/i-releasel-icon1.png':'../../static/images/i-releasel-icon.png'" class="icon5"></image>
+				<!-- <image src="../../static/images/i-releasel-icon1.png" class="icon5"></image> -->
 				<view class="pl-2 flex-1" :data-id="item.id" @click="Router.navigateTo({route:{path:'/pages/labour-detail/labour-detail?id='+$event.currentTarget.dataset.id}})">
 					<view class="font-30 color2 pt-4">{{item.title}}</view>
 					<view class="d-flex flex-wrap py-3 imgBox">
@@ -215,8 +215,8 @@
 		<view v-show="navCurr==3" class="bg-white borderB-e1" v-for="(item,index) of mainData" :key="item.id">
 			<view class="d-flex a-center px-3">
 				<image @click="choose(index)" v-if="isShowChoose"
-				:src="item.choose?'../../static/images/i releasel-icon1.png':'../../static/images/i releasel-icon.png'" class="icon5"></image>
-				<!-- <image src="../../static/images/i releasel-icon1.png" class="icon5"></image> -->
+				:src="item.choose?'../../static/images/i-releasel-icon1.png':'../../static/images/i-releasel-icon.png'" class="icon5"></image>
+				<!-- <image src="../../static/images/i-releasel-icon1.png" class="icon5"></image> -->
 				<view class="flex-1 ml-2">
 					<view class="Mcolor font-30 py-3">{{item.title}}</view>
 					<view class="d-flex a-center j-sb line-h pb-3 borderB-e1">

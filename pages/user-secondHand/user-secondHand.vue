@@ -20,7 +20,7 @@
 		<view>
 			<view class="borderB-e1 py-4" v-for = "(item,index) of mainData" :key="item.id">
 				<view class="d-flex a-center mx-3">
-					<image @click="choose(index)" v-if="isShowChoose" :src="item.choose?'../../static/images/i releasel-icon1.png':'../../static/images/i releasel-icon.png'" class="icon1"></image>
+					<image @click="choose(index)" v-if="isShowChoose" :src="item.choose?'../../static/images/i-releasel-icon1.png':'../../static/images/i-releasel-icon.png'" class="icon1"></image>
 					<view class="ml-2 d-flex a-center j-sb flex-1">
 						<image :src="item.mainImg&&item.mainImg[0]?item.mainImg[0].url:''" class="img"></image>
 						<view class="itemCon flex-1 ml-2">

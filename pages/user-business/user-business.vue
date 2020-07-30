@@ -13,8 +13,8 @@
 			
 			<view class="rounded shadow m-2 pb-3">
 				<view class="px-2 d-flex a-center">
-					<image src="../../static/images/i releasel-icon.png" class="icon1"></image>
-					<!-- <image src="../../static/images/i releasel-icon1.png" class="icon1"></image> -->
+					<image src="../../static/images/i-releasel-icon.png" class="icon1"></image>
+					<!-- <image src="../../static/images/i-releasel-icon1.png" class="icon1"></image> -->
 					<view class="flex-1 ml-2">
 						<view class="Mcolor font-30 py-3">贵阳**物资有限公司</view>
 						<view class="d-flex a-center j-sb line-h pb-3 borderB-e1">
@@ -45,8 +45,8 @@
 			
 			<view class="rounded shadow m-2 pb-3">
 				<view class="px-2 d-flex a-center">
-					<image src="../../static/images/i releasel-icon.png" class="icon1"></image>
-					<!-- <image src="../../static/images/i releasel-icon1.png" class="icon1"></image> -->
+					<image src="../../static/images/i-releasel-icon.png" class="icon1"></image>
+					<!-- <image src="../../static/images/i-releasel-icon1.png" class="icon1"></image> -->
 					<view class="flex-1 ml-2">
 						<view class="Mcolor font-30 py-3">贵阳**物资有限公司</view>
 						<view class="d-flex a-center j-sb line-h pb-3 borderB-e1">

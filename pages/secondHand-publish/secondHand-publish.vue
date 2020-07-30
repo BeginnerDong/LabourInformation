@@ -2,7 +2,7 @@
 	<view>
 		<view class="text-center font-24 color2 line-h p-3 head position-relative" v-show="tips_show">
 			<view class="Rcolor pb-3">温馨提示</view>
-			<view class="pb-1"><text class="Rcolor">自己发布太麻烦？</text>请添加劳务信息官方微信：hjhsn2500</view>
+			<view class="pb-1"><text class="Rcolor">自己发布太麻烦？</text>请添加劳务信息官方微信：{{kefu}}</view>
 			<view class="pb-1">我们完全免费帮您发布（平台不收取任何费用）</view>
 			<view>劳务信息有强大的资源渠道，能够帮您快速的出售/求购</view>
 			<view class="close p-3" @click="changeTips()">
@@ -20,12 +20,12 @@
 		<view class="upload font-24 color2 px-3 py-4 bg-white mb-2">
 			<view v-if="submitData.behavior==1">添加图片（最多上传5张图片，至少上传一张图片）</view>
 			<view v-if="submitData.behavior==2">添加图片（最多上传5张图片，选填）</view>
-			<view class="uploadImg d-flex a-center">
+			<view class="uploadImg d-flex a-center" style="flex-wrap: wrap;">
 				<view class="position-relative" v-for="(item,index) of submitData.mainImg" :key="index">
 					<image :src="item.url" mode=""></image>
-					<image src="../../static/images/used to releasel-icon1.png" @click="deleteImg(index)" class="icon2"></image>
+					<image src="../../static/images/used-to-releasel-icon1.png" @click="deleteImg(index)" class="icon2"></image>
 				</view>
-				<image v-if="submitData.mainImg.length<5" @click="upLoadImg('mainImg')" src="../../static/images/used to releasel-icon.png"
+				<image v-if="submitData.mainImg.length<5" @click="upLoadImg('mainImg')" src="../../static/images/used-to-releasel-icon.png"
 				 mode=""></image>
 			</view>
 		</view>
@@ -36,7 +36,7 @@
 				<view class="d-flex a-center" @click="showChoose('menu')">
 					<view class="font-24 color9 pr-1">{{submitData.menu_id!=''?
 					menuData[menuIndex].title+'/'+menuData[menuIndex].children[menuIdIndex].title:'请选择'}}</view>
-					<image src="../../static/images/used to releasel-icon3.png" class="icon3"></image>
+					<image src="../../static/images/used-to-releasel-icon3.png" class="icon3"></image>
 				</view>
 			</view>
 			<view class="py-4 borderB-e1 px-3">
@@ -55,7 +55,7 @@
 				<view class="d-flex a-center" @click="showChoose('city')">
 					<view class="font-24 color9 pr-1">{{submitData.location!=''?
 					cityData[cityIndex].title+'/'+cityData[cityIndex].children[cityIdIndex].title:'请选择'}}</view>
-					<image src="../../static/images/used to releasel-icon3.png" class="icon3"></image>
+					<image src="../../static/images/used-to-releasel-icon3.png" class="icon3"></image>
 				</view>
 			</view>
 			<view class="d-flex a-center j-sb py-4 borderB-e1 px-3">
@@ -81,7 +81,7 @@
 			<view v-show="menu">
 				
 				<view class="d-flex a-center j-sb px-3 py-2 borderB-e1 bg-white">
-					<view class="font-26 Mcolor d-flex a-center" @click="showChoose('menu')"><image src="../../static/images/used to releasel-icon4.png" class="icon4"></image>返回</view>
+					<view class="font-26 Mcolor d-flex a-center" @click="showChoose('menu')"><image src="../../static/images/used-to-releasel-icon4.png" class="icon4"></image>返回</view>
 					<view class="bg-mcolor colorf rounded10 yesBtn" @click="confirmMenu()">确认</view>
 				</view>
 				
@@ -94,7 +94,7 @@
 					<view class="right flex-1 bg-white">
 						<view class="li" :class="menuIdIndex==index?'on':''" @click="chooseMenuId(index)" v-for="(item,index) of menuData[menuIndex].children" 
 						:key="item.id">{{item.title}}
-							<image src="../../static/images/used to releasel-icon5.png" class="icon5" v-if="menuIdIndex==index"></image>
+							<image src="../../static/images/used-to-releasel-icon5.png" class="icon5" v-if="menuIdIndex==index"></image>
 						</view>
 					</view>
 				</view>
@@ -102,7 +102,7 @@
 			
 			<view  v-show="city">
 				<view class="d-flex a-center j-sb px-3 py-2 borderB-e1 bg-white">
-					<view class="font-26 Mcolor d-flex a-center" @click="showChoose('city')"><image src="../../static/images/used to releasel-icon4.png" class="icon4"></image>返回</view>
+					<view class="font-26 Mcolor d-flex a-center" @click="showChoose('city')"><image src="../../static/images/used-to-releasel-icon4.png" class="icon4"></image>返回</view>
 					<view class="bg-mcolor colorf rounded10 yesBtn" @click="confirmCity()">确认</view>
 				</view>
 				<!-- 所在地 -->
@@ -115,7 +115,7 @@
 						<view class="li" :class="cityIdIndex==index?'on':''" @click="chooseCityId(index)" 
 						v-for="(item,index) of cityData[cityIndex].children"
 						:key="item.id">{{item.title}}
-							<image src="../../static/images/used to releasel-icon5.png" class="icon5" v-if="cityIdIndex==index"></image>
+							<image src="../../static/images/used-to-releasel-icon5.png" class="icon5" v-if="cityIdIndex==index"></image>
 						</view>
 					</view>
 				</view>
@@ -325,14 +325,16 @@
 					count: 5-self.submitData.mainImg.length,
 					success: function(res) {
 						console.log(res);
-						var tempFilePaths = res.tempFilePaths[0];
-						var file = res.tempFiles[0];
-						var obj = res.tempFiles[0].path.lastIndexOf(".");
-						var ext = res.tempFiles[0].path.substr(obj+1);
-						console.log(callback)
-						self.$Utils.uploadFile(tempFilePaths, 'file', {
-							tokenFuncName: 'getProjectToken',ext:ext,md5:'md5',totalSize:file.size,start:0,chunkSize:file.size,originName:'headImg'
-						}, callback)
+						var tempFilePaths = res.tempFilePaths;
+						for (var i = 0; i < tempFilePaths.length; i++) {
+							var file = res.tempFiles[i];
+							var obj = res.tempFiles[i].path.lastIndexOf(".");
+							var ext = res.tempFiles[i].path.substr(obj+1);
+							console.log(callback)
+							self.$Utils.uploadFile(tempFilePaths, 'file', {
+								tokenFuncName: 'getProjectToken',ext:ext,md5:'md5',totalSize:file.size,start:0,chunkSize:file.size,originName:'headImg'
+							}, callback)
+						}
 					},
 					fail: function(err) {
 						uni.hideLoading();

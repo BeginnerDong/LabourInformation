@@ -18,11 +18,11 @@
 		<view class="bg-white  px-3">
 			<view class="py-3 font-28 color2 d-flex a-center j-sa">
 				<view class="d-flex a-center" @click="change(1)">
-					<image :src="current==1?'../../static/images/used to sharel-icon1.png':'../../static/images/used to sharel-icon.png'"
+					<image :src="current==1?'../../static/images/used-to-sharel-icon1.png':'../../static/images/used-to-sharel-icon.png'"
 					 class="icon1"></image>图片样式1
 				</view>
 				<view class="d-flex a-center" @click="change(2)">
-					<image :src="current==2?'../../static/images/used to sharel-icon1.png':'../../static/images/used to sharel-icon.png'"
+					<image :src="current==2?'../../static/images/used-to-sharel-icon1.png':'../../static/images/used-to-sharel-icon.png'"
 					 class="icon1"></image>图片样式2
 				</view>
 			</view>
@@ -32,16 +32,16 @@
 					<view class="font-34 text-center" v-if="current==1">进入我的主页查看</view>
 					<view class="d-flex a-center j-center" v-if="current==2">
 						<view class="font-28 d-flex a-center">
-							<image src="../../static/images/used to sharel-icon2.png" class="icon2"></image>{{info.name?info.name:''}}
+							<image src="../../static/images/used-to-sharel-icon2.png" class="icon2"></image>{{info.name?info.name:''}}
 						</view>
 						<view class="font-28 d-flex a-center ml-5">
-							<image src="../../static/images/used to sharel-icon3.png" class="icon3"></image>{{info.phone?info.phone:''}}
+							<image src="../../static/images/used-to-sharel-icon3.png" class="icon3"></image>{{info.phone?info.phone:''}}
 						</view>
 					</view>
 				</view>
 				<view class="shareImg d-flex j-sb a-center px-3 pt-4">
 					<image :src="qrUrl" mode=""></image>
-					<image src="../../static/images/used to sharel-img1.png" mode=""></image>
+					<image src="../../static/images/used-to-sharel-img1.png" mode=""></image>
 				</view>
 				<view class="Rcolor font-36 text-center py-3">长按图片，识别图中小程序</view>
 				<view class="font-24 color6 text-right d-flex a-center j-sa">
@@ -196,11 +196,11 @@
 					myCanvas.font = '17px Arial'
 					myCanvas.fillText('进入我的主页查看', 175.5, 90, 345);
 				} else {
-					myCanvas.drawImage('../../static/images/used to sharel-icon2.png', 80, 72, 15, 16);
+					myCanvas.drawImage('../../static/images/used-to-sharel-icon2.png', 80, 72, 15, 16);
 					myCanvas.font = '15px Arial'
 					myCanvas.fillText(this.info.name, 125, 85);
 
-					myCanvas.drawImage('../../static/images/used to sharel-icon3.png', 170, 72, 11, 15);
+					myCanvas.drawImage('../../static/images/used-to-sharel-icon3.png', 170, 72, 11, 15);
 					myCanvas.fillText(this.info.phone, 230, 85);
 				}
 				//内容
@@ -218,7 +218,7 @@
 							myCanvas.draw(true)
 					}
 				});
-				myCanvas.drawImage('../../static/images/used to sharel-img1.png', 170, 140, 161, 145);
+				myCanvas.drawImage('../../static/images/used-to-sharel-img1.png', 170, 140, 161, 145);
 				myCanvas.save()
 				myCanvas.restore(); //恢复之前保存的绘图上下文 恢复之前保存的绘图上下午即状态 可以继续绘制
 				myCanvas.draw(true)

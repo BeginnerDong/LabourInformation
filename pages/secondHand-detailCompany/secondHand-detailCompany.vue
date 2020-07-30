@@ -96,7 +96,11 @@
 		
 		onLoad(options) {
 			const self = this;
-			self.user_no = options.user_no;
+			if(options.scene){
+				self.user_no = decodeURIComponent(options.scene)
+			}else{
+				self.user_no = options.user_no;
+			}
 			self.paginate = self.$Utils.cloneForm(self.$AssetsConfig.paginate);
 			self.$Utils.loadAll(['getUserData','getQrCode'], self);
 		},
@@ -108,6 +112,42 @@
 				self.paginate.currentPage++;
 				self.getRelationData()
 			};
+		},
+		
+		onShareAppMessage(ops) {
+			console.log(ops)
+			const self = this;
+			if (ops.from === 'button') {
+				return {
+					title:self.info.company?self.info.company:'',
+					path: '/pages/secondHand-detailCompany/secondHand-detailCompany?user_no='+self.userData.user_no, //点击分享的图片进到哪一个页面
+					//imageUrl:self.mainData&&self.mainData.mainImg&&self.mainData.mainImg[0]&&self.mainData.mainImg[0].url?self.mainData.mainImg[0].url:'',
+					success: function(res) {
+						// 转发成功
+						
+						console.log("转发成功:" + JSON.stringify(res));
+					},
+					fail: function(res) {
+						// 转发失败
+						console.log("转发失败:" + JSON.stringify(res));
+					}
+				}
+			}else{
+				return {
+					title:self.info.company?self.info.company:'',
+					path: '/pages/secondHand-detailCompany/secondHand-detailCompany?user_no='+self.userData.user_no, //点击分享的图片进到哪一个页面
+					//imageUrl:self.mainData&&self.mainData.mainImg&&self.mainData.mainImg[0]&&self.mainData.mainImg[0].url?self.mainData.mainImg[0].url:'',
+					success: function(res) {
+						// 转发成功
+						
+						console.log("转发成功:" + JSON.stringify(res));
+					},
+					fail: function(res) {
+						// 转发失败
+						console.log("转发失败:" + JSON.stringify(res));
+					}
+				}
+			}
 		},
 		
 		methods: {

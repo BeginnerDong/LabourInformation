@@ -54,7 +54,7 @@
 				<view class="font-24 color2 text-center py-3">长按图片，识别图中小程序码，<text class="font-w">免费查看联系方式</text></view>
 				<view class="shareImg d-flex j-sb a-center px-3">
 					<image :src="qrUrl" mode=""></image>
-					<image src="../../static/images/used to sharel-img1.png" mode=""></image>
+					<image src="../../static/images/used-to-sharel-img1.png" mode=""></image>
 				</view>
 				<view class="font-22 color9 text-center pt-3">没有识别出小程序信息，请重新点开图片，多试几次就行了</view>
 			</view>
@@ -317,7 +317,7 @@
 						console.log('qr', res)
 					}
 				});
-				myCanvas.drawImage('../../static/images/used to sharel-img1.png', 185, 230, 144, 129);
+				myCanvas.drawImage('../../static/images/used-to-sharel-img1.png', 185, 230, 144, 129);
 				myCanvas.save()
 				myCanvas.restore(); //恢复之前保存的绘图上下文 恢复之前保存的绘图上下午即状态 可以继续绘制
 				myCanvas.draw(true)
