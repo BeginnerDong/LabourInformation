@@ -60,6 +60,7 @@
 </template>
 
 <script>
+	import Vue from 'vue'
 	export default {
 		data() {
 			return {
@@ -119,11 +120,11 @@
 				const self = this;
 				self.mainData[index].choose = !self.mainData[index].choose
 				Vue.set(self.mainData,index,self.mainData[index])
-				var options = self.allId.indexOf(self.mainData[index].relationLog[0].id);
+				var options = self.allId.indexOf(self.mainData[index].id);
 				if(options>=0){
 					self.allId.splice(1,parseInt(options))
 				}else{
-					self.allId.push(self.mainData[index].relationLog[0].id)
+					self.allId.push(self.mainData[index].id)
 				}
 			},
 			

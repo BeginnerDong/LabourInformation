@@ -124,7 +124,7 @@
 			<view class="bg-white rounded20-T color2 font-28 text-center position-absolute bottom-0 left-0 right-0">
 				<view class="py-4">分享给</view>
 				<view class="d-flex a-center j-sb share m-a mb-5 pt-3">
-					<view class="font-26 pb-1"><image src="../../static/images/sharel-icon.png" class="img1"></image><view>微信好友</view></view>
+					<button open-type="share" class="font-26 pb-1"><image src="../../static/images/sharel-icon.png" class="img1"></image><view>微信好友</view></button>
 					<view class="font-26 pb-1" @click="Router.navigateTo({route:{path:'/pages/secondHand-share/secondHand-share?id='+mainData.id}})"><image src="../../static/images/sharel-icon1.png" class="img2"></image><view>微信朋友圈</view></view>
 				</view>
 				<view class="font-26 py-3 bg-colorf5 mt-5 z-index100" @click="changeShare()">取消</view>
@@ -480,6 +480,7 @@ page{background-color: #f5f5f5;}
 
 .share{width: 440rpx;}
 .share>view{display: flex;flex-direction: column;align-items: center;}
+.share>button{display: flex;flex-direction: column;align-items: center;background-color: #fff;}
 .img1{width: 83rpx;height: 70rpx;margin-bottom: 35rpx}
 .img2{width: 76rpx;height: 77rpx;margin-bottom: 35rpx}
 </style>

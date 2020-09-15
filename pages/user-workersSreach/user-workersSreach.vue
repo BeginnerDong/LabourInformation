@@ -74,7 +74,7 @@
 				const self = this;
 				const postData = {};
 				postData.tokenFuncName = 'getProjectToken';
-				postData.keywords = JSON.stringify(self.infoArray);
+				postData.keywords =self.infoArray;
 				const callback = (data) => {				
 					if (data.solely_code == 100000) {					
 						uni.setStorageSync('canClick', true);

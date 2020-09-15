@@ -3,7 +3,7 @@
 
 		<!-- nav -->
 		<view class="font-28 color2 d-flex a-center j-sb borderB-e1 bg-f5 shadow-sm nav">
-			<view class="item" :class="navCurr==1?'on':''" @click="changeNav(1)">咨询</view>
+			<view class="item" :class="navCurr==1?'on':''" @click="changeNav(1)">资讯</view>
 			<view class="item" :class="navCurr==2?'on':''" @click="changeNav(2)">二手信息</view>
 			<view class="item" :class="navCurr==3?'on':''" @click="changeNav(3)">商务通</view>
 			<view class="item" :class="navCurr==4?'on':''" @click="changeNav(4)">招聘信息</view>

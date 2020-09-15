@@ -22,7 +22,7 @@
 			
 			
 			<view class="p-3 mb-2 bg-white indexBox1" v-if="item.style==1">
-				<view class="d-flex a-center j-sb" style="width: 100%;">
+				<view class="d-flex a-center j-sb" style="width: 100%;" @click="addViewCount(index)">
 					<view class="d-flex flex-column j-sb  h-100" style="width: 100%;" :data-id = "item.id"
 					@click="Router.navigateTo({route:{path:'/pages/newsDetail/newsDetail?id='+$event.currentTarget.dataset.id}})">
 						<view class="font-30 color2 flex-1 mb-3 avoidOverflow2">{{item.title}}</view>
@@ -45,7 +45,7 @@
 			</view>
 			
 			<view class="p-3 mb-2 bg-white indexBox1" v-if="item.style==2">
-				<view class="d-flex a-center j-sb">
+				<view class="d-flex a-center j-sb" @click="addViewCount(index)">
 					<view class="d-flex flex-column j-sb mr-3 h-100" :data-id = "item.id"
 					@click="Router.navigateTo({route:{path:'/pages/newsDetail/newsDetail?id='+$event.currentTarget.dataset.id}})">
 						<view class="font-30 color2 flex-1 mb-3 avoidOverflow2 tjTit">{{item.title}}</view>
@@ -68,27 +68,29 @@
 				</view>
 			</view>
 
-
-			<view class="mb-2 p-3 bg-white indexBox2" v-if="item.style==3" :data-id = "item.id"
-			@click="Router.navigateTo({route:{path:'/pages/newsDetail/newsDetail?id='+$event.currentTarget.dataset.id}})">
-				<view class="font-30 color2">{{item.title}}</view>
-				<view class="d-flex a-center mt-3 flex-wrap imgBox">
-					<image v-for="(c_item,c_index) in item.mainImg" :key="c_index" :src="c_item.url" mode=""></image>
-				</view>
-				<view class="d-flex a-center j-sb h-100 mt-3">
-					<view class="font-22 d-flex a-center">
-						<view class="tag tag1" v-for="(c_item,c_index) of item.keywords" :key="c_index">{{c_item}}</view>
+			<view  @click="addViewCount(index)">
+				<view class="mb-2 p-3 bg-white indexBox2" v-if="item.style==3" :data-id = "item.id"
+				@click="Router.navigateTo({route:{path:'/pages/newsDetail/newsDetail?id='+$event.currentTarget.dataset.id}})">
+					<view class="font-30 color2">{{item.title}}</view>
+					<view class="d-flex a-center mt-3 flex-wrap imgBox">
+						<image v-for="(c_item,c_index) in item.mainImg" :key="c_index" :src="c_item.url" mode=""></image>
 					</view>
-					<view class="d-flex a-center">
-						<image src="../../static/images/home-icon.png" class="icon1"></image>
-						<view class="font-24 color6 pl-1">{{item.view_count}}</view>
+					<view class="d-flex a-center j-sb h-100 mt-3">
+						<view class="font-22 d-flex a-center">
+							<view class="tag tag1" v-for="(c_item,c_index) of item.keywords" :key="c_index">{{c_item}}</view>
+						</view>
+						<view class="d-flex a-center">
+							<image src="../../static/images/home-icon.png" class="icon1"></image>
+							<view class="font-24 color6 pl-1">{{item.view_count}}</view>
+						</view>
 					</view>
-				</view>
-				<view class="bg-f5 d-flex a-center p-1 mt-4">
-					<image src="../../static/images/home-icon2.png" class="icon2"></image>
-					<view class="font-24 color6 pl-1">{{item.description}}</view>
+					<view class="bg-f5 d-flex a-center p-1 mt-4">
+						<image src="../../static/images/home-icon2.png" class="icon2"></image>
+						<view class="font-24 color6 pl-1">{{item.description}}</view>
+					</view>
 				</view>
 			</view>
+			
 
 			<view class="mb-2 p-3 bg-white indexBox3" v-if="item.style==4"> 
 				<view class="font-30 color2">{{item.title}}</view>
@@ -173,6 +175,12 @@
 		},
 
 		methods: {
+			
+			addViewCount(index){
+				const self = this;
+				console.log(234)
+				self.mainData[index].view_count++
+			},
 			
 			getUserData() {
 				const self = this;

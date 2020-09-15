@@ -52,7 +52,7 @@
 				const callback = (res) => {
 					console.log('res', res)
 					if (res.solely_code == 100000) {
-						self.submitData[type] = [];
+						
 						self.submitData[type].push({url:res.info.url,type:'image'})
 						console.log(self.submitData)
 					} else {
@@ -62,15 +62,16 @@
 				uni.chooseImage({
 					count: 5-self.submitData.mainImg.length,
 					success: function(res) {
-						console.log(res);
-						var tempFilePaths = res.tempFilePaths[0];
-						var file = res.tempFiles[0];
-						var obj = res.tempFiles[0].path.lastIndexOf(".");
-						var ext = res.tempFiles[0].path.substr(obj+1);
-						console.log(callback)
-						self.$Utils.uploadFile(tempFilePaths, 'file', {
-							tokenFuncName: 'getProjectToken',ext:ext,md5:'md5',totalSize:file.size,start:0,chunkSize:file.size,originName:'headImg'
-						}, callback)
+						var tempFilePaths = res.tempFilePaths;
+						for (var i = 0; i < tempFilePaths.length; i++) {
+							var file = res.tempFiles[i];
+							var obj = res.tempFiles[i].path.lastIndexOf(".");
+							var ext = res.tempFiles[i].path.substr(obj+1);
+							console.log(callback)
+							self.$Utils.uploadFile(tempFilePaths[i], 'file', {
+								tokenFuncName: 'getProjectToken',ext:ext,md5:'md5',totalSize:file.size,start:0,chunkSize:file.size,originName:'headImg'
+							}, callback)
+						}
 					},
 					fail: function(err) {
 						uni.hideLoading();

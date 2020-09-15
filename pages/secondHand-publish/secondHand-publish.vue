@@ -331,7 +331,7 @@
 							var obj = res.tempFiles[i].path.lastIndexOf(".");
 							var ext = res.tempFiles[i].path.substr(obj+1);
 							console.log(callback)
-							self.$Utils.uploadFile(tempFilePaths, 'file', {
+							self.$Utils.uploadFile(tempFilePaths[i], 'file', {
 								tokenFuncName: 'getProjectToken',ext:ext,md5:'md5',totalSize:file.size,start:0,chunkSize:file.size,originName:'headImg'
 							}, callback)
 						}
