@@ -8,8 +8,8 @@
 		</view>
 		
 		<view class="font-30 color2 p-3 d-flex a-center j-sb borderB-e1">
-			<view @click="chooseShow" v-if="!isShowChoose">选择</view>
-			<view @click="chooseShow" v-else>取消</view>
+			<view @click="chooseShow" v-if="!isShowChoose" class="btn2">选择</view>
+			<view @click="chooseShow"  class="btn2" v-else>取消</view>
 			<view class="Mcolor d-flex a-center" v-if="isShowChoose">
 				<view class="pr-5 borderR-f5" @click="chooseAll()">全选</view>
 				<view class="pr-5 borderR-f5" @click="deleteAll()">删除</view>
@@ -295,4 +295,6 @@
 .img{width: 160rpx;height: 160rpx;}
 
 .oh view{width: 33.33%;}
+
+.btn2{width: 100rpx;padding: 5px 10px;line-height: 1;border: 1px solid #e1e1e1;border-radius: 5px;}
 </style>

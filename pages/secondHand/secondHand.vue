@@ -1,7 +1,7 @@
 <template>
 	<view :class="menuShow||cityShow?'none':''">
-		<view class="head p-3 bg-mcolor font-36 colorf d-flex a-center z-index100" :style="{paddingTop:statusBar+23 +'px'}"
-		 @click="checkLogin">
+		<view class="head px-3 pb-1 bg-mcolor font-36 colorf d-flex a-center z-index100" :style="{paddingTop:statusBar +'px'}"
+		@click="checkLogin">
 			<image src="../../static/images/businessl-icon1.png" class="icon1"></image>
 			<view>免费发布</view>
 		</view>
@@ -397,7 +397,7 @@
 <style>
 page{background-color: #f5f5f5;height: 100%;}
 .none{height: 100%;overflow: hidden;}
-.head{position: sticky;top: 0;left: 0;right: 0;}
+.head{position: sticky;top: 0;left: 0;right: 0;line-height: 80rpx;}
 .icon1{width: 23rpx;height: 23rpx;margin-right: 10rpx;}
 
 

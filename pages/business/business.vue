@@ -1,6 +1,6 @@
 <template>
 	<view class="h-100 d-flex flex-column">
-		<view class="head p-3 bg-mcolor font-36 colorf d-flex a-center z-index100" :style="{paddingTop:statusBar+23 +'px'}"
+		<view class="head px-3 pb-1 bg-mcolor font-36 colorf d-flex a-center z-index100" :style="{paddingTop:statusBar +'px'}"
 		 @click="checkLogin">
 			<image src="../../static/images/businessl-icon1.png" class="icon1"></image>
 			<view>免费发布</view>
@@ -43,7 +43,7 @@
 						<image src="../../static/images/labor-releasel-icon2.png" v-else></image>
 					</view>
 				</view>
-				<view class="rounded shadow m-2 px-2" v-for="(item,index) of mainData" :key="item.id">
+				<view class="rounded shadow m-2 px-2  pb-3" v-for="(item,index) of mainData" :key="item.id">
 					<view class="Mcolor font-30 py-3">{{item.title}}</view>
 					<view class="d-flex a-center j-sb line-h pb-3 borderB-e1">
 						<view><text class="borderR-e1 pr-2 mr-2">{{item.name}}</text>{{item.phone}}</view>
@@ -71,7 +71,7 @@
 						</view>
 						<view class="btn Mborder rounded ml-5" @click="callPhone(index)">拨打电话</view>
 					</view>
-					<view class="font-22 color2 py-3" @click="Router.navigateTo({route:{path:'/pages/user-opinion/user-opinion'}})">不实信息投诉</view>
+					<view class="font-22 color2 mt-2 btn1" @click="Router.navigateTo({route:{path:'/pages/user-opinion/user-opinion'}})">不实信息投诉</view>
 				</view>
 			</scroll-view>
 
@@ -590,7 +590,7 @@
 		background-color: #f5f5f5;
 	}
 
-	/* .head{position: fixed;top: 0;left: 0;right: 0;} */
+	.head{line-height: 80rpx;}
 	.icon1 {
 		width: 23rpx;
 		height: 23rpx;
@@ -737,4 +737,6 @@
 	.classfiy .right .on {
 		color: #51A9E9;
 	}
+	
+	.btn1{width: 155rpx;padding: 10rpx;border: 1px solid #e1e1e1;}
 </style>

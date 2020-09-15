@@ -4,7 +4,7 @@
 
 		<view class="d-flex a-center j-sb pb-1">
 			<view class="d-flex a-center">
-				<view class="font-26 color6 pr-1">{{mainData.create_time}}</view>
+				<view class="font-26 color6 pr-3">{{mainData.create_time}}</view>
 				<view class="d-flex a-center">
 					<image src="../../static/images/detailsl-icon.png" class="icon1"></image>
 					<view class="font-24 color6 pl-1 py-3">{{mainData.view_count}}</view>

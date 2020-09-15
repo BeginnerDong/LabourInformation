@@ -76,7 +76,7 @@
 		}, {
 			"path": "pages/newsDetail/newsDetail",
 			"style": {
-				"navigationBarTitleText": "详情"
+				"navigationBarTitleText": "返回首页"
 			}
 		}, {
 			"path": "pages/business/business",
@@ -126,12 +126,12 @@
 		}, {
 			"path": "pages/user-workersRecord/user-workersRecord",
 			"style": {
-				"navigationBarTitleText": "用工不良记录"
+				"navigationBarTitleText": "工人不良行为登记"
 			}
 		}, {
 			"path": "pages/user-workersSreach/user-workersSreach",
 			"style": {
-				"navigationBarTitleText": "用工不良记录"
+				"navigationBarTitleText": "工人不良行为登记"
 			}
 		}, {
 			"path": "pages/user-sreachResult/user-sreachResult",
