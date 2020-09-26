@@ -31,39 +31,39 @@
 		</view>
 
 		<view class="bg-white">
-			<view class="d-flex a-center j-sb py-4 borderB-e1 px-3">
-				<view class="font-28 color2">分类</view>
+			<view class="d-flex a-center j-sb py-3 borderB-e1 px-3">
+				<view class="font-30 color2">分类</view>
 				<view class="d-flex a-center" @click="showChoose('menu')">
-					<view class="font-24 color9 pr-1">{{submitData.menu_id!=''?
+					<view class="font-30 color9 pr-1">{{submitData.menu_id!=''?
 					menuData[menuIndex].title+'/'+menuData[menuIndex].children[menuIdIndex].title:'请选择'}}</view>
 					<image src="../../static/images/used-to-releasel-icon3.png" class="icon3"></image>
 				</view>
 			</view>
-			<view class="py-4 borderB-e1 px-3">
+			<view class="py-3 borderB-e1 px-3">
 				<view class="d-flex a-center j-sb color2 pb-4 line-h">
-					<view class="font-28">标题/求购描述</view>
+					<view class="font-30">标题/出售描述</view>
 					<view class="font-24">({{submitData.title.length}}/100)</view>
 				</view>
 				<textarea value="" maxlength="100" placeholder="请填写100个字以内的内容" v-model="submitData.title" />
 				</view>
-			<view class="d-flex a-center j-sb py-4 borderB-e1 px-3">
-				<view class="font-28 color2">出售价格</view>
+			<view class="d-flex a-center j-sb py-3 borderB-e1 px-3">
+				<view class="font-30 color2">{{submitData.behavior==1?'出售价格':'求购价格'}} </view>
 				<input type="text" placeholder="此项不填为面议" v-model="submitData.price"/>
 			</view>
-			<view class="d-flex a-center j-sb py-4 borderB-e1 px-3">
-				<view class="font-28 color2">所在地区</view>
+			<view class="d-flex a-center j-sb py-3 borderB-e1 px-3">
+				<view class="font-30 color2">所在地区</view>
 				<view class="d-flex a-center" @click="showChoose('city')">
-					<view class="font-24 color9 pr-1">{{submitData.location!=''?
+					<view class="font-30 color9 pr-1">{{submitData.location!=''?
 					cityData[cityIndex].title+'/'+cityData[cityIndex].children[cityIdIndex].title:'请选择'}}</view>
 					<image src="../../static/images/used-to-releasel-icon3.png" class="icon3"></image>
 				</view>
 			</view>
-			<view class="d-flex a-center j-sb py-4 borderB-e1 px-3">
-				<view class="font-28 color2">联系人</view>
+			<view class="d-flex a-center j-sb py-3 borderB-e1 px-3">
+				<view class="font-30 color2">联系人</view>
 				<input type="text" placeholder="请填写" v-model="submitData.name"/>
 			</view>
-			<view class="d-flex a-center j-sb py-4 borderB-e1 px-3">
-				<view class="font-28 color2">手机号</view>
+			<view class="d-flex a-center j-sb py-3 borderB-e1 px-3">
+				<view class="font-30 color2">手机号</view>
 				<input type="number" placeholder="请填写" v-model="submitData.phone"/>
 			</view>
 		</view>
@@ -442,21 +442,23 @@
 </script>
 
 <style>
+input,textarea{font-size: 30rpx;color: #222;}
+	
 page{background-color: #f5f5f5;}
 .head{background-color: #FFF4D4;}
-.icon1{width: 19rpx;height: 18rpx;}
+.icon1{width: 19rpx!important;height: 18rpx!important;}
 .close{position: absolute;top: 0;right: 0;}
 
 .nav .item{width: 50%;line-height: 90rpx;text-align: center;}
 .nav .on{position: relative;color: #51A9E9;}
 .nav .on::before{content: ''; width: 100%;height: 2rpx;background-color: #55aae9;position: absolute; bottom: 0;left: 0;}
 
-.icon4{width: 14rpx;height: 26rpx;margin-right: 10rpx;}
+.icon4{width: 14rpx!important;height: 26rpx!important;margin-right: 10rpx;}
 .yesBtn{padding: 15rpx 30rpx;}
 .classfiy .left{width: 180rpx;background-color: #f5f5f5;}
 .classfiy .left .on{color: #55AAE9;position: relative;background: #fff;}
 .classfiy .left .on::before{content: '';background-color: #55AAE9;height: 100%;width: 4rpx;position: absolute;top: 0;left: 0;}
-.icon5{width: 36rpx;height: 26rpx;}
+.icon5{width: 36rpx!important;height: 26rpx!important;}
 .classfiy .right .li{display: flex;justify-content: space-between;align-items: center;padding: 30rpx;border-bottom: 1px solid #f5f5f5;}
 .classfiy .right .on{color: #51A9E9;}
 </style>

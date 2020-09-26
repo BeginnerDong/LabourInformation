@@ -151,7 +151,7 @@
 					<view class="itemCon flex-1 ml-2">
 						<view class="color3 font-30 avoidOverflow2 tit">{{item.title}}</view>
 						<view class="font-24 color6 d-flex a-center j-sb mt-3 line-h">
-							<view>{{item.name}}
+							<view class="d-flex a-center">{{item.name}}
 								<view class="tag tagName" v-if="item.user&&item.user[0]&&item.user[0].behavior==2">已实名认证</view>
 							</view>
 							<view>{{item.city?item.city.title:''}}</view>

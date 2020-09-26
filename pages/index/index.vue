@@ -1,7 +1,8 @@
 <template>
 	<view>
-		<view class="head px-3 bg-mcolor z-index100 line-h" :style="{paddingTop:statusBar +'px'}">
-			<view class="font-36 colorf d-flex a-center py-2">桥隧之家</view>
+		<view class="head px-3 bg-mcolor line-h" :style="{paddingTop:statusBar +'px'}">
+			<image src="../../static/images/logo.png" class="logo"></image>
+			<!-- <view class="font-36 colorf d-flex a-center py-2">桥隧之家</view> -->
 			<!-- <view class="colorf font-24 top overflow-h">欢迎来到桥隧之家，在这里您可以买卖二手设备，劳务招聘，在这里您可以买卖二手设备，劳务招聘</view> -->
 			<uni-notice-bar background-color="#51A9E9" color="#fff" single="true" scrollable="true" v-if="text!=''" :text="text"></uni-notice-bar>
 		</view>
@@ -77,7 +78,7 @@
 					</view>
 					<view class="d-flex a-center j-sb h-100 mt-3">
 						<view class="font-22 d-flex a-center">
-							<view class="tag tag1" v-for="(c_item,c_index) of item.keywords" :key="c_index">{{c_item}}</view>
+							<view class="tag" v-for="(c_item,c_index) of item.keywords" :key="c_index">{{c_item}}</view>
 						</view>
 						<view class="d-flex a-center">
 							<image src="../../static/images/home-icon.png" class="icon1"></image>
@@ -113,7 +114,7 @@
 			</view>
 		</block>
 
-		<view class="py-5 font-26 color9 text-center">{{total>mainData.length?'下拉加载更多':'没有更多内容了'}}</view>
+		<view class="py-5 font-26 color9 text-center">{{total>mainData.length?'下拉加载更多':'加载中'}}</view>
 		<view style="height: 100rpx;width: 100%;"></view>
 		<!-- 底部 -->
 		<view class="footer">
@@ -285,7 +286,7 @@
 	page {
 		background-color: #f5f5f5;
 	}
-	.head{position: fixed;top: 0;left: 0;right: 0;}
+	.head{position: fixed;top: 0;left: 0;right: 0;z-index: 1000;}
 
 	.top {
 		height: 65rpx;
@@ -294,7 +295,7 @@
 	}
 
 	.banner {
-		height: 288rpx;
+		height: 360rpx;
 	}
 
 	.swiper-box {
@@ -307,10 +308,10 @@
 		height: 100%;
 	}
 
-	.icon1 {
+	/* .icon1 {
 		width: 30rpx !important;
 		height: 22rpx !important;
-	}
+	} */
 
 	.tjTit {
 		width: 480rpx;
@@ -321,10 +322,10 @@
 		height: 160rpx;
 	}
 
-	.icon2 {
+	/* .icon2 {
 		width: 27rpx !important;
 		height: 27rpx !important;
-	}
+	} */
 
 	.imgBox image {
 		width: 210rpx;
@@ -344,4 +345,6 @@
 		height: 340rpx;
 		width: 100%;
 	}
+	
+	.bg-f5{background-color: rgba(245,245,245,0.7);}
 </style>

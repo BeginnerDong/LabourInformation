@@ -78,8 +78,8 @@ uni-button:after{border: 0;}
 
 
 /* 底部导航 */
-.footer{height: 100rpx;width:100%;border-top: 1px solid #e1e1e1;position: fixed;bottom: 0;display: flex;justify-content: space-between;background-color: #fff;box-shadow: 0 0 10rpx 0 rgba(0,0,0,0.12);}
-.footer .item{width: 20%;display: flex;flex-direction: column;align-items: center;color: #999;font-size: 24rpx;justify-content: center;}
+.footer{height: 120rpx;width:100%;position: fixed;bottom: 0;display: flex;justify-content: space-between;background-color: #fff;box-shadow: 0 0 10rpx 0 rgba(0,0,0,0.18);}
+.footer .item{width: 20%;display: flex;flex-direction: column;align-items: center;font-size: 22rpx;justify-content: center;color: #394751;}
 .footer .on{color: #51A9E9;}
 .footer .item image{margin-bottom: 10rpx;width: 52rpx;height: 45rpx;margin-top: 5rpx;}
 .footer .item:nth-child(3) image{width: 54rpx;height: 42rpx;}
@@ -102,8 +102,22 @@ uni-button:after{border: 0;}
 
 .tagUser{background-color: #B5DEFE;color: #51A9E9;}
 
-.tagName{line-height: 25rpx;border-radius: 10rpx;border: 1rpx solid #F02431;color: #F02431;margin-left: 10rpx;}
-.tagName1{line-height: 25rpx;border-radius: 10rpx;border: 1rpx solid #F02431;color: #fff;margin-left: 10rpx;background-color: #F02431;}
+.tagName{font-size: 19rpx; height: 24rpx;border-radius: 6rpx;border: 1rpx solid #F02431;color: #F02431;margin-left: 10rpx;display: flex;align-items: center;justify-content: center;line-height: 24rpx;}
+.tagName1{line-height: 25rpx;border-radius: 10rpx;border: 1rpx solid #F02431;color: #fff;margin-left: 10rpx;background-color: #F02431;display: flex;align-items: center;justify-content: center;}
+
+
+.logo{width: 220rpx;height: 70rpx;}
+.icon1 {
+		width: 40rpx!important;
+		height: 28rpx!important;
+}
+
+.icon2 {
+	width: 33rpx!important;
+	height: 34rpx!important;
+}
+
+
 
 
 /* 上传图片 */

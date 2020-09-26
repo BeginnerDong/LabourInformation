@@ -1,8 +1,8 @@
 <template>
 	<view class="h-100 d-flex flex-column">
-		<view class="head px-3 pb-1 bg-mcolor font-36 colorf d-flex a-center z-index100" :style="{paddingTop:statusBar +'px'}"
+		<view class="head px-3 pb-1 bg-mcolor font-32 colorf d-flex a-center z-index100" :style="{paddingTop:statusBar +'px'}"
 		 @click="checkLogin">
-			<image src="../../static/images/businessl-icon1.png" class="icon1"></image>
+			<image src="../../static/images/businessl-icon1.png" class="add"></image>
 			<view>免费发布</view>
 		</view>
 		<!--  -->
@@ -622,21 +622,21 @@
 	}
 
 	.head{line-height: 80rpx;}
-	.icon1 {
+	.add {
 		width: 23rpx;
 		height: 23rpx;
 		margin-right: 10rpx;
 	}
 
 	.icon2 {
-		width: 24rpx;
-		height: 24rpx;
+		width: 24rpx!important;
+		height: 24rpx!important;
 		margin-right: 10rpx;
 	}
 
 	.icon3 {
-		width: 21rpx;
-		height: 25rpx;
+		width: 21rpx!important;
+		height: 25rpx!important;
 	}
 
 	.img {
@@ -719,6 +719,7 @@
 	.nav .on {
 		position: relative;
 		color: #51A9E9;
+		/* box-shadow: 0 8px 6px -6px rgba(148, 232, 241, 0.5); */
 	}
 
 	.nav .on::before {

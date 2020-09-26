@@ -1,8 +1,8 @@
 <template>
 	<view :class="cityShow?'none':''">
-		<view class="head px-3 py-2 bg-mcolor font-36 colorf d-flex a-center z-index100" :style="{paddingTop:statusBar+'px'}" 
+		<view class="head px-3 py-2 bg-mcolor font-32 colorf d-flex a-center z-index100" :style="{paddingTop:statusBar+'px'}" 
 		@click="checkLogin">
-			<image src="../../static/images/businessl-icon1.png" class="icon1"></image>
+			<image src="../../static/images/businessl-icon1.png" class="add"></image>
 			<view>免费发布</view>
 		</view>
 		
@@ -48,11 +48,11 @@
 						<view class="tag tagB" v-if="item.behavior==2">招队伍</view>
 						<view class="tag tagG" v-if="item.behavior==3">工人找活</view>
 						<view class="tag tagG" v-if="item.behavior==4">队伍找活</view>
-						<view class="tag tagY" v-if="item.invalid_time<now">信息已失效</view>
+						<!-- <view class="tag tagY" v-if="item.invalid_time<now">信息已失效</view> -->
 						<view v-if="item.price!=''"><text class="tag tagR">介绍费</text><text class="tag tagO">{{item.price}}</text></view>
 					</view>
 					<view class="d-flex a-center">
-						<image src="../../static/images/detailsl-icon3.png" class="icon2"></image>
+						<image src="../../static/images/detailsl-icon3.png" class="dw"></image>
 						<view class="font-24 color6 pl-1">{{item.city?item.city.title:''}}</view>
 						<view class="font-24 color6 pl-2">{{Utils.formatMsgTime(item.update_time)}}</view>
 					</view>
@@ -68,7 +68,7 @@
 			</view>
 		
 			
-			<view class="py-5 font-26 color9 text-center">{{total>mainData.length?'下拉加载更多':'没有更多内容了'}}</view>
+			<view class="py-5 font-26 color9 text-center">{{total>mainData.length?'下拉加载更多':'加载中'}}</view>
 		</view>
 		
 		
@@ -80,7 +80,7 @@
 		
 		
 		<view class="oh bg-mask position-fixed d-flex flex-column"  :style="{marginTop:statusBar+172 +'px'}" 
-		style="top: 78px;" v-show="cityShow">
+		style="top: 66px;" v-show="cityShow">
 			<!-- 所在地 -->
 			<view class="classfiy font-26 color2 line-h text-center d-flex">
 				<view class="left">
@@ -232,14 +232,13 @@
 			changeNav(type){
 				const self = this;
 				uni.setStorageSync('canClick', false);
+				self.navCurr = type;
 				if(type==1){
-					self.navCurr = type;
 					delete self.searchItem.price;
 					delete self.searchItem.location;
 					self.cityShow = false;
 					self.getMainData(true)
 				}else if(type==2){
-					self.navCurr = type;
 					self.searchItem.price = ['not in',[]]
 					self.cityShow = false;
 					self.getMainData(true)
@@ -336,23 +335,24 @@
 page{height: 100%;}
 .none{height: 100%;overflow: hidden;}
 .bg-f5{background-color: #f5f5f5;}
-.head{position: sticky;top: 0;left: 0;right: 0;}
-.icon1{width: 23rpx;height: 23rpx;margin-right: 10rpx;}
+.head{position: sticky;top: 0;left: 0;right: 0;line-height: 70rpx;}
+.add{width: 23rpx;height: 23rpx;margin-right: 10rpx;}
 
 
 .ss input{border-right: 1px solid #e1e1e1;flex: 1;text-indent: 20rpx;font-size: 28rpx;text-align: left;}
 .ss input::-webkit-input-placeholder{color: #222!important;}
 
 .iconBox image{width: 110rpx;height: 110rpx ;}
+.nav{z-index: 2000;}
 .nav image{width: 13rpx;height: 6rpx;margin-left: 8rpx;}
 .nav .item{width: 33.33%;line-height: 90rpx;text-align: center;}
-.nav .on{position: relative;color: #51A9E9;}
-.nav .on::before{content: ''; width: 100%;height: 2rpx;background-color: #51A9E9;position: absolute; bottom: 0;left: 0;}
+.nav .on{position: relative;color: #51A9E9;box-shadow: 0 8px 6px -6px rgba(148, 232, 241, 0.5);}
+/* .nav .on::before{content: ''; width: 100%;height: 2rpx;background-color: #51A9E9;position: absolute; bottom: 0;left: 0;} */
 
 .imgBox image{width: 160rpx;height: 160rpx;margin-right: 17rpx;}
 .imgBox image:nth-child(4n){margin-right: 0;}
 .imgBox image:nth-child(n+5){margin-top: 20rpx;}
-.icon2{width: 21rpx;height: 25rpx;}
+.dw{width: 21rpx;height: 25rpx;}
 
 .tagR{margin-right: 0;}
 

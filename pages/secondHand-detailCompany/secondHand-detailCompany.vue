@@ -1,23 +1,34 @@
 <template>
 	<view>
+		
+		<view class="headBox px-3 bg-mcolor font-32 colorf z-index100" :style="{paddingTop:statusBar +'px'}">
+			<view class="d-flex a-center">
+				<view class="py-1 pr-2" @click="Router.back(1)">
+					<image src="../../static/images/back.png" class="back"></image>
+				</view>
+				<image src="../../static/images/logo.png" class="logo"></image>
+			</view>
+		</view>
+		
 		<view class="head position-relative">
 			<image :src="info.mainImg&&info.mainImg[0]?info.mainImg[0].url:''" mode=""></image>
-			<view class="txt px-3 font-32 colorf">{{info.company?info.company:''}}
+			<view class="txt px-3 font-32 colorf d-flex a-center">
+				<view class="name">{{info.company?info.company:''}}</view>
 				<view class="tag tagName1 ml-2">已实名认证</view>
 			</view>
 		</view>
 
 		<view class="px-3 bg-white">
-			<view class="font-26 color9 py-3 borderB-e1 position-relative">{{info.passage1?info.passage1:''}}
+			<!-- <view class="font-26 color9 py-3 borderB-e1 position-relative">{{info.passage1?info.passage1:''}}
 				<image src="../../static/images/labor%20releasel-icon1.png" class="icon1"></image>
-			</view>
+			</view> -->
 			<view class="bg-white py-4 d-flex a-start">
 				<view>
 					<image :src="userData.headImgUrl?userData.headImgUrl:''" class="userImg"></image>
 					<!-- <view class="Rcolor text-center font-18 pt-1">热度98561</view> -->
 				</view>
 				<view class="ml-3 flex-1">
-					<view class="font-26 color2 pb-4 flex-1 d-flex a-center">
+					<view class="font-26 font-w color2 mb-2 flex-1 d-flex a-center border-e1" style="width: 58%;">
 						<view class="pr-4">{{info.name?info.name:''}}</view>
 						<view class="d-flex a-center">
 							<image src="../../static/images/detailsl-icon4.png" class="icon2"></image>
@@ -51,7 +62,7 @@
 						{{item.title}}
 					</view>
 					<view class="font-24 color6 d-flex a-center j-sb mt-3 line-h">
-						<view>{{item.name}}
+						<view class="d-flex a-center">{{item.name}}
 							<view class="tag tagName" v-if="item.user&&item.user[0]&&item.user[0].behavior==2">已实名认证</view>
 						</view>
 						<view>{{item.city?item.city.title:''}}</view>
@@ -90,10 +101,12 @@
 </template>
 
 <script>
+	const app = getApp();
 	export default {
 		data() {
 			return {
 				Router: this.$Router,
+				statusBar: app.globalData.statusBar,
 				navCurr: 1,
 				userData: {},
 				info: {},
@@ -375,7 +388,10 @@
 	page {
 		background-color: #f5f5f5;
 	}
-
+	
+	.back{width: 20rpx;height: 30rpx;}
+	.headBox{position: sticky;top: 0;z-index: 1000;}
+	
 	.head image {
 		height: 240rpx;
 	}
@@ -387,19 +403,22 @@
 		left: 0;
 		right: 0;
 		background-color: rgba(0, 0, 0, 0.5);
+		
 	}
+	
+	.name{text-shadow:3px 2px 2px rgba(0, 0, 0, 1);}
 
 	.icon1 {
-		width: 19rpx;
-		height: 10rpx;
+		width: 19rpx!important;
+		height: 10rpx!important;
 		position: absolute;
 		bottom: -10rpx;
 		right: 0;
 	}
 
 	.icon2 {
-		width: 20rpx;
-		height: 26rpx;
+		width: 20rpx!important;
+		height: 26rpx!important;
 		margin-right: 10rpx;
 	}
 
@@ -428,9 +447,10 @@
 	.nav .on {
 		position: relative;
 		color: #51A9E9;
+		box-shadow: 0 8px 6px -6px rgba(148, 232, 241, 0.5);
 	}
 
-	.nav .on::before {
+	/* .nav .on::before {
 		content: '';
 		width: 100%;
 		height: 2rpx;
@@ -438,7 +458,7 @@
 		position: absolute;
 		bottom: 0;
 		left: 0;
-	}
+	} */
 
 	.list .item image {
 		width: 180rpx;

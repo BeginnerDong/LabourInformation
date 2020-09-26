@@ -24,7 +24,7 @@
 			</view>
 		</view>
 
-		<view class="font-30 color6 bg-f5 px-1 d-flex a-center rounded10">
+		<view class="font-28 color6 bg-f5 px-1 d-flex a-center rounded10">
 			<image src="../../static/images/home-icon2.png" class="icon3"></image>
 			<view class="pl-1 py-2">文章摘要</view>
 		</view>
@@ -195,8 +195,8 @@
 	}
 
 	.icon1 {
-		width: 31rpx;
-		height: 23rpx;
+		width: 40rpx;
+		height: 28rpx;
 	}
 
 	.icon2 {
@@ -208,7 +208,6 @@
 		width: 38rpx;
 		height: 38rpx;
 	}
-
 	.img {
 		width: 690rpx;
 		height: 400rpx;
@@ -231,4 +230,6 @@
 		color: #000000;
 		background: none;
 	}
+	
+	.bg-f5{background-color: rgba(245,245,245,0.7);}
 </style>

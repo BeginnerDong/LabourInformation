@@ -1,31 +1,40 @@
 <template>
 	<view :class="menuShow||cityShow?'none':''">
-		<view class="head px-3 pb-1 bg-mcolor font-36 colorf d-flex a-center z-index100" :style="{paddingTop:statusBar +'px'}"
-		@click="checkLogin">
-			<image src="../../static/images/businessl-icon1.png" class="icon1"></image>
-			<view>免费发布</view>
-		</view>
-		
-		<!-- 搜索 -->
-		<view class="border-e1 rounded bg-white font-28 mx-3 py-2 d-flex a-center j-sb z-index1000 ss mt-2">
-			<input type="text" placeholder="输入关键词搜索" v-model="title"/>
-			<view class="px-2" @click="search">搜索</view>
-		</view>
-		
-		<!-- nav -->
-		<view class="font-28 color2 d-flex a-center j-sb borderB-e1 z-index1000 nav">
-			<view class="item" :class="navCurr==1?'on':''" @click="canClick?changeCurr(1):''">全部</view>
-			<view class="item" :class="navCurr==2?'on':''" @click="canClick?changeCurr(2):''">出售</view>
-			<view class="item" :class="navCurr==3?'on':''" @click="canClick?changeCurr(3):''">求购</view>
-			<view class="item d-flex a-center j-center" :class="navCurr==4?'on':''" @click="changeCurr(4)">分类
-				<image src="../../static/images/labor-releasel-icon1.png" v-if="navCurr==4"></image>
-				<image src="../../static/images/labor-releasel-icon2.png" v-else></image>
+		<view class="headBox">
+			
+			<view class="head px-3 pb-1 bg-mcolor font-32 colorf d-flex a-center z-index100" :style="{paddingTop:statusBar +'px'}"
+			@click="checkLogin">
+				<image src="../../static/images/businessl-icon1.png" class="add"></image>
+				<view>免费发布</view>
 			</view>
-			<view class="item d-flex a-center j-center" :class="navCurr==5?'on':''" @click="changeCurr(5)">所在地
-				<image src="../../static/images/labor-releasel-icon1.png" v-if="navCurr==5"></image>
-				<image src="../../static/images/labor-releasel-icon2.png" v-else></image>
+			
+			
+			<!-- 搜索 -->
+			<view class="pt-2 bg-f5">
+				<view class="border-e1 rounded bg-white font-28 mx-3 py-2 d-flex a-center j-sb ss">
+					<input type="text" placeholder="输入关键词" v-model="title"/>
+					<view class="px-2 color6" @click="search">搜索</view>
+				</view>
 			</view>
+			
+			<!-- nav -->
+			<view class="font-28 color2 d-flex a-center j-sb borderB-e1 bg-f5 nav">
+				<view class="item" :class="navCurr==1?'on':''" @click="canClick?changeCurr(1):''">全部</view>
+				<view class="item" :class="navCurr==2?'on':''" @click="canClick?changeCurr(2):''">出售</view>
+				<view class="item" :class="navCurr==3?'on':''" @click="canClick?changeCurr(3):''">求购</view>
+				<view class="item d-flex a-center j-center" :class="navCurr==4?'on':''" @click="changeCurr(4)">分类
+					<image src="../../static/images/labor-releasel-icon1.png" v-if="navCurr==4"></image>
+					<image src="../../static/images/labor-releasel-icon2.png" v-else></image>
+				</view>
+				<view class="item d-flex a-center j-center" :class="navCurr==5?'on':''" @click="changeCurr(5)">所在地
+					<image src="../../static/images/labor-releasel-icon1.png" v-if="navCurr==5"></image>
+					<image src="../../static/images/labor-releasel-icon2.png" v-else></image>
+				</view>
+			</view>
+			
 		</view>
+			
+			
 		
 		<!-- 列表 -->
 		<view class="list">
@@ -38,7 +47,7 @@
 						{{item.title}}
 					</view>
 					<view class="font-24 color6 d-flex a-center j-sb mt-3 line-h">
-						<view>{{item.name}}<view class="tag tagName" v-if="item.user&&item.user[0]&&item.user[0].behavior==2">已实名认证</view></view>
+						<view class="d-flex a-center">{{item.name}}<view class="tag tagName" v-if="item.user&&item.user[0]&&item.user[0].behavior==2">已实名认证</view></view>
 						<view>{{item.city?item.city.title:''}}</view>
 					</view>
 					<view class="d-flex a-center j-sb h-100 mt-3">
@@ -47,7 +56,7 @@
 							<view class="tag tagG" v-if="item.behavior==2">求购</view>
 							<view class="tag tagO">{{item.label?item.label.title:''}}</view>
 							<view class="tag tagR" v-if="item.top>0">置顶</view>
-							<view class="tag tagY" v-if="item.invalid_time<now">信息已失效</view>
+							<!-- <view class="tag tagY" v-if="item.invalid_time<now">信息已失效</view> -->
 						</view>
 						<view class="font-22 color9">{{Utils.formatMsgTime(item.update_time)}}</view>
 					</view>
@@ -92,7 +101,7 @@
 		
 		
 		
-		<view class="py-5 font-26 color9 text-center">没有更多内容了</view>
+		<view class="py-5 font-26 color9 text-center">加载中</view>
 		<view style="height: 100rpx;width: 100%;"></view>
 		<!-- 底部 -->
 		<view class="footer z-index100"> 
@@ -271,11 +280,10 @@
 			
 			changeCurr(type){
 				const self = this;
-				
 				uni.setStorageSync('canClick', false);
+				self.navCurr = type;
 				if(type==1){
 					self.canClick = false;
-					self.navCurr = type;
 					delete self.searchItem.behavior;
 					delete self.searchItem.menu_id;
 					delete self.searchItem.location;
@@ -284,14 +292,12 @@
 					self.getMainData(true)
 				}else if(type==2){
 					self.canClick = false;
-					self.navCurr = type;
 					self.searchItem.behavior = 1
 					self.menuShow = false;
 					self.cityShow = false;
 					self.getMainData(true)
 				}else if(type==3){
 					self.canClick = false;
-					self.navCurr = type;
 					self.searchItem.behavior = 2
 					self.menuShow = false;
 					self.cityShow = false;
@@ -407,17 +413,17 @@
 <style>
 page{background-color: #f5f5f5;height: 100%;}
 .none{height: 100%;overflow: hidden;}
-.head{position: sticky;top: 0;left: 0;right: 0;line-height: 80rpx;}
-.icon1{width: 23rpx;height: 23rpx;margin-right: 10rpx;}
+.headBox{position: sticky;top: 0;z-index: 1000;}
+.head{line-height: 80rpx;}
+.add{width: 23rpx;height: 23rpx;margin-right: 10rpx;}
 
 
-.ss input{border-right: 1px solid #e1e1e1;flex: 1;padding-left: 20rpx;font-size: 28rpx;text-align: left;box-sizing: border-box;}
-.ss input::-webkit-input-placeholder{color: #222!important;}
+.ss input{border-right: 1px solid #e1e1e1;flex: 1;padding-left: 20rpx;font-size: 28rpx;text-align: left;box-sizing: border-box;color: #222;}
 
 .nav image{width: 18rpx;height: 9rpx;margin-left: 8rpx;}
 .nav .item{width: 20%;line-height: 90rpx;text-align: center;}
-.nav .on{position: relative;color: #51A9E9;}
-.nav .on::before{content: ''; width: 100%;height: 2rpx;background-color: #51A9E9;position: absolute; bottom: 0;left: 0;}
+.nav .on{position: relative;color: #51A9E9;box-shadow: 0 8px 6px -6px rgba(148, 232, 241, 0.5);}
+/* .nav .on::before{content: ''; width: 100%;height: 2rpx;background-color: #51A9E9;position: absolute; bottom: 0;left: 0;} */
 
 .list .item image{width: 180rpx;height: 180rpx;}
 .list .itemCon .tit{width: 480rpx;line-height: 1.2;}

@@ -7,17 +7,17 @@
 				<view class="sgin"></view>
 				<view>本条信息有效期至：{{mainData.invalid_time?mainData.invalid_time:''}}（7天），可在[我的-发布的二手信息]里刷新有效期</view>
 			</view>
-			<view class="d-flex a-start font-24 color2 mb-3 mx-3">
+			<!-- <view class="d-flex a-start font-24 color2 mb-3 mx-3">
 				<view class="sgin"></view>
 				<view>如果设备已出售/购得，请在[我的-发布二手信息]里取消交易，以免电话被骚扰</view>
-			</view>
+			</view> -->
 			<view class="d-flex mx-3 j-sa pt-2 pb-5">
-				<view class="btn1" @click="Router.redirectTo({route:{path:'/pages/index/index'}})">返回首页</view>
+				<view class="btn1" @click="Router.redirectTo({route:{path:'/pages/secondHand/secondHand'}})">返回二手列表</view>
 				<view class="btn1" @click="Router.redirectTo({route:{path:'/pages/secondHand-detail/secondHand-detail?id='+id}})">查看发布信息</view>
 			</view>
 		</view>
 		
-		<view class="mt-2 px-3 bg-white problemBox">
+		<view class="mt-2 px-3 pb-3 bg-white problemBox">
 			<view class="font-30 color2 pt-4 pb-1 line-h">常见问题</view>
 			<view class="content ql-editor" style="padding:0;" v-html="artData.content">
 			</view>

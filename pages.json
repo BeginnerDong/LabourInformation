@@ -37,7 +37,8 @@
 		}, {
 			"path": "pages/secondHand-detailCompany/secondHand-detailCompany",
 			"style": {
-				"navigationBarTitleText": "详情"
+				"navigationBarTitleText": "详情",
+				"navigationStyle": "custom"
 			}
 		}, {
 			"path": "pages/secondHand-detailCompany-share/secondHand-detailCompany-share",
@@ -78,7 +79,7 @@
 		}, {
 			"path": "pages/newsDetail/newsDetail",
 			"style": {
-				"navigationBarTitleText": "返回首页"
+				"navigationBarTitleText": "返回咨询列表"
 			}
 		}, {
 			"path": "pages/business/business",
