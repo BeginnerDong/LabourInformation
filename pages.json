@@ -10,8 +10,10 @@
 		}, {
 			"path": "pages/secondHand/secondHand",
 			"style": {
-				"navigationStyle": "custom"
+				"navigationStyle": "custom",
+				"enablePullDownRefresh":true
 			}
+			
 		}, {
 			"path": "pages/secondHand-publish/secondHand-publish",
 			"style": {
@@ -126,7 +128,7 @@
 		}, {
 			"path": "pages/user-workersRecord/user-workersRecord",
 			"style": {
-				"navigationBarTitleText": "工人不良行为登记"
+				"navigationBarTitleText": "用工不良记录"
 			}
 		}, {
 			"path": "pages/user-workersSreach/user-workersSreach",

@@ -56,7 +56,7 @@
 		</view>
 		
 		
-		<view class="oh bg-mask position-fixed d-flex flex-column"  :style="{marginTop:statusBar+172 +'px'}" v-show="menuShow||cityShow">
+		<view class="oh bg-mask position-fixed d-flex flex-column"  :style="{marginTop:statusBar+155 +'px'}" v-show="menuShow||cityShow">
 			<!-- 分类 -->
 			<view class="classfiy font-26 color2 line-h text-center d-flex" v-show="menuShow">
 				<view class="left">
@@ -171,7 +171,13 @@
 		
 		onPullDownRefresh() {
 			const self=  this;
-			
+			self.navCurr = 1;
+			delete self.searchItem.behavior;
+			delete self.searchItem.menu_id;
+			delete self.searchItem.location;
+			self.menuShow = false;
+			self.cityShow = false;
+			self.getMainData(true)
 		},
 		
 		methods: {
@@ -265,9 +271,10 @@
 			
 			changeCurr(type){
 				const self = this;
-				self.canClick = false;
+				
 				uni.setStorageSync('canClick', false);
 				if(type==1){
+					self.canClick = false;
 					self.navCurr = type;
 					delete self.searchItem.behavior;
 					delete self.searchItem.menu_id;
@@ -276,12 +283,14 @@
 					self.cityShow = false;
 					self.getMainData(true)
 				}else if(type==2){
+					self.canClick = false;
 					self.navCurr = type;
 					self.searchItem.behavior = 1
 					self.menuShow = false;
 					self.cityShow = false;
 					self.getMainData(true)
 				}else if(type==3){
+					self.canClick = false;
 					self.navCurr = type;
 					self.searchItem.behavior = 2
 					self.menuShow = false;
@@ -366,6 +375,7 @@
 						self.mainData.push.apply(self.mainData, res.info.data);
 					};
 					self.canClick = true;
+					uni.stopPullDownRefresh();
 					uni.setStorageSync('canClick', true);
 					self.$Utils.finishFunc('getMainData');
 				};

@@ -2,8 +2,12 @@
 	<view>
 		
 		<view class="py-4 borderB-f5 px-3 bg-white">
-			<view class="d-flex a-center j-sb color2 pb-4 line-h font-32">提意见或建议</view>
-			<textarea v-model="submitData.description" placeholder="请填写800个字以内的内容" class="border-e1 p-2 font-30"/>
+			<view class="d-flex a-center j-sb color2 pb-4 line-h font-32">
+				
+				<view>提意见或建议</view>
+				<view class="font-24">({{submitData.description.length}}/200)</view>
+			</view>
+			<textarea maxlength="200" v-model="submitData.description" placeholder="请填写200个字以内的内容" class="border-e1 p-2 font-30"/>
 		</view>
 		<view class="font-30 color2 py-4 px-3 bg-white">
 			<view>添加图片</view>

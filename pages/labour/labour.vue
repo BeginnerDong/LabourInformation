@@ -1,6 +1,6 @@
 <template>
 	<view :class="cityShow?'none':''">
-		<view class="head px-3 py-2 bg-mcolor font-36 colorf d-flex a-center z-index100" :style="{paddingTop:statusBar+23 +'px'}" 
+		<view class="head px-3 py-2 bg-mcolor font-36 colorf d-flex a-center z-index100" :style="{paddingTop:statusBar+'px'}" 
 		@click="checkLogin">
 			<image src="../../static/images/businessl-icon1.png" class="icon1"></image>
 			<view>免费发布</view>

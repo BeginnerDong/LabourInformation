@@ -86,7 +86,10 @@
 			<view class="bg-mask px-4" v-show="hand_show">
 				<view class="font-28 color2 bg-white m-a text-center rounded10" style="margin-top: 370rpx;">
 					<view class="pb-2 pt-5">免费开通二手交易主页，请联系微信客服</view>
-					<view class="Rcolor pb-2">微信号：{{kefu}}</view>
+					<view class="Rcolor pb-2 d-flex j-center a-center">
+						<view>微信号：{{kefu}}</view>
+						<view @click="copy" style="width: 100rpx;line-height: 50rpx;height: 50rpx;background-color: #51A9E9;color: #fff;margin-left: 20rpx;">复制</view>
+					</view>
 					<view>加微信备注：开通主页</view>
 					<view class="Mcolor font-30 mt-5 py-4 borderT-e1" @click="changeHand()">确认</view>
 				</view>
@@ -148,6 +151,13 @@
 		},
 
 		methods: {
+			
+			copy(){
+				const self = this;
+				uni.setClipboardData({
+					data:self.kefu
+				})
+			},
 
 			changeHand() {
 				const self = this;

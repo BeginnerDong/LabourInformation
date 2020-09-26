@@ -1,6 +1,6 @@
 <template>
 	<view>
-		<view class="bg-white py-4 font-30 color2 text-center">工人不良行为登记</view>
+		<view class="bg-white py-4 font-30 color2 text-center">工人不良行为查询</view>
 		
 		<view class="d-flex a-center j-sb py-4 borderB-e1 px-3 bg-white mt-2">
 			<view class="font-28 color2">联系人</view>
@@ -43,6 +43,10 @@
 					thirdapp_id:2
 				}
 			}
+		},
+		onLoad() {
+			const self = this;
+			uni.setStorageSync('canClick', true);
 		},
 		methods: {
 			

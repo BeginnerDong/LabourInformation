@@ -75,7 +75,7 @@
 			speed: {
 				// 默认1s滚动100px
 				type: Number,
-				default: 100
+				default: 50
 			},
 			color: {
 				type: String,

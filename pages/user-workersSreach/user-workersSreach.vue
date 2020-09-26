@@ -42,6 +42,7 @@
 				text:'',
 				infoArray:[],
 				Utils:this.$Utils,
+				Router:this.$Router
 			}
 		},
 		
@@ -78,6 +79,9 @@
 				const callback = (data) => {				
 					if (data.solely_code == 100000) {					
 						uni.setStorageSync('canClick', true);
+						uni.setStorageSync('infoNum',self.infoArray.length);
+						uni.setStorageSync('infoData',data.info.data);
+						self.Router.navigateTo({route:{path:'/pages/user-sreachResult/user-sreachResult'}})
 					} else {
 						uni.setStorageSync('canClick', true);
 						self.$Utils.showToast(data.msg, 'none', 1000)

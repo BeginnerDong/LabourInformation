@@ -25,7 +25,7 @@
 		</view>
 
 		<view class="font-30 color6 bg-f5 px-1 d-flex a-center rounded10">
-			<image src="../../static/images/about-icon.png" class="icon3"></image>
+			<image src="../../static/images/home-icon2.png" class="icon3"></image>
 			<view class="pl-1 py-2">文章摘要</view>
 		</view>
 
@@ -178,6 +178,7 @@
 						self.mainData = res.info.data[0];
 						const regex = new RegExp('<img', 'gi');
 						self.mainData.content = self.mainData.content.replace(regex, `<img style="max-width: 100%;"`);
+						self.mainData.create_time = self.mainData.create_time.substr(0,10)
 					};
 					self.$Utils.finishFunc('getMainData');
 				};

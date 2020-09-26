@@ -808,10 +808,12 @@ export default {
 	},
 
 	formatMsgTime(timespan) {
-		
+		timespan=timespan.replace(/-/g, '/');
 		var timeStamp = this.timeToTimestamp(timespan)*1000
 		var dateTime = new Date(timespan);
 		console.log('dateTime',dateTime)
+		
+		//dateTime=dateTime.replace(/-/g, '/')
 		var year = dateTime.getFullYear();
 		var month = dateTime.getMonth() + 1;
 		var day = dateTime.getDate();

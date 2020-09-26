@@ -8,46 +8,34 @@
 		</view>
 		<view style="height: 20rpx;" class="bg-f5"></view>
 		<view class="font-28 color2 py-3 text-center">
-			本次共查询100条信息，其中<text class="Rcolor">2</text>条涉及不良行为
+			本次共查询{{num}}条信息，其中<text class="Rcolor">{{mainData.length?mainData.length:0}}</text>条涉及不良行为
 		</view>
 		<view style="height: 20rpx;" class="bg-f5"></view>
 		
 		<!-- 结果 -->
 		<view>
-			<view class="font-26 text-center color9 pt-5 mt-3">未查询到不良结果</view>
+			<view class="font-26 text-center color9 pt-5 mt-3" v-if="mainData.length==0">未查询到不良结果</view>
 			
-			<view class="font-26 color2">
-				<view class="borderB-f5 p-3">
-					<view class="pb-3">姓名：张三丰</view>
-					<view class="pb-3">手机号：156****1258</view>
-					<view class="pb-3">身份证号：无</view>
+			<view class="font-26 color2 borderB-e1" v-if="mainData.length>0">
+				<view class="borderB-f5 p-3" v-for="(item,index) in mainData" :key="index">
+					<view class="pb-3">姓名：{{item.title!=''?item.title:'无'}}</view>
+					<view class="pb-3">手机号：{{item.phone!=''?item.phone:'无'}}</view>
+					<view class="pb-3">身份证号：{{item.description!=''?item.description:'无'}}</view>
 					<view class="d-flex">
 						<view>不良记录：</view>
-						<view class="flex-1 line-h-md">个位老总，首都机场不良记录不良记录不良记录不良记录不良记录不良记录不良记录不良记录</view>
+						<view class="flex-1 line-h-md">{{item.content}}</view>
 					</view>
-				</view>
-				<view class="borderB-f5 p-3">
-					<view class="pb-3">姓名：张三丰</view>
-					<view class="pb-3">手机号：156****1258</view>
-					<view class="pb-3">身份证号：无</view>
-					<view class="d-flex">
-						<view>不良记录：</view>
-						<view class="flex-1 line-h-md">个位老总，首都机场</view>
-					</view>
-					<view class="d-flex">
+					<view class="d-flex"  v-if="item.mainImg.length>0">
 						<view class="pt-2">相关图片：</view>
 						<view class="flex-1 d-flex flex-wrap">
-							<image src="../../static/images/laborl-img.png" class="img"></image>
-							<image src="../../static/images/laborl-img.png" class="img"></image>
-							<image src="../../static/images/laborl-img.png" class="img"></image>
-							<image src="../../static/images/laborl-img.png" class="img"></image>
-							<image src="../../static/images/laborl-img.png" class="img"></image>
+							<!-- <image src="../../static/images/laborl-img.png"  class="img"></image> -->
+							<image @click="imgPreview(index,c_index)" v-for="(c_item,c_index) of item.mainImg" :key="c_index" :src="c_item.url" class="img"></image>
 						</view>
 					</view>
 				</view>
 			</view>
 			
-			<view style="height: 100rpx;" class="bg-f5"></view>
+			
 		</view>
 		
 		
@@ -58,11 +46,27 @@
 	export default {
 		data() {
 			return {
-				
+				mainData:[],
+				num:0
 			}
 		},
+		onLoad() {
+			const self = this;
+			self.mainData = uni.getStorageSync('infoData');
+			self.num = uni.getStorageSync('infoNum')
+		},
 		methods: {
-			
+			imgPreview(index,c_index){
+				const self = this;
+				var urls = [];
+				for (var i = 0; i < self.mainData[index].mainImg.length; i++) {
+					urls.push(self.mainData[index].mainImg[i].url)
+				};
+				uni.previewImage({
+					current:c_index,
+					urls:urls,
+				})
+			},
 		}
 	}
 </script>

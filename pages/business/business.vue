@@ -54,40 +54,46 @@
 					</view>
 					<view class="d-flex font-24 pt-3">
 						<view class="color6">业务范围：</view>
-						<view class="color2 flex-1">{{item.description}}</view>
-					</view>
-					<view class="d-flex font-24 pt-3">
-						<view class="d-flex a-center flex-wrap" v-if="item.mainImg.length>0">
-							<image v-for="(c_item,c_index) of item.mainImg" :key="c_index" :src="item.url" class="img"></image>
+						<view class="color2 flex-1">
+							<view class="w-100 overflow-h" style="word-break:break-all;">{{item.description}}</view>
+							<view class="d-flex font-24">
+								<view class="d-flex a-center flex-wrap" v-if="item.mainImg.length>0">
+									<image @click="imgPreview(index,c_index)" v-for="(c_item,c_index) of item.mainImg" :key="c_index" :src="c_item.url" class="img"></image>
+								</view>
+							</view>
 						</view>
+						
 					</view>
+					
+					
 					<view class="d-flex font-24 pt-3">
 						<view class="color6">销售区域：</view>
 						<view class="color2 mr-1" :key="c_item.id" v-for="(c_item,c_index) in item.relation">{{c_item.relation_two}}</view>
 					</view>
 					<view class="font-22 Mcolor text-center d-flex a-center j-end pt-3">
-						<view class="btn Mborder rounded" @click="collect(index)">
+						<view class="btn Mborder rounded" style="width: 150rpx;" @click="Router.navigateTo({route:{path:'/pages/user-opinion/user-opinion'}})">不实信息投诉</view>
+						<view class="btn Mborder rounded ml-5" @click="collect(index)">
 							{{item.log&&item.log.length>0&&item.log[0].status==1?'已收藏':'收藏'}}
 						</view>
 						<view class="btn Mborder rounded ml-5" @click="callPhone(index)">拨打电话</view>
 					</view>
-					<view class="font-22 color2 mt-2 btn1" @click="Router.navigateTo({route:{path:'/pages/user-opinion/user-opinion'}})">不实信息投诉</view>
+					
 				</view>
 			</scroll-view>
 
 
 		</view>
 
-		<view class="oh bg-mask position-fixed top-0 left-0 right-0" @click="closeMask" :style="{marginTop:statusBar+63 +'px'}"
+		<view class="oh bg-mask position-fixed top-0  right-0"  style="left:180rpx;bottom: 100rpx;" @click="closeMask" :style="{marginTop:statusBar+100 +'px'}"
 		 v-show="menuShow||cityShow||saleCityShow">
 			<!-- 分类 -->
 
 		</view>
-		<view :style="{marginTop:statusBar+63 +'px'}" style="z-index:41" class="position-fixed top-0 left-0 right-0">
+		<view :style="{marginTop:statusBar+100 +'px'}" style="z-index:41;left:180rpx;height: 100;max-height: 400rpx;overflow-y: auto;" class="position-fixed top-0  right-0">
 			<view class="classfiy font-26 color2 line-h text-center d-flex" v-show="menuShow">
-				<view class="left">
+				<!-- <view class="left">
 					<view class="li py-3" v-for="(item,index) of menuData" :key="item.id" @click="changeMenuIndex(index)" :class="menuIndex==index?'on':''">{{item.title}}</view>
-				</view>
+				</view> -->
 				<view class="right flex-1 bg-white">
 					<view class="li" :class="menuIdIndex==index?'on':''" @click="chooseMenuId(index)" v-for="(item,index) of menuData[menuIndex].children"
 					 :key="item.id">{{item.title}}
@@ -179,7 +185,7 @@
 				menuIndex: 0,
 				menuIdIndex: -1,
 				navCurr: -1,
-				menuBefore: {},
+				
 				citySaleIndex: 0,
 				citySaleIdIndex: -1,
 				saleCityBefore: {},
@@ -194,6 +200,18 @@
 		},
 
 		methods: {
+			
+			imgPreview(index,c_index){
+				const self = this;
+				var urls = [];
+				for (var i = 0; i < self.mainData[index].mainImg.length; i++) {
+					urls.push(self.mainData[index].mainImg[i].url)
+				};
+				uni.previewImage({
+					current:c_index,
+					urls:urls,
+				})
+			},
 			
 			changeSaleCityIndex(index) {
 				const self = this;
@@ -230,7 +248,7 @@
 				const self = this;
 				uni.setStorageSync('canClick', false);
 				self.menuIdIndex = index;
-				self.listCurr = self.menuIndex;
+				//self.listCurr = self.menuIndex;
 				self.menuBefore = {
 					tableName: 'Relation',
 					middleKey: 'id',
@@ -269,6 +287,7 @@
 				const self = this;
 				self.menuShow = false;
 				self.cityShow = false;
+				self.saleCityShow = false
 			},
 
 			Bottom() {
@@ -378,9 +397,13 @@
 				postData.tokenFuncName = 'getProjectToken';
 				postData.paginate = self.$Utils.cloneForm(self.paginate);
 				postData.searchItem = self.$Utils.cloneForm(self.searchItem);
+				console.log('self.listCurr',self.listCurr)
 				if (self.listCurr == -1) {
+					self.keywords = '';
 					postData.searchItem.top = 1
 				} else if (self.listCurr != -2) {
+					console.log(13344)
+					self.keywords = '';
 					postData.getBefore = {
 						relation: {
 							tableName: 'Relation',
@@ -393,10 +416,11 @@
 						}
 					}
 				};
-				if (JSON.stringify(self.menuBefore) != '{}') {
+				console.log('246567',postData.getBefore)
+				if (JSON.stringify(self.menuBefore) != '{}'&&self.listCurr!=-1) {
 					postData.getBefore.relation1 = self.menuBefore
 				};
-				if (JSON.stringify(self.saleCityBefore) != '{}') {
+				if (JSON.stringify(self.saleCityBefore) != '{}'&&self.listCurr!=-1) {
 					postData.getBefore.relation2 = self.saleCityBefore
 				};
 				if (self.keywords != '') {
@@ -452,6 +476,13 @@
 				self.listCurr = i;
 				if (self.listCurr != -2) {
 					self.getMainData(true)
+				};
+				if(self.listCurr>=0){
+					self.menuIndex = self.listCurr
+				}else{
+					self.menuShow = false
+					self.saleCityShow = false;
+					self.cityShow = false;
 				}
 			},
 
