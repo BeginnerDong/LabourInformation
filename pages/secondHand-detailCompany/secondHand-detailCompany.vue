@@ -324,7 +324,7 @@
 			getRelationData(isNew) {
 				const self = this;
 				if (isNew) {
-					self.mainData = [];
+					self.relationData = [];
 					self.paginate = {
 						count: 0,
 						currentPage: 1,

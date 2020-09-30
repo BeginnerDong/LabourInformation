@@ -853,9 +853,9 @@ export default {
 		} else if (1000 * 60 * 60 * 24 < milliseconds && milliseconds <= 1000 * 60 * 60 * 24 * 15) {
 			timeSpanStr = Math.round(milliseconds / (1000 * 60 * 60 * 24)) + '天前';
 		} else if (milliseconds > 1000 * 60 * 60 * 24 * 15 && year == now.getFullYear()) {
-			timeSpanStr = month + '-' + day + ' ' + hour + ':' + minute;
+			timeSpanStr = month + '-' + day /* + ' ' + hour + ':' + minute */;
 		} else {
-			timeSpanStr = year + '-' + month + '-' + day + ' ' + hour + ':' + minute;
+			timeSpanStr = year + '-' + month /* + '-' + day + ' ' + hour + ':' + minute */;
 		}
 		return timeSpanStr;
 	}

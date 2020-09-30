@@ -5,7 +5,7 @@
 			<swiper class="swiper-box h-100" autoplay="autoplay" interval="4000" :current="currIndex" @change="changeCurrent">
 				<block v-for="(item,index) in mainData.mainImg" :key="index">
 					<swiper-item class="swiper-item">
-						<image :src="item.url" @click="preview(index)"/>
+						<image mode="aspectFill" :src="item.url" @click="preview(index)"/>
 					</swiper-item>
 				</block>
 			</swiper>
@@ -21,7 +21,7 @@
 			<view class="color6 font-24 d-flex j-sb a-start pb-4 borderB-f5">
 				<view class="line-h">
 					<view class="pb-2">首发时间：{{mainData.create_time?mainData.create_time:''}}</view>
-					<view>更新时间：{{mainData.update_time?mainData.update_time:'-'}}</view>
+					<view>更新时间：{{mainData.update_time!='1970-01-01'?mainData.update_time:'-'}}</view>
 					<!-- <view v-if="now < mainData.invalid_time">更新时间：{{mainData.update_time?mainData.update_time:''}}</view> -->
 					<!-- <view class="Rcolor" v-else>本条信息已失效</view> -->
 				</view>
@@ -38,6 +38,7 @@
 			</view>
 			<view class="d-flex a-center j-sb h-100 py-4">
 				<view class="font-22 d-flex a-center">
+					<view class="tag tag1" v-if="mainData.keywords&&mainData.keywords.length>0&&mainData.keywords[0].length>0" v-for="(c_item,c_index) of mainData.keywords" :key="c_index">{{c_item}}</view>
 					<view class="tag tagB" v-if="mainData.behavior==1">出售</view>
 					<!-- <view class="tag tagG" v-if="mainData.behavior==2">求购</view> -->
 					<view class="tag tagO">{{mainData.label?mainData.label.title:''}}</view>
@@ -59,7 +60,7 @@
 				<view class="d-flex a-center">
 					<image src="../../static/images/detailsl-icon4.png" class="icon5"></image>
 					<view v-if="now < mainData.invalid_time">{{mainData.phone?mainData.phone:''}}</view>
-					<view v-else>信息已超过7天，联系方式不可见</view>
+					<view v-if="now > mainData.invalid_time">信息已超过7天，联系方式不可见</view>
 				</view>
 			</view>
 			<view class="Mcolor line-h-sm Mborder px-3 py-1 rounded" v-if="now < mainData.invalid_time" @click="callPhone">拨打电话</view>
@@ -96,7 +97,7 @@
 			<view class="item d-flex a-center j-sb py-3"  v-for="(item,index) of relationData"
 			:key="item.id" :data-id="item.id"
 			@click="Router.navigateTo({route:{path:'/pages/secondHand-detail/secondHand-detail?id='+$event.currentTarget.dataset.id}})">
-				<image :src="item.mainImg&&item.mainImg[0]?item.mainImg[0].url:''" mode=""></image>
+				<image mode="aspectFill" :src="item.mainImg&&item.mainImg[0]?item.mainImg[0].url:''" ></image>
 				<view class="itemCon flex-1 ml-2">
 					<view class="color3 font-30 avoidOverflow2 tit">
 						{{item.title}}
@@ -107,11 +108,12 @@
 					</view>
 					<view class="d-flex a-center j-sb h-100 mt-3">
 						<view class="font-22 d-flex a-center">
+							<view class="tag tag1" v-if="item.keywords&&item.keywords.length>0&&item.keywords[0].length>0" v-for="(c_item,c_index) of item.keywords" :key="c_index">{{c_item}}</view>
 							<view class="tag tagB" v-if="item.behavior==1">出售</view>
 							<view class="tag tagG" v-if="item.behavior==2">求购</view>
 							<view class="tag tagO">{{item.label?item.label.title:''}}</view>
 							<view class="tag tagR" v-if="item.top>0">置顶</view>
-							<view class="tag tagY" v-if="item.invalid_time<now">信息已失效</view>
+							<!-- <view class="tag tagY" v-if="item.invalid_time<now">信息已失效</view> -->
 						</view>
 						<view class="font-22 color9">{{Utils.formatMsgTime(item.update_time)}}</view>
 					</view>
@@ -360,6 +362,11 @@
 						self.mainData = res.info.data[0];
 						self.getRelationData()
 						//self.mainData.invalid_time = self.$Utils.timeto(self.mainData.invalid_time*1000,'ymd')
+						self.mainData.create_time = self.mainData.create_time.substr(0,10)
+						self.mainData.update_time = self.mainData.update_time.substr(0,10)
+						
+						self.mainData.keywords = self.mainData.keywords.split(',')
+						
 					};
 					self.$Utils.finishFunc('getMainData');
 				};
@@ -446,6 +453,9 @@
 				const callback = (res) => {
 					if (res.info.data.length > 0) {
 						self.relationData = res.info.data;
+						for (var i = 0; i < self.relationData.length; i++) {
+							self.relationData[i].keywords = self.relationData[i].keywords.split(',')
+						}
 					};
 					self.$Utils.finishFunc('getMainData');
 				};

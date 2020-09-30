@@ -41,7 +41,7 @@
 			<view class="item d-flex a-center j-sb p-3 bg-white mb-2" v-for="(item,index) of mainData"
 			:key="item.id" :data-id="item.id"
 			@click="Router.navigateTo({route:{path:'/pages/secondHand-detail/secondHand-detail?id='+$event.currentTarget.dataset.id}})">
-				<image :src="item.mainImg&&item.mainImg[0]?item.mainImg[0].url:''" mode=""></image>
+				<image :src="item.mainImg&&item.mainImg[0]?item.mainImg[0].url:''" mode="aspectFill"></image>
 				<view class="itemCon flex-1 ml-2">
 					<view class="color3 font-30 avoidOverflow2 tit">
 						{{item.title}}
@@ -52,6 +52,7 @@
 					</view>
 					<view class="d-flex a-center j-sb h-100 mt-3">
 						<view class="font-22 d-flex a-center">
+							<view class="tag tag1" v-if="item.keywords&&item.keywords.length>0&&item.keywords[0].length>0" v-for="(c_item,c_index) of item.keywords" :key="c_index">{{c_item}}</view>
 							<view class="tag tagB" v-if="item.behavior==1">出售</view>
 							<view class="tag tagG" v-if="item.behavior==2">求购</view>
 							<view class="tag tagO">{{item.label?item.label.title:''}}</view>
@@ -101,7 +102,7 @@
 		
 		
 		
-		<view class="py-5 font-26 color9 text-center">加载中</view>
+		<view class="py-5 font-26 color9 text-center">{{tip}}</view>
 		<view style="height: 100rpx;width: 100%;"></view>
 		<!-- 底部 -->
 		<view class="footer z-index100"> 
@@ -158,7 +159,8 @@
 				cityIndex:0,
 				cityIdIndex:-1,
 				title:'',
-				canClick:true
+				canClick:true,
+				tip:'加载中...'
 			}
 		},
 		
@@ -314,6 +316,7 @@
 			
 			getMainData(isNew) {
 				const self = this;
+				self.tip = '加载中...'
 				if (isNew) {
 					self.mainData = [];
 					self.paginate = {
@@ -379,10 +382,19 @@
 				const callback = (res) => {
 					if (res.info.data.length > 0) {
 						self.mainData.push.apply(self.mainData, res.info.data);
+						for (var i = 0; i < self.mainData.length; i++) {
+							self.mainData[i].keywords = self.mainData[i].keywords.split(',')
+						}
 					};
 					self.canClick = true;
 					uni.stopPullDownRefresh();
 					uni.setStorageSync('canClick', true);
+					self.total = res.info.total;
+					if(self.total>self.mainData.length){
+						self.tip = '下拉加载更多'
+					}else{
+						self.tip = '没有更多内容了'
+					}
 					self.$Utils.finishFunc('getMainData');
 				};
 				self.$apis.messageGet(postData, callback);

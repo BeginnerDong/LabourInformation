@@ -79,6 +79,7 @@
 					<view class="d-flex a-center j-sb h-100 mt-3">
 						<view class="font-22 d-flex a-center">
 							<view class="tag" v-for="(c_item,c_index) of item.keywords" :key="c_index">{{c_item}}</view>
+							<view class="tag tag2" v-if="item.top==1">推荐</view>
 						</view>
 						<view class="d-flex a-center">
 							<image src="../../static/images/home-icon.png" class="icon1"></image>
@@ -96,7 +97,7 @@
 			<view class="mb-2 p-3 bg-white indexBox3" v-if="item.style==4"> 
 				<view class="font-32 color2">{{item.title}}</view>
 				<view class="mt-3">
-					<video class="video" :src="item.mainImg&&item.mainImg[0]?item.mainImg[0].url:''" controls>
+					<video class="video" direction="90" :src="item.mainImg&&item.mainImg[0]?item.mainImg[0].url:''" controls>
 						
 					</video>
 				</view>
@@ -114,7 +115,7 @@
 			</view>
 		</block>
 
-		<view class="py-5 font-26 color9 text-center">{{total>mainData.length?'下拉加载更多':'加载中'}}</view>
+		<view class="py-5 font-26 color9 text-center">{{tip}}</view>
 		<view style="height: 100rpx;width: 100%;"></view>
 		<!-- 底部 -->
 		<view class="footer">
@@ -156,7 +157,8 @@
 				total:0,
 				mainData:[],
 				sliderData:[],
-				text:''
+				text:'',
+				tip:'加载中...'
 			}
 		},
 
@@ -247,6 +249,7 @@
 
 			getMainData(isNew) {
 				const self = this;
+				self.tip = '加载中...'
 				if (isNew) {
 					self.mainData = [];
 					self.paginate = {
@@ -274,6 +277,11 @@
 						}
 					};
 					self.total = res.info.total;
+					if(self.total>self.mainData.length){
+						self.tip = '下拉加载更多'
+					}else{
+						self.tip = '没有更多内容了'
+					}
 					self.$Utils.finishFunc('getMainData');
 				};
 				self.$apis.articleGet(postData, callback);

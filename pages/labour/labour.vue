@@ -68,7 +68,7 @@
 			</view>
 		
 			
-			<view class="py-5 font-26 color9 text-center">{{total>mainData.length?'下拉加载更多':'加载中'}}</view>
+			<view class="py-5 font-26 color9 text-center">{{tip}}</view>
 		</view>
 		
 		
@@ -152,7 +152,8 @@
 				cityIndex:0,
 				cityIdIndex:-1,
 				cityData:[],
-				keywords:''
+				keywords:'',
+				tip:'加载中...'
 			}
 		},
 		
@@ -266,6 +267,7 @@
 			
 			getMainData(isNew) {
 				const self = this;
+				self.tip = '加载中...'
 				if (isNew) {
 					self.mainData = [];
 					self.paginate = {
@@ -303,7 +305,11 @@
 						self.mainData.push.apply(self.mainData, res.info.data);
 					};
 					self.total = res.info.total;
-					
+					if(self.total>self.mainData.length){
+						self.tip = '下拉加载更多'
+					}else{
+						self.tip = '没有更多内容了'
+					}
 					uni.setStorageSync('canClick', true);
 					self.$Utils.finishFunc('getMainData');
 				};
