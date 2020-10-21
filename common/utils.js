@@ -88,7 +88,7 @@ export default {
 			};
 		};
 		wx.uploadFile({
-			url: 'http://106.12.155.217/labour/public/index.php/api/v1/Base/FtpFile/upload',
+			url: 'https://test.solelyfinance.com/labour/public/index.php/api/v1/Base/FtpFile/upload',
 			filePath: filePath,
 			name: name,
 			formData: formData,
@@ -811,8 +811,6 @@ export default {
 		timespan=timespan.replace(/-/g, '/');
 		var timeStamp = this.timeToTimestamp(timespan)*1000
 		var dateTime = new Date(timespan);
-		console.log('dateTime',dateTime)
-		
 		//dateTime=dateTime.replace(/-/g, '/')
 		var year = dateTime.getFullYear();
 		var month = dateTime.getMonth() + 1;
@@ -843,7 +841,6 @@ export default {
 		
 		now = this.timeto(now,'ymd-hms')
 		now = new Date(now);
-		console.log('now',now)
 		if (milliseconds <= 1000 * 60 * 1) {
 			timeSpanStr = '刚刚';
 		} else if (1000 * 60 * 1 < milliseconds && milliseconds <= 1000 * 60 * 60) {

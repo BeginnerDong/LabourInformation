@@ -1,10 +1,10 @@
 <template>
 	<view>
-		<view class="bg-white py-4 font-30 color2 text-center mb-2">工人不良行为登记</view>
+		<view class="bg-white py-4 font-30 color2 text-center mb-2">工人不良行为查询</view>
 		
 		<view class="bg-white px-3 pb-4">
 			<view class="py-4 d-flex a-center j-sb">
-				<view class="font-24 color6 d-flex a-center">
+				<view class="font-24 color6 d-flex a-center" @click="set">
 					<image src="../../static/images/the-queryl-icon.png" class="icon1"></image>
 					<view class="pl-2">粘贴</view>
 				</view>
@@ -53,6 +53,19 @@
 		
 		methods: {
 			
+			set(){
+				const self = this;
+				uni.getClipboardData({
+					success(res) {
+						if(res.data!=''){
+							self.text = res.data
+						}else{
+							self.$Utils.showToast('剪贴板无内容', 'none', 1000);
+						}
+					}
+				})
+			},
+			
 			deleteText(){
 				const self = this;
 				self.text = '';
@@ -96,7 +109,7 @@
 
 <style>
 page{background-color: #f5f5f5;}
-.icon1{width: 27rpx;height: 28rpx;}
+.icon1{width: 27rpx!important;height: 28rpx!important;}
 textarea{width: 100%;height: 700rpx;box-shadow: 0 0 16rpx rgba(114, 130, 138, 0.2);box-sizing: border-box;padding: 30rpx;z-index: 99;}
 .btn400{margin-top: 70rpx;margin-bottom: 70rpx;}
 </style>

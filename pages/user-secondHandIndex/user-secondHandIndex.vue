@@ -1,33 +1,34 @@
 <template>
 	<view>
 		
-		<view class="font-30 color2 d-flex j-sb a-center py-4 px-3 bg-white">
+		<view class="font-30 color2 d-flex j-sb a-center py-4 px-3 bg-white borderB-f5">
 			<view>主页顶部图片</view>
 			<view class="d-flex a-center" @click="upLoadImg('mainImg')">
-				<image :src="submitData.mainImg&&submitData.mainImg[0]?submitData.mainImg[0].url:'../../static/images/the-queryl-icon2.png'" class="icon1"></image>
+				<image :src="submitData.mainImg&&submitData.mainImg[0]?submitData.mainImg[0].url:'../../static/images/bg.jpg'" class="icon1"></image>
 				<image src="../../static/images/used-to-releasel-icon3.png" class="icon2"></image>
 			</view>
 		</view>
-		<view class="font-30 color2 d-flex j-sb a-center py-4 px-3 bg-white mt-2 borderB-f5">
-			<view>公司名称</view>
-			<input type="text" placeholder="请填写" v-model="submitData.company"/>
+		<view class="font-30 color2 d-flex j-sb a-center py-4 px-3 bg-white ">
+			<view>实名认证</view>
+			<input placeholder-class="font-30" class="color2 font-30" type="text" v-if="submitData.company==''" placeholder="请填写" v-model="submitData.company"/>
+			<view>{{submitData.company}}</view>
 		</view>
-		<view class="py-4 borderB-f5 px-3 bg-white">
+		<!-- <view class="py-4 borderB-f5 px-3 bg-white">
 			<view class="d-flex a-center j-sb color2 pb-4 line-h font-24">业务范围</view>
 			<textarea value="" placeholder="请填写100个字以内的内容" class="border-e1 p-2" v-model="submitData.passage1"/>
-		</view>
-		
-		<view class="d-flex a-center j-sb py-4 borderB-e1 px-3 bg-white mt-2">
+		</view> -->
+		<view style="color: red;text-align: right;line-height: 80rpx;" class="font-22 px-2">修改认证名称请联系客服：{{kefu}}</view>
+		<view class="d-flex a-center j-sb py-4 borderB-f5 px-3 bg-white">
 			<view class="font-28 color2">联系人</view>
-			<input type="text" placeholder="请填写" v-model="submitData.name"/>
+			<input type="text" class="color2 font-30" placeholder="请填写" v-model="submitData.name"/>
 		</view>
-		<view class="d-flex a-center j-sb py-4 borderB-e1 px-3 bg-white">
-			<view class="font-28 color2">手机号</view>
-			<input type="text" placeholder="请填写" v-model="submitData.phone" />
+		<view class="d-flex a-center j-sb py-4 borderB-f5 px-3 bg-white">
+			<view class="font-28 color2">联系电话</view>
+			<input type="text" class="color2 font-30" placeholder="请填写" v-model="submitData.phone" />
 		</view>
 		<view class="py-4 borderB-f5 px-3 bg-white">
-			<view class="d-flex a-center j-sb color2 pb-4 line-h font-24">个性签名</view>
-			<textarea value="" placeholder="请填写100个字以内的内容" class="border-e1 p-2" v-model="submitData.passage2"/>
+			<view class="d-flex a-center j-sb color2 pb-4 line-h">业务介绍</view>
+			<textarea maxlength="40" class="color2 font-30 border-e1 p-2" placeholder="请填写40个字以内的内容"  v-model="submitData.passage2"/>
 		</view>
 		
 		<view class="py-5"  @click="Utils.stopMultiClick(submit)">
@@ -45,15 +46,17 @@
 					company:'',
 					phone:'',
 					mainImg:[],
-					passage1:'',
+					//passage1:'',
 					passage2:''
 				},
-				Utils:this.$Utils
+				Utils:this.$Utils,
+				kefu:''
 			}
 		},
 		
 		onLoad() {
 			const self = this;
+			self.kefu = uni.getStorageSync('kefu');
 			self.$Utils.loadAll(['getUserInfoData'], self);
 		},
 		
@@ -143,7 +146,7 @@
 						self.submitData.phone = self.userInfoData.phone;
 						self.submitData.company = self.userInfoData.company;
 						self.submitData.mainImg = self.userInfoData.mainImg;
-						self.submitData.passage1 = self.userInfoData.passage1;
+						//self.submitData.passage1 = self.userInfoData.passage1;
 						self.submitData.passage2 = self.userInfoData.passage2;
 					}
 					self.$Utils.finishFunc('getUserInfoData');
@@ -157,7 +160,8 @@
 
 <style>
 page{background-color: #f5f5f5;}
-.icon1{width: 90rpx;height: 90rpx;margin-right: 20rpx;}
-.icon2{width: 12rpx;height: 21rpx;}
+
+.icon1{width: 90rpx!important;height: 90rpx!important;margin-right: 20rpx!important;}
+.icon2{width: 12rpx!important;height: 21rpx!important;}
 textarea{width: 100%;box-sizing: border-box;}
 </style>

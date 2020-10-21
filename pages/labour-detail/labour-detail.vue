@@ -1,19 +1,19 @@
 <template>
 	<view>
 		<!-- banner -->
-		<view class="banner">
-			<swiper class="swiper-box h-100" autoplay="autoplay" interval="4000" :current="currIndex">
+		<view class="banner" v-if="mainData.mainImg&&mainData.mainImg.length>0">
+			<swiper class="swiper-box h-100" autoplay="autoplay" interval="4000" :current="currIndex" @change="changeCurrent">
 				<block v-for="(item,index) in mainData.mainImg" :key="index">
 					<swiper-item class="swiper-item">
 						<image :src="item.url" @click="preview(index)"/>
 					</swiper-item>
 				</block>
 			</swiper>
-			<view class="swiper-sign colorf font-20 line-h-md px-1 rounded10">{{currIndex+1}}/{{mainData.mainImg?mainData.mainImg.length:0}}</view>
+			<view class="swiper-sign colorf font-22 line-h-md px-1 rounded10">{{currIndex+1}}/{{mainData.mainImg?mainData.mainImg.length:0}}</view>
 		</view>
 		
 		<view class="px-3 bg-white">
-			<view class="font-30 color3 pt-5 avoidOverflow4">
+			<view class="font-30 color3 pt-5">
 				{{mainData.title?mainData.title:''}}
 			</view>
 			<view class="d-flex a-center">
@@ -23,13 +23,14 @@
 			<view class="color6 font-24 d-flex j-sb a-start pb-3 borderB-f5">
 				<view class="line-h">
 					<view class="pb-2">首发时间：{{mainData.create_time?mainData.create_time:''}}</view>
-					<view v-if="now < mainData.invalid_time">更新时间：{{mainData.update_time?mainData.update_time:''}}</view>
-					<view class="Rcolor" v-else>本条信息已失效</view>
+					<view>更新时间：{{mainData.update_time&&mainData.update_time!=mainData.create_time?mainData.update_time:'-'}}</view>
+					<!-- <view v-if="now < mainData.invalid_time">更新时间：{{mainData.update_time?mainData.update_time:''}}</view>
+					<view class="Rcolor" v-else>本条信息已失效</view> -->
 				</view>
 				<view class="d-flex a-center">
 					<view class="d-flex a-center"  @click="Utils.stopMultiClick(collect)">
 						<image :src="mainData.log&&mainData.log.length>0&&mainData.log[0].status==1?'../../static/images/detailsl-icon1.png':'../../static/images/detailsl-icon5.png'" class="icon2"></image>
-						<view class="pl-1">{{mainData.log&&mainData.log.length>0&&mainData.log[0].status==1?'已收藏':'未收藏'}}</view>
+						<view class="pl-1">{{mainData.log&&mainData.log.length>0&&mainData.log[0].status==1?'已收藏':'收藏'}}</view>
 					</view>
 					<view class="d-flex a-center ml-5" @click="changeShare()">
 						<image src="../../static/images/detailsl-icon2.png" class="icon2"></image>
@@ -64,22 +65,22 @@
 					<view class="d-flex a-center">
 						<image src="../../static/images/detailsl-icon4.png" class="icon5"></image>
 						<view v-if="now < mainData.invalid_time">{{mainData.phone?mainData.phone:''}}</view>
-						<view v-else>信息已失效，联系方式不可见</view>
+						<view v-else>信息已超过7天，联系方式不可见</view>
 					</view>
 				</view>
 				<view class="Mcolor line-h-sm Mborder px-3 py-1 rounded" v-if="now < mainData.invalid_time" @click="callPhone">拨打电话</view>
 			</view>
-			<view class="line-h-md py-4 font-24 color6 dashedBorder">
+			<!-- <view class="line-h-md py-4 font-24 color6 dashedBorder">
 				<view v-if="mainData.behavior==1" v-for="(c_item,c_index) in mainData.passage_array" :key="index">{{c_item.name}}，{{c_item.num}}名，
 				{{c_item.money!=''?'月工资'+c_item.money:'待遇面议'}}</view>
 				<view v-if="mainData.behavior==2" v-for="(c_item,c_index) in mainData.passage_array" :key="index">{{c_item.name}}，{{c_item.num}}支队伍，
 				{{c_item.money!=''?'月工资'+c_item.money:'待遇面议'}}</view>
 				<view v-if="mainData.behavior==3">求职岗位：{{mainData.description}},期待工资：{{mainData.salary}}</view>
 				<view v-if="mainData.behavior==4">我能承包：<span :key="index" v-for="(c_item,c_index) in mainData.passage_array">{{c_item.name}}</span></view>
-			</view>
+			</view> -->
 		</view>
 		
-		<view class="bg-white mt-2 font-24 colorO text-center py-3">联系我时，请说是在劳务信息小程序上看到的信息哦！</view>
+		<view class="bg-white mt-2 font-24 colorO text-center py-3">联系我时，请说明是在“桥隧之家”小程序上看到的信息哦！</view>
 		
 		<view class="py-5 font-26 Mcolor text-center" @click="checkLogin">我也要发布招工求职信息</view>
 		
@@ -162,7 +163,11 @@
 		
 		methods: {
 			
-			
+			changeCurrent(e){
+				console.log(e)
+				const self = this;
+				self.currIndex = e.detail.current
+			},
 			
 			getQrCode() {
 				const self = this;
@@ -319,6 +324,8 @@
 						self.mainData = res.info.data[0];
 						//self.getRelationData()
 						//self.mainData.invalid_time = self.$Utils.timeto(self.mainData.invalid_time*1000,'ymd')
+						self.mainData.create_time = self.mainData.create_time.substr(0,10)
+						self.mainData.update_time = self.mainData.update_time.substr(0,10)
 					};
 					self.$Utils.finishFunc('getMainData');
 				};
@@ -344,11 +351,11 @@
 page{background-color: #f5f5f5;}
 .banner{height: 505rpx;position: relative;}
 .swiper-sign{background-color: #434343;position: absolute;bottom: 30rpx;right: 30rpx;}
-.icon1{width: 31rpx;height: 23rpx;}
-.icon2{width: 33rpx;height: 34rpx;}
-.icon3{width: 36rpx;height: 34rpx;}
-.icon4{width: 21rpx;height: 25rpx;}
-.icon5{width: 20rpx;height: 26rpx;margin-right: 10rpx;}
+.icon1{width: 31rpx!important;height: 23rpx!important;}
+.icon2{width: 33rpx!important;height: 34rpx!important;}
+.icon3{width: 36rpx!important;height: 34rpx!important;}
+.icon4{width: 21rpx!important;height: 25rpx!important;}
+.icon5{width: 20rpx!important;height: 26rpx;margin-right: 10rpx!important;}
 
 .userImg{width: 100rpx;height: 100rpx;}
 

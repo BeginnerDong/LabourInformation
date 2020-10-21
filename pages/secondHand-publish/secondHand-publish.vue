@@ -6,7 +6,7 @@
 			<view class="pb-1">我们完全免费帮您发布（平台不收取任何费用）</view>
 			<view>劳务信息有强大的资源渠道，能够帮您快速的出售/求购</view>
 			<view class="close p-3" @click="changeTips()">
-				<image src="../../static/images/used%20to%20releasel-icon2.png" class="icon1"></image>
+				<image src="../../static/images/used-to-releasel-icon2.png" class="icon1"></image>
 			</view>
 		</view>
 
@@ -34,17 +34,17 @@
 			<view class="d-flex a-center j-sb py-3 borderB-e1 px-3">
 				<view class="font-30 color2">分类</view>
 				<view class="d-flex a-center" @click="showChoose('menu')">
-					<view class="font-30 color9 pr-1">{{submitData.menu_id!=''?
+					<view class="font-30 color9 pr-1" :class="submitData.menu_id!=''?'color2':''">{{submitData.menu_id!=''?
 					menuData[menuIndex].title+'/'+menuData[menuIndex].children[menuIdIndex].title:'请选择'}}</view>
 					<image src="../../static/images/used-to-releasel-icon3.png" class="icon3"></image>
 				</view>
 			</view>
 			<view class="py-3 borderB-e1 px-3">
 				<view class="d-flex a-center j-sb color2 pb-4 line-h">
-					<view class="font-30">标题/出售描述</view>
+					<view class="font-30">标题/{{submitData.behavior==1?'出售':'求购'}}出售描述</view>
 					<view class="font-24">({{submitData.title.length}}/100)</view>
 				</view>
-				<textarea value="" maxlength="100" placeholder="请填写100个字以内的内容" v-model="submitData.title" />
+				<textarea v-show="!menu&&!city" value="" maxlength="100" placeholder="请填写100个字以内的内容" v-model="submitData.title" />
 				</view>
 			<view class="d-flex a-center j-sb py-3 borderB-e1 px-3">
 				<view class="font-30 color2">{{submitData.behavior==1?'出售价格':'求购价格'}} </view>
@@ -53,7 +53,7 @@
 			<view class="d-flex a-center j-sb py-3 borderB-e1 px-3">
 				<view class="font-30 color2">所在地区</view>
 				<view class="d-flex a-center" @click="showChoose('city')">
-					<view class="font-30 color9 pr-1">{{submitData.location!=''?
+					<view class="font-30 color9 pr-1" :class="submitData.location!=''?'color2':''" >{{submitData.location!=''?
 					cityData[cityIndex].title+'/'+cityData[cityIndex].children[cityIdIndex].title:'请选择'}}</view>
 					<image src="../../static/images/used-to-releasel-icon3.png" class="icon3"></image>
 				</view>

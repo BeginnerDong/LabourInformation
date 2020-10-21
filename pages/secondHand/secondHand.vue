@@ -2,7 +2,7 @@
 	<view :class="menuShow||cityShow?'none':''">
 		<view class="headBox">
 			
-			<view class="head px-3 pb-1 bg-mcolor font-32 colorf d-flex a-center z-index100" :style="{paddingTop:statusBar +'px'}"
+			<view class="head px-3 pb-1 bg-mcolor font-30 colorf d-flex a-center z-index100" :style="{paddingTop:statusBar +'px'}"
 			@click="checkLogin">
 				<image src="../../static/images/businessl-icon1.png" class="add"></image>
 				<view>免费发布</view>
@@ -18,15 +18,19 @@
 			</view>
 			
 			<!-- nav -->
-			<view class="font-28 color2 d-flex a-center j-sb borderB-e1 bg-f5 nav">
+			<view class="font-28 color2 d-flex a-center j-sb  bg-f5 nav">
 				<view class="item" :class="navCurr==1?'on':''" @click="canClick?changeCurr(1):''">全部</view>
 				<view class="item" :class="navCurr==2?'on':''" @click="canClick?changeCurr(2):''">出售</view>
 				<view class="item" :class="navCurr==3?'on':''" @click="canClick?changeCurr(3):''">求购</view>
-				<view class="item d-flex a-center j-center" :class="navCurr==4?'on':''" @click="changeCurr(4)">分类
+				<view class="item d-flex a-center j-center" :class="navCurr==4?'on':''" @click="changeCurr(4)">
+					{{menuText!=''?menuText:'分类'}}
+					<!-- {{menuIndex>=0&&menuIdIndex<0?menuData[menuIndex].title:(menuIndex>=0&&menuIdIndex>=0?menuData[menuIndex].children[menuIdIndex].title:'分类')}} -->
 					<image src="../../static/images/labor-releasel-icon1.png" v-if="navCurr==4"></image>
 					<image src="../../static/images/labor-releasel-icon2.png" v-else></image>
 				</view>
-				<view class="item d-flex a-center j-center" :class="navCurr==5?'on':''" @click="changeCurr(5)">所在地
+				<view class="item d-flex a-center j-center" :class="navCurr==5?'on':''" @click="changeCurr(5)">
+					{{cityText!=''?cityText:'所在地'}}
+					<!-- {{cityIndex>=0&&cityIdIndex<0?cityData[cityIndex].title:(cityIndex>=0&&cityIdIndex>=0?cityData[cityIndex].children[cityIdIndex].title:'所在地')}} -->
 					<image src="../../static/images/labor-releasel-icon1.png" v-if="navCurr==5"></image>
 					<image src="../../static/images/labor-releasel-icon2.png" v-else></image>
 				</view>
@@ -66,17 +70,21 @@
 		</view>
 		
 		
-		<view class="oh bg-mask position-fixed d-flex flex-column"  :style="{marginTop:statusBar+155 +'px'}" v-show="menuShow||cityShow">
+		<view class="oh bg-mask position-fixed d-flex flex-column"  :style="{marginTop:showHeight+'px'}" v-show="menuShow||cityShow">
 			<!-- 分类 -->
 			<view class="classfiy font-26 color2 line-h text-center d-flex" v-show="menuShow">
 				<view class="left">
+					<!-- <view class="li py-3"
+					 @click="changeMenuIndex(-1)" :class="menuIndex==-1?'on':''">全部</view> -->
 					<view class="li py-3" v-for="(item,index) of menuData" :key="item.id"
 					 @click="changeMenuIndex(index)" :class="menuIndex==index?'on':''">{{item.title}}</view>
 				</view>
 				<view class="right flex-1 bg-white" @click="closeMask">
-					<view class="li" :class="menuIdIndex==index?'on':''" @click="chooseMenuId(index)" v-for="(item,index) of menuData[menuIndex].children" 
+					<view class="li py-3"
+					 @click="chooseMenuId(-1)" :class="menuIdIndex==-1?'on':''">全部</view>
+					<view class="li" :class="searchItem.menu_id==item.id?'on':''" @click="chooseMenuId(index)" v-for="(item,index) of menuData[menuIndex].children" 
 					:key="item.id">{{item.title}}
-						<image src="../../static/images/used-to-releasel-icon5.png" class="icon5" v-if="menuIdIndex==index"></image>
+						<image src="../../static/images/used-to-releasel-icon5.png" class="icon5" v-if="searchItem.menu_id==item.id"></image>
 					</view>
 				</view>
 			</view>
@@ -88,10 +96,12 @@
 					 @click="changeCityIndex(index)" :class="cityIndex==index?'on':''">{{item.title}}</view>
 				</view>
 				<view class="right flex-1 bg-white" @click="closeMask">
-					<view class="li" :class="cityIdIndex==index?'on':''" @click="chooseCityId(index)" 
+					<view class="li py-3"
+					 @click="chooseCityId(-1)" :class="cityIdIndex==-1?'on':''">全部</view>
+					<view class="li" :class="searchItem.location==item.id?'on':''" @click="chooseCityId(index)" 
 					v-for="(item,index) of cityData[cityIndex].children"
 					:key="item.id">{{item.title}}
-						<image src="../../static/images/used-to-releasel-icon5.png" class="icon5" v-if="cityIdIndex==index"></image>
+						<image src="../../static/images/used-to-releasel-icon5.png" class="icon5" v-if="searchItem.location==item.id"></image>
 					</view>
 				</view>
 			</view>
@@ -154,13 +164,16 @@
 				cityShow:false,
 				menuData:[],
 				cityData:[],
-				menuIndex:0,
-				menuIdIndex:-1,
-				cityIndex:0,
-				cityIdIndex:-1,
+				menuIndex:-1,
+				menuIdIndex:-2,
+				cityIndex:-1,
+				cityIdIndex:-2,
 				title:'',
 				canClick:true,
-				tip:'加载中...'
+				tip:'加载中...',
+				showHeight:0,
+				menuText:'',
+				cityText:''
 			}
 		},
 		
@@ -179,7 +192,15 @@
 				self.getMainData()
 			};
 		},
-		
+		onReady () {
+			const self = this;
+		    setTimeout(() => {
+				let query = wx.createSelectorQuery();		
+				query.select('.headBox').boundingClientRect(rect=>{
+					this.showHeight = rect.height
+				},this).exec();
+		    }, 300,this)
+		},
 		onPullDownRefresh() {
 			const self=  this;
 			self.navCurr = 1;
@@ -205,16 +226,44 @@
 			
 			changeMenuIndex(index){
 				const self = this;
-				self.menuIndex = index
+				self.menuIndex = index;
+				if(self.menuIndex==-1){
+					delete self.searchItem.location;
+					delete self.searchItem.behavior;
+					delete self.searchItem.menu_id;
+					self.cityIndex = -1;
+					self.cityIdIndex = -2;
+					self.cityText = '';
+					self.closeMask();
+					self.getMainData(true)
+				}
 			},
 			
 			chooseMenuId(index){
 				const self = this;
 				uni.setStorageSync('canClick', false);
 				self.menuIdIndex = index;
+				if(index<0){
+					var idArray = [];
+					if(self.menuData[self.menuIndex].children.length>0){
+						for (var i = 0; i < self.menuData[self.menuIndex].children.length; i++) {
+							idArray.push(self.menuData[self.menuIndex].children[i].id)
+						};
+						self.searchItem.menu_id = ['in',idArray];
+						
+					}else{
+						self.searchItem.menu_id = [];
+					}
+					self.menuText = self.menuData[self.menuIndex].title
+				}else{
+					
+					self.searchItem.menu_id = self.menuData[self.menuIndex].children[self.menuIdIndex].id;
+					self.menuText = self.menuData[self.menuIndex].children[self.menuIdIndex].title
+				};
 				delete self.searchItem.behavior;
-				delete self.searchItem.menu_id;
-				self.searchItem.menu_id = self.menuData[self.menuIndex].children[self.menuIdIndex].id;
+				delete self.searchItem.location;
+				self.cityIndex = -1;
+				self.cityIdIndex = -2;
 				self.navCurr = 4;
 				self.getMainData(true)
 			},
@@ -224,15 +273,38 @@
 			changeCityIndex(index){
 				const self = this;
 				self.cityIndex = index
+				if(self.cityIndex==-1){
+					delete self.searchItem.location;
+					delete self.searchItem.behavior;
+					delete self.searchItem.menu_id;
+					self.menuIndex = -1;
+					self.menuIdIndex = -2;
+					self.menuText = '';
+					self.closeMask();
+					self.getMainData(true)
+				}
 			},
 			
 			chooseCityId(index){
 				const self = this;
 				uni.setStorageSync('canClick', false);
+				
 				self.cityIdIndex = index;
+				if(index<0){
+					var idArray = [];
+					for (var i = 0; i < self.cityData[self.cityIndex].children.length; i++) {
+						idArray.push(self.cityData[self.cityIndex].children[i].id)
+					};
+					self.searchItem.location = ['in',idArray];
+					self.cityText = self.menuData[self.menuIndex].title
+				}else{
+					self.searchItem.location = self.cityData[self.cityIndex].children[self.cityIdIndex].id;
+					self.cityText = self.cityData[self.cityIndex].children[self.cityIdIndex].title;
+				};
 				delete self.searchItem.behavior;
 				delete self.searchItem.menu_id;
-				self.searchItem.location = self.cityData[self.cityIndex].children[self.cityIdIndex].id;
+				self.menuIndex = -1;
+				self.menuIdIndex = -2;
 				self.navCurr = 5;
 				self.getMainData(true)
 			},
@@ -289,18 +361,40 @@
 					delete self.searchItem.behavior;
 					delete self.searchItem.menu_id;
 					delete self.searchItem.location;
+					self.cityIndex = -1;
+					self.cityIdIndex = -2;
+					self.menuIndex = -1;
+					self.menuIdIndex = -2;
+					self.menuText = '';
+					self.cityText = '';
 					self.menuShow = false;
 					self.cityShow = false;
 					self.getMainData(true)
 				}else if(type==2){
 					self.canClick = false;
 					self.searchItem.behavior = 1
+					delete self.searchItem.menu_id;
+					delete self.searchItem.location;
+					self.cityIndex = -1;
+					self.cityIdIndex = -2;
+					self.menuIndex = -1;
+					self.menuIdIndex = -2;
+					self.menuText = '';
+					self.cityText = '';
 					self.menuShow = false;
 					self.cityShow = false;
 					self.getMainData(true)
 				}else if(type==3){
 					self.canClick = false;
 					self.searchItem.behavior = 2
+					delete self.searchItem.menu_id;
+					delete self.searchItem.location;
+					self.cityIndex = -1;
+					self.cityIdIndex = -2;
+					self.menuIndex = -1;
+					self.menuIdIndex = -2;
+					self.menuText = '';
+					self.cityText = '';
 					self.menuShow = false;
 					self.cityShow = false;
 					self.getMainData(true)
@@ -431,14 +525,14 @@ page{background-color: #f5f5f5;height: 100%;}
 
 
 .ss input{border-right: 1px solid #e1e1e1;flex: 1;padding-left: 20rpx;font-size: 28rpx;text-align: left;box-sizing: border-box;color: #222;}
-
+.nav{box-shadow: 0 1px 1px 0px rgba(225, 225, 225, 1);}
 .nav image{width: 18rpx;height: 9rpx;margin-left: 8rpx;}
 .nav .item{width: 20%;line-height: 90rpx;text-align: center;}
-.nav .on{position: relative;color: #51A9E9;box-shadow: 0 8px 6px -6px rgba(148, 232, 241, 0.5);}
-/* .nav .on::before{content: ''; width: 100%;height: 2rpx;background-color: #51A9E9;position: absolute; bottom: 0;left: 0;} */
+.nav .on{position: relative;color: #51A9E9;}
+.nav .on::before{content: ''; width: 100%;height: 4rpx;background-color: #51A9E9;position: absolute; bottom: 0;left: 0;}
 
 .list .item image{width: 180rpx;height: 180rpx;}
-.list .itemCon .tit{width: 480rpx;line-height: 1.2;}
+.list .itemCon .tit{width: 480rpx}
 .list .itemConL{width: 180rpx;height: 180rpx;line-height: 180rpx;background-color: #9DD6FF;}
 
 .icon4{width: 14rpx;height: 26rpx;margin-right: 10rpx;}

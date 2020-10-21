@@ -11,7 +11,7 @@
 		</view>
 		
 		<view class="head position-relative">
-			<image :src="info.mainImg&&info.mainImg[0]?info.mainImg[0].url:''" mode=""></image>
+			<image :src="info.mainImg&&info.mainImg[0]?info.mainImg[0].url:'../../static/images/bg.jpg'" mode=""></image>
 			<view class="txt px-3 font-32 colorf d-flex a-center">
 				<view class="name">{{info.company?info.company:''}}</view>
 				<view class="tag tagName1 ml-2">已实名认证</view>
@@ -28,7 +28,7 @@
 					<!-- <view class="Rcolor text-center font-18 pt-1">热度98561</view> -->
 				</view>
 				<view class="ml-3 flex-1">
-					<view class="font-26 font-w color2 mb-2 flex-1 d-flex a-center border-e1" style="width: 58%;">
+					<view class="font-26 font-w color2 mb-2 flex-1 d-flex a-center" style="width: 58%;">
 						<view class="pr-4">{{info.name?info.name:''}}</view>
 						<view class="d-flex a-center">
 							<image src="../../static/images/detailsl-icon4.png" class="icon2"></image>
@@ -39,7 +39,7 @@
 				</view>
 			</view>
 			<view class="Mcolor font-24 text-center d-flex a-center j-sa pb-4 ">
-				<view class="Mborder rounded10 btn">{{userData.log&&userData.log.length>0&&userData.log[0].status==1?'已收藏':'我要收藏'}}</view>
+				<view class="Mborder rounded10 btn" @click="collect">{{userData.log&&userData.log.length>0&&userData.log[0].status==1?'已收藏':'我要收藏'}}</view>
 				<view class="Mborder rounded10 btn" @click="changeShare()">我要分享</view>
 				<view class="Mborder rounded10 btn" @click="callPhone">拨打电话</view>
 			</view>

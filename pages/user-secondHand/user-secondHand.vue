@@ -1,13 +1,13 @@
 <template>
 	<view>
 		<!-- nav -->
-		<view class="font-28 color2 d-flex a-center j-sb borderB-e1 bg-f5 shadow-sm nav">
+		<view class="font-28 color2 d-flex a-center j-sb  bg-f5 shadow-sm nav">
 			<view class="item" :class="navCurr==1?'on':''" @click="changeNav(1)">全部</view>
 			<view class="item" :class="navCurr==2?'on':''" @click="changeNav(2)">出售</view>
 			<view class="item" :class="navCurr==3?'on':''" @click="changeNav(3)">求购</view>
 		</view>
 		
-		<view class="font-30 color2 p-3 d-flex a-center j-sb borderB-e1">
+		<view class="font-30 color2 p-3 d-flex a-center j-sb borderB-f5">
 			<view @click="chooseShow" v-if="!isShowChoose" class="btn2">选择</view>
 			<view @click="chooseShow"  class="btn2" v-else>取消</view>
 			<view class="Mcolor d-flex a-center" v-if="isShowChoose">
@@ -18,7 +18,7 @@
 		</view>
 		
 		<view>
-			<view class="borderB-e1 py-4" v-for = "(item,index) of mainData" :key="item.id">
+			<view class="borderB-f5 py-4" v-for = "(item,index) of mainData" :key="item.id">
 				<view class="d-flex a-center mx-3">
 					<image @click="choose(index)" v-if="isShowChoose" :src="item.choose?'../../static/images/i-releasel-icon1.png':'../../static/images/i-releasel-icon.png'" class="icon1"></image>
 					<view class="ml-2 d-flex a-center j-sb flex-1">
@@ -289,12 +289,12 @@
 <style>
 .nav .item{width: 33.33%;line-height: 90rpx;text-align: center;}
 .nav .on{position: relative;color: #51A9E9;}
-.nav .on::before{content: ''; width: 100%;height: 2rpx;background-color: #51A9E9;position: absolute; bottom: 0;left: 0;}
+.nav .on::before{content: ''; width: 100%;height: 4rpx;background-color: #51A9E9;position: absolute; bottom: 0;left: 0;}
 
 .icon1{width: 40rpx;height: 40rpx;}
 .img{width: 160rpx;height: 160rpx;}
 
 .oh view{width: 33.33%;}
 
-.btn2{width: 100rpx;padding: 5px 10px;line-height: 1;border: 1px solid #e1e1e1;border-radius: 5px;}
+.btn2{padding: 5px 10px;line-height: 1;border: 1px solid #e1e1e1;border-radius: 5px;}
 </style>

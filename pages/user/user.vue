@@ -1,5 +1,13 @@
 <template>
 	<view v-if="showAll">
+		<view class="headBox">
+			<view class="head px-3 pb-1 bg-mcolor font-30 colorf d-flex a-center z-index100" :style="{paddingTop:statusBar+'px'}"
+			@click="checkLogin">
+				<view>我的</view>
+			</view>
+		</view>
+		
+		
 		<view class="bg-mcolor text-center">
 			<image :src="userData.headImgUrl?userData.headImgUrl:'../../static/images/head.png'" class="userImg m-a "></image>
 			<!-- <view class="userImg m-a">
@@ -27,26 +35,26 @@
 				<view>我的二手交易信息主页</view>
 				<view class="Mcolor" @click="changeHand()">免费开通</view>
 			</view>
-			<view class="font-30 color2 d-flex j-sb a-center py-4 px-3 bg-white borderB-e1" v-if="userData.behavior==2"
+			<view class="font-30 color2 d-flex j-sb a-center py-4 px-3 bg-white borderB-f5" v-if="userData.behavior==2"
 			@click="Router.navigateTo({route:{path:'/pages/user-secondHandIndex/user-secondHandIndex'}})">
 				<view>我的二手交易信息主页</view>
 				<image src="../../static/images/used-to-releasel-icon3.png" class="icon2"></image>
 			</view>
-			<view class="font-30 Mcolor py-4 px-3 bg-white mt-2 borderB-e1 d-flex a-center">
+			<view class="font-30 Mcolor py-3 px-3 bg-white mt-2 borderB-f5 d-flex a-center">
 				<image src="../../static/images/about-icon.png" class="icon1"></image>
 				<view class="pl-2">我发布的</view>
 			</view>
-			<view class="font-30 color2 d-flex j-sb a-center py-4 px-3 bg-white borderB-e1" @click="Router.navigateTo({route:{path:'/pages/user-secondHand/user-secondHand'}})">
+			<view class="font-30 color2 d-flex j-sb a-center py-4 px-3 bg-white borderB-f5" @click="Router.navigateTo({route:{path:'/pages/user-secondHand/user-secondHand'}})">
 				<view>二手交易信息</view>
 				<image src="../../static/images/used-to-releasel-icon3.png" class="icon2"></image>
 			</view>
-			<view class="font-30 color2 d-flex j-sb a-center py-4 px-3 bg-white borderB-e1" @click="Router.navigateTo({route:{path:'/pages/user-labour/user-labour'}})">
+			<view class="font-30 color2 d-flex j-sb a-center py-4 px-3 bg-white borderB-f5" @click="Router.navigateTo({route:{path:'/pages/user-labour/user-labour'}})">
 				<view>劳务招聘信息</view>
 				<image src="../../static/images/used-to-releasel-icon3.png" class="icon2"></image>
 			</view>
 			<view class="font-30 color2 d-flex j-sb a-center py-4 px-3 bg-white" 
 			@click="Router.navigateTo({route:{path:'/pages/business-publish/business-publish?type=isMe'}})">
-				<view>商务通信息</view>
+				<view>商务通名片</view>
 				<image src="../../static/images/used-to-releasel-icon3.png" class="icon2"></image>
 			</view>
 			<view class="font-30 color2 d-flex j-sb a-center py-4 px-3 bg-white mt-2" @click="Router.navigateTo({route:{path:'/pages/user-collection/user-collection'}})">
@@ -73,7 +81,7 @@
 			</view>
 			<!-- --------------------- -->
 
-			<view class="font-30 color2 d-flex j-sb a-center py-4 px-3 bg-white mt-2 borderB-e1" @click="Router.navigateTo({route:{path:'/pages/user-opinion/user-opinion'}})">
+			<view class="font-30 color2 d-flex j-sb a-center py-4 px-3 bg-white mt-2 borderB-f5" @click="Router.navigateTo({route:{path:'/pages/user-opinion/user-opinion'}})">
 				<view>意见反馈</view>
 				<image src="../../static/images/used-to-releasel-icon3.png" class="icon2"></image>
 			</view>
@@ -127,9 +135,11 @@
 </template>
 
 <script>
+	const app = getApp();
 	export default {
 		data() {
 			return {
+				statusBar: app.globalData.statusBar,
 				Router: this.$Router,
 				hand_show: false,
 				userData: {},
@@ -201,7 +211,8 @@
 	page {
 		background-color: #f5f5f5;
 	}
-
+	.headBox{position: sticky;top: 0;z-index: 1000;}
+	.head{line-height: 80rpx;}
 	.userImg {
 		height: 120rpx;
 		width: 120rpx;
@@ -220,13 +231,13 @@
 	}
 
 	.icon1 {
-		width: 30rpx;
-		height: 30rpx;
+		width: 30rpx!important;
+		height: 30rpx!important;
 	}
 
 	.icon2 {
-		width: 12rpx;
-		height: 21rpx;
+		width: 12rpx!important;
+		height: 21rpx!important;
 	}
 
 	.icon3 {

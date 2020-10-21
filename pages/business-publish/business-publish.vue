@@ -2,62 +2,62 @@
 	<view>
 		
 		<!-- nav -->
-		<view class="font-28 color2 d-flex a-center j-sb borderB-e1 bg-f5 shadow-sm nav">
-			<view class="item" :class="navCurr==1?'on':''" @click="changeNav(1)">基本信息</view>
-			<view class="item" :class="navCurr==2?'on':''" @click="submit">名片类型</view>
+		<view class="font-28 color2 d-flex a-center j-sb  bg-f5  nav" style="position: sticky;top: 0;">
+			<view class="item" :class="navCurr==1?'on':''" @click="changeNav(1)">名片信息</view>
+			<view class="item" :class="navCurr==2?'on':''" @click="submit">名片分类</view>
 		</view>
 		
 		<!-- 基本信息 -->
 		<view v-show="navCurr==1" class="pb-5">
-			<view class="d-flex a-center j-sb py-4 borderB-f5 px-3">
-				<view class="font-28 color2">公司名称</view>     
-				<input type="text" placeholder="请填写" v-model="submitData.title"/>
+			<view class="d-flex a-center j-sb py-3 borderB-f5 px-3">
+				<view class="font-30 color2">公司名称</view>     
+				<input type="text" placeholder-class="font-30" class="color2 font-30" placeholder="请填写" v-model="submitData.title"/>
 			</view>
-			<view class="d-flex a-center j-sb py-4 borderB-f5 px-3">
-				<view class="font-28 color2">所在地区</view>     
+			<view class="d-flex a-center j-sb py-3 borderB-f5 px-3">
+				<view class="font-30 color2">所在地区</view>     
 				<view class="d-flex a-center" @click="showChoose('city')">
-					<view class="font-24 color9 pr-1">{{submitData.location!=''?
+					<view class="font-30  pr-1" style="color: #777;" :class="submitData.location!=''?'color2':''">{{submitData.location!=''?
 					cityData[cityIndex].title+'/'+cityData[cityIndex].children[cityIdIndex].title:'请选择'}}</view>
 					<image src="../../static/images/used-to-releasel-icon3.png" class="icon1"></image>
 				</view>
 			</view>
-			<view class="d-flex a-center j-sb py-4 borderB-f5 px-3">
-				<view class="font-28 color2">联系人</view>
-				<input type="text" placeholder="请填写" v-model="submitData.name"/>
+			<view class="d-flex a-center j-sb py-3 borderB-f5 px-3">
+				<view class="font-30 color2">联系人</view>
+				<input type="text" placeholder-class="font-30" class="color2 font-30" placeholder="请填写" v-model="submitData.name"/>
 			</view>
-			<view class="d-flex a-center j-sb py-4 borderB-f5 px-3">
-				<view class="font-28 color2">手机号</view>
-				<input type="text" placeholder="请填写" v-model="submitData.phone" @blur="checkPhone" />
+			<view class="d-flex a-center j-sb py-3 borderB-f5 px-3">
+				<view class="font-30 color2">手机号</view>
+				<input type="text" placeholder-class="font-30" class="color2 font-30" placeholder="请填写" v-model="submitData.phone" @blur="checkPhone" />
 			</view>
 			
-			<view class="py-4 borderB-f5 px-3">
+			<view class="py-3 borderB-f5 px-3">
 				<view class="d-flex a-center j-sb color2 pb-4 line-h">
-					<view class="font-28">业务范围</view>
+					<view class="font-30">业务范围</view>
 					<view class="font-24">({{submitData.description.length}}/100)</view>
 				</view>
-				<textarea value="" maxlength="100" placeholder="请填写100个字以内的内容" v-model="submitData.description"/>
+				<textarea value="" placeholder-class="font-30" class="color2 font-30" maxlength="100" placeholder="请填写100个字以内的内容" v-model="submitData.description"/>
 			</view>
 			
 			<!-- 添加图片 -->
-			<view class="upload font-24 color2 px-3 py-4 bg-white borderB-f5">
+			<view class="upload font-24 color2 px-3 py-3 bg-white borderB-f5">
 				<view>添加图片（最多上传3张图片，选填）</view>
 				<view class="uploadImg d-flex a-center">
 					<view class="position-relative" v-for="(item,index) of submitData.mainImg" :key="index">
 						<image :src="item.url" mode=""></image>
 						<image src="../../static/images/used-to-releasel-icon1.png" @click="deleteImg(index)" class="icon2"></image>
 					</view>
-					<image v-if="submitData.mainImg.length<5" @click="upLoadImg('mainImg')" src="../../static/images/used-to-releasel-icon.png"
+					<image v-if="submitData.mainImg.length<3" @click="upLoadImg('mainImg')" src="../../static/images/used-to-releasel-icon.png"
 					 mode=""></image>
 				</view>
 			</view>
 			
-			<view class="d-flex a-center j-sb py-4 borderB-f5 px-3">
+			<!-- <view class="d-flex a-center j-sb py-4 borderB-f5 px-3">
 				<view class="font-28 color2">销售区域（可多选)</view>     
 				<view class="d-flex a-center" @click="showChoose('saleCity')">
 					<view class="font-24 color9 pr-1">{{conSalecityTitleArray.length>0?conSalecityTitleArray[0]+'等':'不填写默认全国'}}</view>
 					<image src="../../static/images/used-to-releasel-icon3.png" class="icon1"></image>
 				</view>
-			</view>
+			</view> -->
 			
 			<view class="my-5" @click="submit">
 				<view class="btn400">下一步</view>
@@ -66,13 +66,19 @@
 		
 		<!-- 名片类型 -->
 		<view class="" v-show="navCurr==2">
-			<view class="font-24 color2 font-w text-center py-4">请选择名片分类（最多选择5个）</view>
-			<view class="list font-24 color2 d-flex ">
+			<view class="nav">
+				<view class="font-28 color2 font-w text-center py-3">请选择名片分类（最多选择5个）
+					
+				</view>
+				<view style="padding-bottom: 30rpx;" class="px-2">您已选:<span v-for="(item,index) in hasChoose" :key="index">{{item}}<span v-if="index!=4">/</span></span></view>
+			</view>
+			
+			<view class="list font-24 color2 d-flex" style="margin-top: 4rpx;">
 				<view class="one bg-f5 text-center">
 					<view  v-for="(item,index) of menuData" 
 					:key="item.id" :class="menuIndex==index?'on':''" @click="changeMenuIndex(index)">{{item.title}}</view>
 				</view>
-				<view class="two flex-1 borderT-f5 borderB-f5">
+				<view class="two flex-1  borderB-f5">
 					<view class="d-flex a-center j-sb px-2"  
 						:class="Utils.inArray(item.id,menuIdArray)>-1?'on':''" @click="chooseMenuId(index)"
 						v-for="(item,index) of menuData[menuIndex].children"
@@ -91,7 +97,7 @@
 			</view>
 		</view>
 		
-		<view class="oh bg-mask position-fixed top-0 left-0 right-0" v-show="city||saleCity">
+		<view class="oh bg-mask position-fixed top-0 left-0 right-0" style="z-index: 2001;" v-show="city||saleCity">
 			<view  v-show="saleCity">
 				<view class="d-flex a-center j-sb px-3 py-2 borderB-e1 bg-white">
 					<view class="font-26 Mcolor d-flex a-center" @click="showChoose('saleCity')"><image src="../../static/images/used-to-releasel-icon4.png" class="icon4"></image>返回</view>
@@ -170,7 +176,8 @@
 				menuData:[],
 				menuIdArray:[],
 				isEdit:false,
-				kefu:''
+				kefu:'',
+				hasChoose:[]
 			}
 		},
 		
@@ -264,7 +271,7 @@
 				postData.data = {};
 				postData.data = self.$Utils.cloneForm(self.submitData);
 				postData.saveAfter = [];
-				for (var i = 0; i < self.conSalecityTitleArray.length; i++) {
+				/* for (var i = 0; i < self.conSalecityTitleArray.length; i++) {
 					postData.saveAfter.push(
 						{
 							tableName: 'Relation',
@@ -277,7 +284,7 @@
 							},
 						},
 					)	
-				};
+				}; */
 				if(self.conSalecityTitleArray.length==0){
 					postData.saveAfter.push(
 						{
@@ -482,6 +489,7 @@
 				console.log('options',options)
 				if(options>-1){
 					self.menuIdArray.splice(parseInt(options),1)
+					self.hasChoose.splice(parseInt(options),1)
 				}else{
 					if(self.menuIdArray.length>=5){
 						uni.setStorageSync('canClick', true);
@@ -489,6 +497,9 @@
 						return
 					};
 					self.menuIdArray.push(self.menuData[self.menuIndex].children[index].id);
+					self.currentMenuTitle = self.currentMenuTitle + '-' + self.menuData[self.menuIndex].children[index].title;
+					self.hasChoose.push(self.currentMenuTitle);
+					self.currentMenuTitle = self.menuData[self.menuIndex].title;
 				}
 			},
 			
@@ -510,7 +521,8 @@
 			
 			changeMenuIndex(index){
 				const self = this;
-				self.menuIndex = index
+				self.menuIndex = index;
+				self.currentMenuTitle = self.menuData[self.menuIndex].title
 			},
 			
 			chooseCityId(index){
@@ -554,6 +566,7 @@
 				const callback = (res) => {
 					if (res.info.data.length > 0) {
 						self.menuData = res.info.data;
+						self.currentMenuTitle = self.menuData[0].title
 					}
 					self.$Utils.finishFunc('getMenuData');
 				};
@@ -617,12 +630,13 @@
 </script>
 
 <style>
+	.nav{z-index: 2000;box-shadow: 0 1px 1px 0px rgba(225, 225, 225, 1);}
 .nav .item{width: 50%;line-height: 90rpx;text-align: center;}
 .nav .on{position: relative;color: #51A9E9;}
 .nav .on::before{content: ''; width: 100%;height: 2rpx;background-color: #51A9E9;position: absolute; bottom: 0;left: 0;}
 
-.icon1{width: 12rpx;height: 22rpx;}
-.icon2{width: 19rpx;height: 18rpx;}
+.icon1{width: 12rpx!important;height: 22rpx!important;}
+.icon2{width: 19rpx!important;height: 18rpx!important;}
 textarea{border: 1px solid #e1e1e1; padding: 30rpx;width: 100%;box-sizing: border-box;}
 
 

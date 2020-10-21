@@ -1,26 +1,26 @@
 <template>
 	<view>
-		<view class="bg-white py-4 font-30 color2 text-center">工人不良行为查询</view>
+		<view class="bg-white py-4 font-30 color2 text-center">工人不良行为登记</view>
 		
 		<view class="d-flex a-center j-sb py-4 borderB-e1 px-3 bg-white mt-2">
-			<view class="font-28 color2">联系人</view>
-			<input type="text" placeholder="三项信息至少填写一项" v-model="submitData.title"/>
+			<view class="font-30 color2">联系人</view>
+			<input type="text" placeholder-class="font-30" class="color2 font-30" placeholder="三项信息至少填写一项" v-model="submitData.title"/>
 		</view>
 		<view class="d-flex a-center j-sb py-4 borderB-e1 px-3 bg-white">
-			<view class="font-28 color2">身份证号码</view>
-			<input type="idcard" placeholder="三项信息至少填写一项" v-model="submitData.description"/>
+			<view class="font-30 color2">身份证号码</view>
+			<input type="idcard" placeholder-class="font-30" class="color2 font-30" placeholder="三项信息至少填写一项" v-model="submitData.description"/>
 		</view>
 		<view class="d-flex a-center j-sb py-4 borderB-e1 px-3 bg-white">
-			<view class="font-28 color2">手机号</view>
-			<input type="number" maxlength="11" placeholder="三项信息至少填写一项" v-model="submitData.phone"/>
+			<view class="font-30 color2">手机号</view>
+			<input type="number" placeholder-class="font-30" class="color2 font-30" maxlength="11" placeholder="三项信息至少填写一项" v-model="submitData.phone"/>
 		</view>
 		<view class="py-4 borderB-f5 px-3 bg-white">
-			<view class="d-flex a-center j-sb color2 pb-4 line-h font-24">不良行为说明({{submitData.content.length}}/100)</view>
-			<textarea v-model="submitData.content" maxlength="100" placeholder="请填写100个字以内的内容" class="w-100"/>
+			<view class="d-flex a-center j-sb color2 pb-4 line-h font-30" @click="Router.navigateTo({route:{path:'/pages/user-opinion/user-opinion'}})">不良行为说明({{submitData.content.length}}/100)</view>
+			<textarea placeholder-class="font-30" class="color2 font-30 w-100" v-model="submitData.content" maxlength="100" placeholder="请填写100个字以内的内容" />
 		</view>
 		<view class="d-flex a-center py-4 px-3 bg-white" @click="upLoadImg('mainImg')">
 			<image :src="submitData.mainImg&&submitData.mainImg[0]?submitData.mainImg[0].url:'../../static/images/the-queryl-icon2.png'" class="icon"></image>
-			<view class="font-28 color2 pl-2">上传图片（选填）</view>
+			<view class="font-30 color2 pl-2">上传图片（选填）</view>
 		</view>
 		
 		<view class="btn400" @click="Utils.stopMultiClick(submit)">提交</view>

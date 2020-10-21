@@ -1,43 +1,44 @@
 <template>
 	<view :class="cityShow?'none':''">
-		<view class="head px-3 py-2 bg-mcolor font-32 colorf d-flex a-center z-index100" :style="{paddingTop:statusBar+'px'}" 
-		@click="checkLogin">
-			<image src="../../static/images/businessl-icon1.png" class="add"></image>
-			<view>免费发布</view>
-		</view>
-		
-		<!-- 搜索 -->
-		<view class="bg-f5 px-3 pt-2">
-			<view class="border-e1 rounded font-28 px-3 py-2 d-flex a-center j-sb ss">
-				<input type="text" v-model="keywords"/>
-				<view class="px-2" @click="search">搜索</view>
+		<view class="headBox">
+			<view class="head px-3 pb-1 bg-mcolor font-30 colorf d-flex a-center z-index100" :style="{paddingTop:statusBar+'px'}" 
+			@click="checkLogin">
+				<image src="../../static/images/businessl-icon1.png" class="add"></image>
+				<view>免费发布</view>
+			</view>
+			
+			<!-- 搜索 -->
+			<view class="bg-f5 px-3 pt-2">
+				<view class="border-e1 rounded bg-white font-28 mx-3 py-2 d-flex a-center j-sb ss">
+					<input type="text" v-model="keywords"/>
+					<view class="px-2" @click="search">搜索</view>
+				</view>
+			</view>
+			
+			<view class="iconBox d-flex a-center j-sb px-3 pt-4 bg-f5">
+				<image @click="changeBehavior(1)" :src="navType==1?'../../static/images/laborl-icon.png':'../../static/images/laborl-icon5.png'" mode=""></image>
+				<image @click="changeBehavior(2)" :src="navType==2?'../../static/images/laborl-icon9.png':'../../static/images/laborl-icon1.png'" mode=""></image>
+				<image @click="changeBehavior(3)" :src="navType==3?'../../static/images/laborl-icon8.png':'../../static/images/laborl-icon2.png'" mode=""></image>
+				<image @click="changeBehavior(4)" :src="navType==4?'../../static/images/laborl-icon7.png':'../../static/images/laborl-icon3.png'" mode=""></image>
+				<image @click="changeBehavior(5)" :src="navType==5?'../../static/images/laborl-icon6.png':'../../static/images/laborl-icon4.png'" mode=""></image>
+			</view>
+			
+			<!-- nav -->
+			<view class="font-28 color2 d-flex a-center j-sb  bg-f5 nav">
+				<view class="item" :class="navCurr==1?'on':''" @click="changeNav(1)">默认</view>
+				<view class="item" :class="navCurr==2?'on':''" @click="changeNav(2)">介绍费</view>
+				<view class="item d-flex a-center j-center" :class="navCurr==3?'on':''" @click="changeNav(3)">
+					{{cityIndex>=0&&cityIdIndex<0?cityData[cityIndex].title:(cityIndex>=0&&cityIdIndex>=0?cityData[cityIndex].children[cityIdIndex].title:'所在地')}}
+					<image src="../../static/images/second-handl-icon4.png" v-if="navCurr==3"></image>
+					<image src="../../static/images/second-handl-icon.png" v-else></image>
+				</view>
 			</view>
 		</view>
-		
-		<view class="iconBox d-flex a-center j-sb px-3 pt-4 bg-f5">
-			<image @click="changeBehavior(1)" :src="navType==1?'../../static/images/laborl-icon.png':'../../static/images/laborl-icon5.png'" mode=""></image>
-			<image @click="changeBehavior(2)" :src="navType==2?'../../static/images/laborl-icon9.png':'../../static/images/laborl-icon1.png'" mode=""></image>
-			<image @click="changeBehavior(3)" :src="navType==3?'../../static/images/laborl-icon8.png':'../../static/images/laborl-icon2.png'" mode=""></image>
-			<image @click="changeBehavior(4)" :src="navType==4?'../../static/images/laborl-icon7.png':'../../static/images/laborl-icon3.png'" mode=""></image>
-			<image @click="changeBehavior(5)" :src="navType==5?'../../static/images/laborl-icon6.png':'../../static/images/laborl-icon4.png'" mode=""></image>
-		</view>
-		
-		<!-- nav -->
-		<view class="font-28 color2 d-flex a-center j-sb borderB-e1 bg-f5 nav">
-			<view class="item" :class="navCurr==1?'on':''" @click="changeNav(1)">默认</view>
-			<view class="item" :class="navCurr==2?'on':''" @click="changeNav(2)">介绍费</view>
-			<view class="item d-flex a-center j-center" :class="navCurr==3?'on':''" @click="changeNav(3)">
-				所在地
-				<image src="../../static/images/second-handl-icon4.png" v-if="navCurr==3"></image>
-				<image src="../../static/images/second-handl-icon.png" v-else></image>
-			</view>
-		</view>
-		
 		<view class="bg-f5">
 			<view class="bg-white mb-2 px-3"  v-for="(item,index) of mainData"
 			:key="item.id" :data-id="item.id"
 			@click="Router.navigateTo({route:{path:'/pages/labour-detail/labour-detail?id='+$event.currentTarget.dataset.id}})">
-				<view class="font-30 color2 pt-4">{{item.title}}</view>
+				<view class="font-30 color2 pt-4 avoidOverflow2">{{item.title}}</view>
 				<view class="d-flex flex-wrap py-3 imgBox">
 					<image v-for="(c_item,c_index) in item.mainImg" :key="c_index"  :src="c_item.url" mode=""></image>
 					
@@ -49,7 +50,7 @@
 						<view class="tag tagG" v-if="item.behavior==3">工人找活</view>
 						<view class="tag tagG" v-if="item.behavior==4">队伍找活</view>
 						<!-- <view class="tag tagY" v-if="item.invalid_time<now">信息已失效</view> -->
-						<view v-if="item.price!=''"><text class="tag tagR">介绍费</text><text class="tag tagO">{{item.price}}</text></view>
+						<view v-if="item.price!=''"><text class="tag tagR" style="border-radius: 5rpx 0 0 5rpx;">介绍费</text><text class="tag tagO" style="border-radius: 0 5rpx 5rpx 0;" >{{item.price}}</text></view>
 					</view>
 					<view class="d-flex a-center">
 						<image src="../../static/images/detailsl-icon3.png" class="dw"></image>
@@ -57,14 +58,14 @@
 						<view class="font-24 color6 pl-2">{{Utils.formatMsgTime(item.update_time)}}</view>
 					</view>
 				</view>	
-				<view class="line-h-md py-4 font-24 color6 dashedBorder">
+				<!-- <view class="line-h-md py-4 font-24 color6 dashedBorder">
 					<view v-if="item.behavior==1" v-for="(c_item,c_index) in item.passage_array" :key="c_index">{{c_item.name}}，{{c_item.num}}名，
 					{{c_item.money!=''?'月工资'+c_item.money:'待遇面议'}}</view>
 					<view v-if="item.behavior==2" v-for="(c_item,c_index) in item.passage_array" :key="c_index">{{c_item.name}}，{{c_item.num}}支队伍，
 					{{c_item.money!=''?'月工资'+c_item.money:'待遇面议'}}</view>
 					<view v-if="item.behavior==3">求职岗位：{{item.description}},期待工资：{{item.salary}}</view>
 					<view v-if="item.behavior==4">我能承包：<span :key="c_index" v-for="(c_item,c_index) in item.passage_array">{{c_item.name}}</span></view>
-				</view>
+				</view> -->
 			</view>
 		
 			
@@ -79,8 +80,8 @@
 		</view> -->
 		
 		
-		<view class="oh bg-mask position-fixed d-flex flex-column"  :style="{marginTop:statusBar+172 +'px'}" 
-		style="top: 66px;" v-show="cityShow">
+		<view class="oh bg-mask position-fixed d-flex flex-column"   :style="{marginTop:showHeight+'px'}"
+		 v-show="cityShow">
 			<!-- 所在地 -->
 			<view class="classfiy font-26 color2 line-h text-center d-flex">
 				<view class="left">
@@ -88,6 +89,8 @@
 					 @click="changeCityIndex(index)" :class="cityIndex==index?'on':''">{{item.title}}</view>
 				</view>
 				<view class="right flex-1 bg-white">
+					<view class="li py-3"
+					 @click="chooseCityId(-1)" :class="cityIdIndex==-1?'on':''">全部</view>
 					<view class="li" :class="cityIdIndex==index?'on':''" @click="chooseCityId(index)" 
 					v-for="(item,index) of cityData[cityIndex].children"
 					:key="item.id">{{item.title}}
@@ -149,11 +152,12 @@
 				total:0,
 				navType:1,
 				cityShow:false,
-				cityIndex:0,
-				cityIdIndex:-1,
+				cityIndex:-1,
+				cityIdIndex:-2,
 				cityData:[],
 				keywords:'',
-				tip:'加载中...'
+				tip:'加载中...',
+				showHeight:0
 			}
 		},
 		
@@ -172,7 +176,15 @@
 				self.getMainData()
 			};
 		},
-		
+		onReady () {
+			const self = this;
+		    setTimeout(() => {
+				let query = wx.createSelectorQuery();		
+				query.select('.headBox').boundingClientRect(rect=>{
+					this.showHeight = rect.height
+				},this).exec();
+		    }, 300,this)
+		},
 		methods: {
 			
 			closeMask(){
@@ -237,10 +249,14 @@
 				if(type==1){
 					delete self.searchItem.price;
 					delete self.searchItem.location;
+					self.cityIndex = -1;
+					self.cityIdIndex = -2;
 					self.cityShow = false;
 					self.getMainData(true)
 				}else if(type==2){
 					self.searchItem.price = ['not in',[]]
+					self.cityIndex = -1;
+					self.cityIdIndex = -2;
 					self.cityShow = false;
 					self.getMainData(true)
 				}else if(type==3){
@@ -257,8 +273,20 @@
 				const self = this;
 				uni.setStorageSync('canClick', false);
 				self.cityIdIndex = index;
+				if(index<0){
+					var idArray = [];
+					if(self.cityData[self.cityIndex].children.length>0){
+						for (var i = 0; i < self.cityData[self.cityIndex].children.length; i++) {
+							idArray.push(self.cityData[self.cityIndex].children[i].id)
+						};
+						self.searchItem.location = ['in',idArray];
+					}else{
+						self.searchItem.location = [];
+					}
+				}else{
+					self.searchItem.location = self.cityData[self.cityIndex].children[self.cityIdIndex].id;
+				};
 				delete self.searchItem.price;
-				self.searchItem.location = self.cityData[self.cityIndex].children[self.cityIdIndex].id;
 				self.navCurr = 3;
 				self.cityShow = false;
 				self.getMainData(true)
@@ -309,7 +337,11 @@
 						self.tip = '下拉加载更多'
 					}else{
 						self.tip = '没有更多内容了'
-					}
+						if(postData.keywords&&self.mainData.length==0){
+							self.tip = '没有找到与“'+postData.keywords+'”相关的信息 请试试其他关键词搜索'
+						}
+					};
+					
 					uni.setStorageSync('canClick', true);
 					self.$Utils.finishFunc('getMainData');
 				};
@@ -338,10 +370,12 @@
 </script>
 
 <style>
-page{height: 100%;}
+page{height: 100%;background-color: #F5F5F5;}
+.headBox{position: sticky;top: 0;z-index: 1000;}
 .none{height: 100%;overflow: hidden;}
 .bg-f5{background-color: #f5f5f5;}
-.head{position: sticky;top: 0;left: 0;right: 0;line-height: 70rpx;}
+.head{line-height: 80rpx;}
+/* .head{position: sticky;top: 0;left: 0;right: 0;line-height: 70rpx;} */
 .add{width: 23rpx;height: 23rpx;margin-right: 10rpx;}
 
 
@@ -349,11 +383,11 @@ page{height: 100%;}
 .ss input::-webkit-input-placeholder{color: #222!important;}
 
 .iconBox image{width: 110rpx;height: 110rpx ;}
-.nav{z-index: 2000;}
+.nav{z-index: 2000;box-shadow: 0 1px 1px 0px rgba(225, 225, 225, 1);}
 .nav image{width: 13rpx;height: 6rpx;margin-left: 8rpx;}
 .nav .item{width: 33.33%;line-height: 90rpx;text-align: center;}
-.nav .on{position: relative;color: #51A9E9;box-shadow: 0 8px 6px -6px rgba(148, 232, 241, 0.5);}
-/* .nav .on::before{content: ''; width: 100%;height: 2rpx;background-color: #51A9E9;position: absolute; bottom: 0;left: 0;} */
+.nav .on{position: relative;color: #51A9E9;}
+.nav .on::before{content: ''; width: 100%;height: 2rpx;background-color: #51A9E9;position: absolute; bottom: 0;left: 0;}
 
 .imgBox image{width: 160rpx;height: 160rpx;margin-right: 17rpx;}
 .imgBox image:nth-child(4n){margin-right: 0;}

@@ -21,7 +21,7 @@
 			<view class="color6 font-24 d-flex j-sb a-start pb-4 borderB-f5">
 				<view class="line-h">
 					<view class="pb-2">首发时间：{{mainData.create_time?mainData.create_time:''}}</view>
-					<view>更新时间：{{mainData.update_time!='1970-01-01'?mainData.update_time:'-'}}</view>
+					<view>更新时间：{{mainData.update_time&&mainData.update_time!=mainData.create_time?mainData.update_time:'-'}}</view>
 					<!-- <view v-if="now < mainData.invalid_time">更新时间：{{mainData.update_time?mainData.update_time:''}}</view> -->
 					<!-- <view class="Rcolor" v-else>本条信息已失效</view> -->
 				</view>
@@ -40,9 +40,9 @@
 				<view class="font-22 d-flex a-center">
 					<view class="tag tag1" v-if="mainData.keywords&&mainData.keywords.length>0&&mainData.keywords[0].length>0" v-for="(c_item,c_index) of mainData.keywords" :key="c_index">{{c_item}}</view>
 					<view class="tag tagB" v-if="mainData.behavior==1">出售</view>
-					<!-- <view class="tag tagG" v-if="mainData.behavior==2">求购</view> -->
+					<view class="tag tagG" v-if="mainData.behavior==2">求购</view>
 					<view class="tag tagO">{{mainData.label?mainData.label.title:''}}</view>
-					<view class="tag tagP">{{mainData.behavior?(mainData.behavior==1?'售价:':''):''}}{{mainData.price==''?'面议':mainData.price}}</view>
+					<view class="tag tagP">{{mainData.price&&mainData.price!=''?mainData.price:'面议'}}</view>
 				</view>
 				<view class="d-flex a-center">
 					<image src="../../static/images/detailsl-icon3.png" class="icon4"></image>
@@ -72,11 +72,11 @@
 			<view class="bg-white py-4 d-flex a-start">
 				<image :src="mainData.user&&mainData.user[0]&&mainData.user[0]?mainData.user[0].headImgUrl:''" class="userImg"></image>
 				<view class="ml-3 flex-1">
-					<view class="font-26 color2 mb-2 flex-1 d-flex a-center border-e1" style="width: 58%;">
-						<view class="pr-4">{{mainData.name?mainData.name:''}}</view>
+					<view class="font-26 color2 mb-2 flex-1 d-flex a-center" style="width: 58%;">
+						<view class="pr-4 font-w">{{mainData.name?mainData.name:''}}</view>
 						<view class="d-flex a-center">
 							<image src="../../static/images/detailsl-icon4.png" class="icon5"></image>
-							<view>{{mainData.phone?mainData.phone:''}}</view>
+							<view class="font-w">{{mainData.phone?mainData.phone:''}}</view>
 						</view>
 					</view>
 					<view class="font-24 color6">{{mainData.user&&mainData.user[0]&&mainData.user[0]?mainData.user[0].info.passage2:''}}</view>

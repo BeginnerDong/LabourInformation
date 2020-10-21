@@ -1,13 +1,13 @@
 <template>
 	<view>
-		<view class="text-center font-24 color2 p-3 head position-relative" v-show="tips_show">
+		<!-- <view class="text-center font-24 color2 p-3 head position-relative" v-show="tips_show">
 			<view class="Rcolor pb-3">温馨提示</view>
 			<view class="pb-1" style="text-indent: 40rpx;">
 				<text class="Rcolor">如果您是工程高管或老板，</text>
 				请添加劳务信息官方微信：{{kefu}}（免费认证），以后有招工人/找班组需求告知我们完全免费帮您发布（不收取任何费用）
 			</view>
-			<view class="close p-3" @click="changeTips()"><image src="../../static/images/used%20to%20releasel-icon2.png" class="icon1"></image></view>
-		</view>
+			<view class="close p-3" @click="changeTips()"><image src="../../static/images/used-to-releasel-icon2.png" class="icon1"></image></view>
+		</view> -->
 		
 		<!-- nav -->
 		<view class="font-28 color2 d-flex a-center j-sb borderB-e1 bg-f5 shadow-sm nav">
@@ -31,57 +31,34 @@
 		</view>
 		<!-- 列表信息 -->
 		<view class="bg-white">
-			<view class="py-4 borderB-f5 px-3">
+			<view class="py-3 borderB-f5 px-3">
 				<view class="d-flex a-center j-sb color2 pb-4 line-h">
-					<view class="font-28" v-show="navCurr==1">标题/招工人需求</view>
-					<view class="font-28" v-show="navCurr==2">标题/招班组需求</view>
-					<view class="font-28" v-show="navCurr==3">标题/您的应聘内容</view>
-					<view class="font-28" v-show="navCurr==4">标题/您的队伍简介</view>
+					<view class="font-30">标题</view>
 					<view class="font-24">({{submitData.title.length}}/100)</view>
 				</view>
 				<textarea  maxlength="100" placeholder="请填写100个字以内的内容"  v-model="submitData.title"/>
 			</view>
-			
-			<!-- ---------工人找活展示------- -->
-			<view class="d-flex a-center j-sb py-4 borderB-f5 px-3" v-show="navCurr==3">
-				<view class="font-28 color2">求职岗位</view>
-				<input type="text" placeholder="请填写" v-model="submitData.description"/>
-			</view>
-			<view class="d-flex a-center j-sb py-4 borderB-f5 px-3" v-show="navCurr==3">
-				<view class="font-28 color2">期望薪资</view>
-				<input type="text" placeholder="请填写" v-model="submitData.salary"/>
-			</view>
-			<view class="d-flex a-center j-sb py-4 borderB-f5 px-3" v-show="navCurr==3 || navCurr==4">
-				<view class="font-28 color2">户籍所在地</view>
+			<view class="d-flex a-center j-sb py-3 borderB-f5 px-3">
+				<view class="font-30 color2">所在地区</view>
 				<view class="d-flex a-center" @click="showChoose('city')">
-					<view class="font-24 color9 pr-1">{{submitData.location!=''?
+					<view class="font-24 color9 pr-1" :class="submitData.location!=''?'color2':''">{{submitData.location!=''?
 					cityData[cityIndex].title+'/'+cityData[cityIndex].children[cityIdIndex].title:'请选择'}}</view>
 					<image src="../../static/images/used-to-releasel-icon3.png" class="icon1"></image>
 				</view>
 			</view>
-			<!-- ------------------------------- -->
-			
-			<view class="d-flex a-center j-sb py-4 borderB-f5 px-3" v-show="navCurr==1 || navCurr==2">
-				<view class="font-28 color2">工程所在地区</view>     
-				<view class="d-flex a-center" @click="showChoose('city')">
-					<view class="font-24 color9 pr-1">{{submitData.location!=''?
-					cityData[cityIndex].title+'/'+cityData[cityIndex].children[cityIdIndex].title:'请选择'}}</view>
-					<image src="../../static/images/used-to-releasel-icon3.png" class="icon1"></image>
-				</view>
-			</view>
-			<view class="d-flex a-center j-sb py-4 borderB-f5 px-3">
-				<view class="font-28 color2">联系人</view>
+			<view class="d-flex a-center j-sb py-3 borderB-f5 px-3">
+				<view class="font-30 color2">联系人</view>
 				<input type="text" placeholder="请填写" v-model="submitData.name"/>
 			</view>
-			<view class="d-flex a-center j-sb py-4 borderB-f5 px-3">
-				<view class="font-28 color2">手机号</view>
+			<view class="d-flex a-center j-sb py-3 borderB-f5 px-3">
+				<view class="font-30 color2">手机号</view>
 				<input type="text" placeholder="请填写" v-model="submitData.phone"/>
 			</view>
 		</view>
 		
 		
-		<view class="card1 bg-white">
-			<!-- 招工人 -->
+		<!-- <view class="card1 bg-white">
+			
 			<view class="px-3 mt-2" v-show="navCurr==1">
 				<view class="color2 font-28 d-flex a-center">
 					<view class="pt-4 pb-3 select">招聘工种</view>
@@ -95,11 +72,11 @@
 					<view class="font-28 Rcolor" v-if="index>0" @click="deleteWorker(index)">删除</view>
 				</view>
 				<view class="d-flex a-center j-center py-4" @click="addWorker">
-					<image src="../../static/images/labor%20releasel-icon.png" class="icon3"></image>
+					<image src="../../static/images/labor-releasel-icon.png" class="icon3"></image>
 					<view class="pl-2 font-26 Mcolor">继续添加</view>
 				</view>
 			</view>
-			<!-- 找队伍 -->
+			
 			<view class="px-3 mt-2" v-show="navCurr==2">
 				<view class="color2 font-28 d-flex a-center">
 					<view class="pt-4 pb-3 select">招聘工种</view>
@@ -113,7 +90,7 @@
 					<view class="font-28 Rcolor" v-if="index>0" @click="deleteTeam(index)">删除</view>
 				</view>
 				<view class="d-flex a-center j-center py-4" @click="addTeam">
-					<image src="../../static/images/labor%20releasel-icon.png" class="icon3"></image>
+					<image src="../../static/images/labor-releasel-icon.png" class="icon3"></image>
 					<view class="pl-2 font-26 Mcolor">继续添加</view>
 				</view>
 			</view>
@@ -128,17 +105,17 @@
 					<view class="font-28 Rcolor" v-if="index>0" @click="deleteMyTeam(index)">删除</view>
 				</view>
 				<view class="d-flex a-center j-center py-4" @click="addMyTeam">
-					<image src="../../static/images/labor%20releasel-icon.png" class="icon3"></image>
+					<image src="../../static/images/labor-releasel-icon.png" class="icon3"></image>
 					<view class="pl-2 font-26 Mcolor">继续添加</view>
 				</view>
 			</view>
-		</view>
+		</view> -->
 		
 		
 		<!-- 介绍费 -->
 		<view class="mt-2 bg-white pb-5">
-			<view class="d-flex a-center j-sb py-4 borderB-f5 px-3">
-				<view class="font-28 color2">介绍费</view>
+			<view class="d-flex a-center j-sb py-3 borderB-f5 px-3">
+				<view class="font-30 color2">介绍费</view>
 				<input type="text" placeholder="请输入金额,可不填写" maxlength="5" v-model="submitData.price"/>
 			</view>
 			<view class="d-flex p-3 mb-5">
@@ -191,10 +168,11 @@
 					location:'',
 					name:'',
 					phone:'',
-					passage_array:[],
-					salary:'',
+					//passage_array:[],
+					//salary:'',
 					mainImg:[],
-					description:''
+					//description:''
+					price:''
 				},
 				cityData:[],
 				cityIndex:0,
@@ -256,19 +234,19 @@
 						self.submitData.mainImg = self.messageData.mainImg;
 						self.submitData.behavior = self.messageData.behavior;
 						self.submitData.location = self.messageData.location;
-						self.submitData.passage_array = self.messageData.passage_array;
-						self.submitData.salary = self.messageData.salary;
-						self.submitData.description = self.messageData.description;
+						//self.submitData.passage_array = self.messageData.passage_array;
+						//self.submitData.salary = self.messageData.salary;
+						//self.submitData.description = self.messageData.description;
 						//console.log(self.$Utils.findItemInTwoArray(self.cityData,self.submitData.location))
 						self.cityIndex = self.$Utils.findItemInTwoArray(self.cityData,self.submitData.location)[0];
 						self.cityIdIndex = self.$Utils.findItemInTwoArray(self.cityData,self.submitData.location)[1];
-						if(self.submitData.behavior == 1){
+						/* if(self.submitData.behavior == 1){
 							self.worker = self.submitData.passage_array
 						}else if(self.submitData.behavior == 2){
 							self.team = self.submitData.passage_array
 						}else if(self.submitData.behavior == 4){
 							self.myTeam = self.submitData.passage_array
-						}
+						} */
 					}
 					self.$Utils.finishFunc('getMessageData');
 				};
@@ -281,23 +259,23 @@
 			submit() {
 				const self = this;
 				uni.setStorageSync('canClick', false);
-				if(self.submitData.behavior==1){
+				/* if(self.submitData.behavior==1){
 					self.submitData.passage_array = self.worker
 				}else if(self.submitData.behavior==2){
 					self.submitData.passage_array = self.team
 				}else if(self.submitData.behavior==4){
 					self.submitData.passage_array = self.myTeam
-				};
+				}; */
 				var newObject = self.$Utils.cloneForm(self.submitData);
 				delete newObject.mainImg;
 				delete newObject.price;
-				
+				/* 
 				if(self.submitData.behavior!=3){
 					delete newObject.salary;
 					delete newObject.description
 				}else{
 					delete newObject.passage_array
-				};
+				}; */
 				const pass = self.$Utils.checkComplete(newObject);
 				console.log('self.submitData',self.submitData)
 				if (pass) {	
@@ -503,7 +481,7 @@
 page{background-color: #f5f5f5;}
 .borderBox{box-sizing: border-box;}
 .head{background-color: #FFF4D4;}
-.icon1{width: 19rpx;height: 18rpx;}
+.icon1{width: 19rpx!important;height: 18rpx!important;}
 .close{position: absolute;top: 0;right: 0;}
 
 .nav image{width: 13rpx;height: 6rpx;margin-left: 8rpx;}
@@ -512,7 +490,7 @@ page{background-color: #f5f5f5;}
 .nav .on::before{content: ''; width: 100%;height: 2rpx;background-color: #51A9E9;position: absolute; bottom: 0;left: 0;}
 
 .icon2Box{position: absolute;right: 0;top: 10rpx;padding: 10rpx;}
-.icon2{width: 18rpx;height: 10rpx;}
+.icon2{width: 18rpx!important;height: 10rpx!important;}
 .select{width: 220rpx;line-height: 60rpx;text-indent: 10rpx;margin-right: 30rpx;}
 .select1{width: 160rpx;line-height: 60rpx;margin-right: 30rpx;}
 .card1 .on{border: 1px solid #51A9E9;}
@@ -523,11 +501,11 @@ page{background-color: #f5f5f5;}
 .classfiy .left{width: 180rpx;background-color: #f5f5f5;}
 .classfiy .left .on{color: #55AAE9;position: relative;background: #fff;}
 .classfiy .left .on::before{content: '';background-color: #55AAE9;height: 100%;width: 4rpx;position: absolute;top: 0;left: 0;}
-.icon5{width: 36rpx;height: 26rpx;}
+.icon5{width: 36rpx!important;height: 26rpx!important;}
 .classfiy .right .li{display: flex;justify-content: space-between;align-items: center;padding: 30rpx;border-bottom: 1px solid #f5f5f5;}
 .classfiy .right .on{color: #51A9E9;}
 
-.icon3{width: 22rpx;height: 22rpx;}
-.icon4{width: 12rpx;height: 22rpx;}
+.icon3{width: 22rpx!important;height: 22rpx!important;}
+.icon4{width: 12rpx!important;height: 22rpx!important;}
 .number{border: 1px solid #666;color: #666;border-radius: 50%;width: 24rpx;display: inline-block;line-height: 1;text-align: center;margin-right: 10rpx;margin-bottom: 20rpx;}
 </style>

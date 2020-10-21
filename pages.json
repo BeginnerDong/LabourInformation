@@ -89,12 +89,13 @@
 		}, {
 			"path": "pages/business-publish/business-publish",
 			"style": {
-				"navigationBarTitleText": "商务通名片"
+				"navigationBarTitleText": "我的名片"
 			}
 		}, {
 			"path": "pages/user/user",
 			"style": {
-				"navigationBarTitleText": "我的"
+				"navigationBarTitleText": "我的",
+				"navigationStyle": "custom"
 			}
 		}, {
 			"path": "pages/user-secondHand/user-secondHand",
@@ -134,7 +135,7 @@
 		}, {
 			"path": "pages/user-workersSreach/user-workersSreach",
 			"style": {
-				"navigationBarTitleText": "工人不良行为登记"
+				"navigationBarTitleText": "工人不良行为查询"
 			}
 		}, {
 			"path": "pages/user-sreachResult/user-sreachResult",

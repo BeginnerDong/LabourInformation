@@ -1,6 +1,6 @@
 <template>
 	<view class="h-100 d-flex flex-column">
-		<view class="head px-3 pb-1 bg-mcolor font-32 colorf d-flex a-center z-index100" :style="{paddingTop:statusBar +'px'}"
+		<view class="head px-3 pb-1 bg-mcolor font-30 colorf d-flex a-center z-index100" :style="{paddingTop:statusBar +'px'}"
 		 @click="checkLogin">
 			<image src="../../static/images/businessl-icon1.png" class="add"></image>
 			<view>免费发布</view>
@@ -22,28 +22,31 @@
 				<view class="search p-2" v-show="listCurr==-2">
 					<view class="font-28 color2 d-flex border-e1 a-center px-2 ss">
 						<input type="text" placeholder="请输入关键词搜索" v-model="keywords" />
-						<view class="pl-2 borderL-f5" @click="search">搜索</view>
+						<view class="pl-2 borderL-f5 Mcolor" @click="search">搜索</view>
 					</view>
 
 					<view class="font-22 color9 d-flex flex-wrap">
 						<view class="py-2 mr-1" v-for="(item,index) of historyData" :key="item.id" @click="clickSearch(index)">{{item.result}}</view>
 					</view>
 				</view>
-				<view class="font-28 color2 d-flex a-center j-sb borderB-e1 z-index1000 nav" v-show="listCurr!=-2&&listCurr!=-1">
-					<view class="item d-flex a-center j-center" :class="navCurr==1?'on':''" @click="changeCurr(1)">分类
+				<view class="font-28 color2 d-flex a-center j-sb bg-fc  z-index1000 nav" v-show="listCurr!=-2&&listCurr!=-1">
+					<view class="item d-flex a-center j-center" :class="navCurr==1?'on':''" @click="changeCurr(1)">
+					{{menuIdIndex>=0?menuData[menuIndex].children[menuIdIndex].title:'分类'}}
 						<image src="../../static/images/labor-releasel-icon1.png" v-if="navCurr==1"></image>
 						<image src="../../static/images/labor-releasel-icon2.png" v-else></image>
 					</view>
-					<view class="item d-flex a-center j-center" :class="navCurr==2?'on':''" @click="changeCurr(2)">销售区域
+					<!-- <view class="item d-flex a-center j-center" :class="navCurr==2?'on':''" @click="changeCurr(2)">销售区域
 						<image src="../../static/images/labor-releasel-icon1.png" v-if="navCurr==2"></image>
 						<image src="../../static/images/labor-releasel-icon2.png" v-else></image>
-					</view>
-					<view class="item d-flex a-center j-center" :class="navCurr==3?'on':''" @click="changeCurr(3)">所在地
+					</view> -->
+					<view class="item d-flex a-center j-center" :class="navCurr==3?'on':''" @click="changeCurr(3)">
+						<!-- {{cityIdIndex>=0?cityData[cityIndex].children[cityIdIndex].title:'所在地'}} -->
+						{{cityIndex>=0&&cityIdIndex<0?cityData[cityIndex].title:(cityIndex>=0&&cityIdIndex>=0?cityData[cityIndex].children[cityIdIndex].title:'所在地')}}
 						<image src="../../static/images/labor-releasel-icon1.png" v-if="navCurr==3"></image>
 						<image src="../../static/images/labor-releasel-icon2.png" v-else></image>
 					</view>
 				</view>
-				<view class="rounded shadow m-2 px-2  pb-3" v-for="(item,index) of mainData" :key="item.id">
+				<view class="rounded shadow m-2 px-2 bg-fc pb-3" v-for="(item,index) of mainData" :key="item.id">
 					<view class="Mcolor font-30 py-3">{{item.title}}</view>
 					<view class="d-flex a-center j-sb line-h pb-3 borderB-e1">
 						<view><text class="borderR-e1 pr-2 mr-2">{{item.name}}</text>{{item.phone}}</view>
@@ -66,10 +69,10 @@
 					</view>
 					
 					
-					<view class="d-flex font-24 pt-3">
+					<!-- <view class="d-flex font-24 pt-3">
 						<view class="color6">销售区域：</view>
 						<view class="color2 mr-1" :key="c_item.id" v-for="(c_item,c_index) in item.relation">{{c_item.relation_two}}</view>
-					</view>
+					</view> -->
 					<view class="font-22 Mcolor text-center d-flex a-center j-end pt-3">
 						<view class="btn Mborder rounded" style="width: 150rpx;" @click="Router.navigateTo({route:{path:'/pages/user-opinion/user-opinion'}})">不实信息投诉</view>
 						<view class="btn Mborder rounded ml-5" @click="collect(index)">
@@ -89,12 +92,15 @@
 			<!-- 分类 -->
 
 		</view>
-		<view :style="{marginTop:statusBar+100 +'px'}" style="z-index:41;left:180rpx;height: 100;max-height: 400rpx;overflow-y: auto;" class="position-fixed top-0  right-0">
+		<scroll-view scroll-y  :style="{marginTop:statusBar+100 +'px'}" style="z-index:41;left:180rpx;height: 100;max-height: 400rpx;overflow-y: auto;" class="position-fixed top-0  right-0">
 			<view class="classfiy font-26 color2 line-h text-center d-flex" v-show="menuShow">
 				<!-- <view class="left">
 					<view class="li py-3" v-for="(item,index) of menuData" :key="item.id" @click="changeMenuIndex(index)" :class="menuIndex==index?'on':''">{{item.title}}</view>
 				</view> -->
 				<view class="right flex-1 bg-white">
+					<view class="li" :class="menuIdIndex==-1?'on':''" @click="chooseMenuId(-1)">全部
+						<image src="../../static/images/used-to-releasel-icon5.png" class="icon5" v-if="menuIdIndex==-1"></image>
+					</view>
 					<view class="li" :class="menuIdIndex==index?'on':''" @click="chooseMenuId(index)" v-for="(item,index) of menuData[menuIndex].children"
 					 :key="item.id">{{item.title}}
 						<image src="../../static/images/used-to-releasel-icon5.png" class="icon5" v-if="menuIdIndex==index"></image>
@@ -105,9 +111,15 @@
 			<!-- 所在地 -->
 			<view class="classfiy font-26 color2 line-h text-center d-flex" v-show="cityShow">
 				<view class="left">
+					<view class="li py-3" :class="cityIndex==-1?'on':''" @click="changeCityIndex(-1)">全国
+
+					</view>
 					<view class="li py-3" v-for="(item,index) of cityData" :key="item.id" @click="changeCityIndex(index)" :class="cityIndex==index?'on':''">{{item.title}}</view>
 				</view>
 				<view class="right flex-1 bg-white">
+					<view class="li" :class="cityIdIndex==-1?'on':''" @click="chooseCityId(-1)">全部
+						<image src="../../static/images/used-to-releasel-icon5.png" class="icon5" v-if="cityIdIndex==-1"></image>
+					</view>
 					<view class="li" :class="cityIdIndex==index?'on':''" @click="chooseCityId(index)" v-for="(item,index) of cityData[cityIndex].children"
 					 :key="item.id">{{item.title}}
 						<image src="../../static/images/used-to-releasel-icon5.png" class="icon5" v-if="cityIdIndex==index"></image>
@@ -126,7 +138,7 @@
 					</view>
 				</view>
 			</view>
-		</view>
+		</scroll-view>
 
 
 
@@ -180,8 +192,8 @@
 				cityShow: false,
 				menuShow: false,
 				saleCityShow: false,
-				cityIndex: 0,
-				cityIdIndex: -1,
+				cityIndex: -1,
+				cityIdIndex: -2,
 				menuIndex: 0,
 				menuIdIndex: -1,
 				navCurr: -1,
@@ -248,17 +260,24 @@
 				const self = this;
 				uni.setStorageSync('canClick', false);
 				self.menuIdIndex = index;
-				//self.listCurr = self.menuIndex;
-				self.menuBefore = {
-					tableName: 'Relation',
-					middleKey: 'id',
-					key: 'relation_one',
-					searchItem: {
-						type:['in',[2]],
-						relation_two: ['in', [self.menuData[self.menuIndex].children[self.menuIdIndex].id]]
-					},
-					condition: 'in'
+				if(index<0){
+					self.menuBefore = {}
+				}else{
+					
+					//self.listCurr = self.menuIndex;
+					self.menuBefore = {
+						tableName: 'Relation',
+						middleKey: 'id',
+						key: 'relation_one',
+						searchItem: {
+							type:['in',[2]],
+							relation_two: ['in', [self.menuData[self.menuIndex].children[self.menuIdIndex].id]]
+						},
+						condition: 'in'
+					};
 				};
+				self.cityIndex = -1;
+				self.cityIdIndex = -1;
 				self.saleCityBefore = {};
 				delete self.searchItem.location;
 				self.navCurr = 1;
@@ -268,16 +287,41 @@
 
 			changeCityIndex(index) {
 				const self = this;
-				self.cityIndex = index
+				self.cityIndex = index;
+				if(self.cityIndex==-1){
+					self.menuIndex = -1;
+					self.menuIdIndex = -1;
+					self.cityIdIndex = -1;
+					self.menuBefore = {};
+					delete self.searchItem.location;
+					delete self.searchItem.menu_id;
+					self.closeMask();
+					self.getMainData(true)
+				}
 			},
 
 			chooseCityId(index) {
 				const self = this;
 				uni.setStorageSync('canClick', false);
 				self.cityIdIndex = index;
+				if(index<0){
+					var idArray = [];
+					if(self.cityData[self.cityIndex].children.length>0){
+						for (var i = 0; i < self.cityData[self.cityIndex].children.length; i++) {
+							idArray.push(self.cityData[self.cityIndex].children[i].id)
+						};
+						self.searchItem.location = ['in',idArray];
+					}else{
+						self.searchItem.location = [];
+					}
+				}else{
+					self.searchItem.location = self.cityData[self.cityIndex].children[self.cityIdIndex].id;
+				};
+				self.menuIndex = 0;
+				self.menuIdIndex = -1;
 				self.menuBefore = {};
 				self.saleCityBefore = {};
-				self.searchItem.location = self.cityData[self.cityIndex].children[self.cityIdIndex].id;
+				
 				self.navCurr = 3;
 				self.cityShow = false;
 				self.getMainData(true)
@@ -478,7 +522,8 @@
 					self.getMainData(true)
 				};
 				if(self.listCurr>=0){
-					self.menuIndex = self.listCurr
+					self.menuIndex = self.listCurr;
+					self.menuIdIndex = -1;
 				}else{
 					self.menuShow = false
 					self.saleCityShow = false;
@@ -643,7 +688,7 @@
 		width: 106rpx;
 		height: 106rpx;
 		margin-top: 20rpx;
-		margin-right: 20rpx;
+		margin-right: 19rpx;
 	}
 
 	.imgBox .img:nth-child(3n) {
@@ -674,7 +719,8 @@
 	}
 
 	.shadow {
-		box-shadow: 0 0rpx 16rpx rgba(114, 130, 138, 0.2) !important;
+		box-shadow: 2rpx 2rpx 3rpx 1rpx rgba(114, 130, 138, 0.3) !important;
+
 	}
 
 	.con {
@@ -703,7 +749,7 @@
 	.footer {
 		position: static;
 	}
-
+	.nav{box-shadow: 0 1px 1px 0px rgba(225, 225, 225, 1)}
 	.nav image {
 		width: 18rpx;
 		height: 9rpx;
@@ -711,7 +757,7 @@
 	}
 
 	.nav .item {
-		width: 33%;
+		width: 50%;
 		line-height: 90rpx;
 		text-align: center;
 	}

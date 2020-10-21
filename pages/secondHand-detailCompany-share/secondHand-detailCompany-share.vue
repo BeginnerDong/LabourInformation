@@ -8,11 +8,7 @@
 		</view>
 		<view style="height: 20rpx;width: 100%;background-color: #f5f5f5;"></view>
 		
-		<view class="pc-container" style="position: absolute;top: 0;z-index: -999;">
-			<!-- <image :src="imgurl" mode="aspectFill" @longpress="saveImage"></image> -->
-			<canvas canvas-id="mycanvas" style="width: 690rpx;height: 760rpx;" v-show="canvasShow"></canvas>
-			
-		</view>
+		
 
 		<!-- 公司分享 -->
 		<view class="bg-white  px-3">
@@ -46,7 +42,7 @@
 				<view class="Rcolor font-36 text-center py-3">长按图片，识别图中小程序</view>
 				<view class="font-24 color6 text-right d-flex a-center j-sa">
 					<view class="borderR-e1 px-1">如果长安图片没有识别出小程序信息，<br />请重新点开图片，在长安识别，多试几次就行了</view>
-					<image src="../../static/images/used%20to%20sharel-img2.png" class="img"></image>
+					<image src="../../static/images/used-to-sharel-img2.png" class="img"></image>
 				</view>
 			</view>
 
@@ -54,7 +50,12 @@
 				<view class="btn400" @click="submit">保存图片</view>
 			</view>
 		</view>
-
+		
+		<view class="pc-container" style="position: fixed;left:0;top: 9999px" v-show="canvasShow">
+			<!-- <image :src="imgurl" mode="aspectFill" @longpress="saveImage"></image> -->
+			<canvas canvas-id="mycanvas" :style="{width: width+'px',height:height+'px'}" v-show="canvasShow"></canvas>
+			
+		</view>
 	</view>
 </template>
 
@@ -67,7 +68,10 @@
 				userData: {},
 				current: 1,
 				qrUrl:'',
-				info:{}
+				info:{},
+				rpx: 0,
+				width: 0,
+				height: 0,
 			}
 		},
 
@@ -76,7 +80,14 @@
 			self.user_no = options.user_no;
 			self.qrUrl = uni.getStorageSync('userQr');
 			self.$Utils.loadAll(['getUserData'], self);
-
+			wx.getSystemInfo({
+				success: function(res) {
+					self.rpx = res.windowWidth / 375;
+					self.width = 345 * self.rpx
+					self.height = 400 * self.rpx
+					console.log('self.width', self.width)
+				},
+			})
 		},
 
 		computed: {
@@ -178,9 +189,9 @@
 				// 坐标(0,0) 表示从此处开始绘制，相当于偏移。
 				//背景色
 				myCanvas.fillStyle = "#FFFFFF";
-				myCanvas.fillRect(0, 0, 345, 400);
+				myCanvas.fillRect(0, 0, 345*self.rpx, 400*self.rpx);
 				myCanvas.fillStyle = "#D31114";
-				myCanvas.fillRect(0, 0, 345, 110);
+				myCanvas.fillRect(0, 0, 345*self.rpx, 110*self.rpx);
 				//类型
 				myCanvas.save()
 				myCanvas.restore(); //恢复之前保存的绘图上下文 恢复之前保存的绘图上下午即状态 可以继续绘制
@@ -188,20 +199,20 @@
 				myCanvas.textAlign = 'center' //文字居中
 				myCanvas.font = '25px Arial'
 				myCanvas.fillStyle = '#fff';
-				myCanvas.fillText('更多二手供需信息', 175.5, 50, 345);
+				myCanvas.fillText('更多二手供需信息', 175.5*self.rpx, 50*self.rpx, 345*self.rpx);
 				myCanvas.save()
 				myCanvas.restore(); //恢复之前保存的绘图上下文 恢复之前保存的绘图上下午即状态 可以继续绘制
 				myCanvas.draw(true)
 				if (this.current == 1) {
 					myCanvas.font = '17px Arial'
-					myCanvas.fillText('进入我的主页查看', 175.5, 90, 345);
+					myCanvas.fillText('进入我的主页查看', 175.5*self.rpx, 90*self.rpx, 345*self.rpx);
 				} else {
-					myCanvas.drawImage('../../static/images/used-to-sharel-icon2.png', 80, 72, 15, 16);
+					myCanvas.drawImage('../../static/images/used-to-sharel-icon2.png', 80*self.rpx, 72*self.rpx, 15*self.rpx, 16*self.rpx);
 					myCanvas.font = '15px Arial'
-					myCanvas.fillText(this.info.name, 125, 85);
+					myCanvas.fillText(this.info.name, 125*self.rpx, 85*self.rpx);
 
-					myCanvas.drawImage('../../static/images/used-to-sharel-icon3.png', 170, 72, 11, 15);
-					myCanvas.fillText(this.info.phone, 230, 85);
+					myCanvas.drawImage('../../static/images/used-to-sharel-icon3.png', 170*self.rpx, 72*self.rpx, 11*self.rpx, 15*self.rpx);
+					myCanvas.fillText(this.info.phone, 230*self.rpx, 85*self.rpx);
 				}
 				//内容
 				myCanvas.save()
@@ -210,76 +221,120 @@
 				wx.getImageInfo({
 					src:this.qrUrl,
 					complete: (res) => {
-						myCanvas.drawImage(res.path, 30,
-							140, 130, 130);
+						self.isCom = true;
+						myCanvas.drawImage(res.path, 30*self.rpx,
+							140*self.rpx, 130*self.rpx, 130*self.rpx);
 							//myCanvas.draw();
 							myCanvas.save()
 							myCanvas.restore(); //恢复之前保存的绘图上下文 恢复之前保存的绘图上下午即状态 可以继续绘制
 							myCanvas.draw(true)
 					}
 				});
-				myCanvas.drawImage('../../static/images/used-to-sharel-img1.png', 170, 140, 161, 145);
+				myCanvas.drawImage('../../static/images/used-to-sharel-img1.png', 170*self.rpx, 140*self.rpx, 161*self.rpx, 145*self.rpx);
 				myCanvas.save()
 				myCanvas.restore(); //恢复之前保存的绘图上下文 恢复之前保存的绘图上下午即状态 可以继续绘制
 				myCanvas.draw(true)
 				myCanvas.textAlign = 'center' //文字居中
 				myCanvas.font = '18px Arial'
 				myCanvas.fillStyle = '#D31114';
-				myCanvas.fillText('长按图片，识别图中小程序', 175.5, 320, 345);
+				myCanvas.fillText('长按图片，识别图中小程序', 175.5*self.rpx, 320*self.rpx, 345*self.rpx);
 				myCanvas.save()
 				myCanvas.restore(); //恢复之前保存的绘图上下文 恢复之前保存的绘图上下午即状态 可以继续绘制
 				myCanvas.draw(true)
 				myCanvas.textAlign = 'start' //文字居中
 				myCanvas.font = '12px Arial'
 				myCanvas.fillStyle = '#666';
-				myCanvas.fillText('如果长按图片没有识别出小程序信息，', 60, 355);
-				myCanvas.fillText('请重新点开图片，在长按识别，多试几次就行了', 5, 370);
+				myCanvas.fillText('如果长按图片没有识别出小程序信息，', 60*self.rpx, 355*self.rpx);
+				myCanvas.fillText('请重新点开图片，在长按识别，多试几次就行了', 5*self.rpx, 370*self.rpx);
 				myCanvas.save()
 				myCanvas.restore(); //恢复之前保存的绘图上下文 恢复之前保存的绘图上下午即状态 可以继续绘制
 				myCanvas.draw(true)
 				myCanvas.strokeStyle = "#e1e1e1";
-				myCanvas.moveTo(265.5, 345);
-				myCanvas.lineTo(265.5, 375);
+				myCanvas.moveTo(265.5*self.rpx, 345*self.rpx);
+				myCanvas.lineTo(265.5*self.rpx, 375*self.rpx);
 				myCanvas.stroke();
 				myCanvas.save()
 				myCanvas.restore(); //恢复之前保存的绘图上下文 恢复之前保存的绘图上下午即状态 可以继续绘制
 				myCanvas.draw(true)
-				myCanvas.drawImage('../../static/images/used%20to%20sharel-img2.png', 270, 345, 75, 31);
+				myCanvas.drawImage('../../static/images/used-to-sharel-img2.png', 270*self.rpx, 345*self.rpx, 75*self.rpx, 31*self.rpx);
 				//开始绘画，必须调用这一步，才会把之前的一些操作实施
 				myCanvas.save()
 				myCanvas.restore(); //恢复之前保存的绘图上下文 恢复之前保存的绘图上下午即状态 可以继续绘制
 				myCanvas.draw(true)
 				//myCanvas.restore()
-				console.log(3456)
-				setTimeout(function() {
-					uni.canvasToTempFilePath({
-						canvasId: 'mycanvas',
-						success: (res) => {
-							// 在H5平台下，tempFilePath 为 base64
-							console.log(res)
-							self.imgurl = res.tempFilePath;
-							//self.canvasShow = false;
-							self.savePoster()
-						
-							uni.hideLoading();
-						
-							uni.setStorageSync('person-card', self.imgurl);
-						},
-						complete(res) {
-							console.log(res)
-						},
-						fail() {
-							console.log(res)
-						}
-					}, this);
-				}, 3000,this);
+				self.roundRect(myCanvas,0,0,345 * self.rpx, 400 * self.rpx,10);
+				//开始绘画，必须调用这一步，才会把之前的一些操作实施
+				var interval = setInterval(function() {
+					if (self.isCom) {
+						clearInterval(interval)
+				
+						self.canvasToTempFilePath()
+					}
+				}, 1000);
 
+			},
+			
+			roundRect(ctx, x, y, w, h, r) {
+				// 开始绘制
+				ctx.beginPath()
+				// 因为边缘描边存在锯齿，最好指定使用 transparent 填充
+				// 这里是使用 fill 还是 stroke都可以，二选一即可
+				ctx.setFillStyle('transparent')
+				// ctx.setStrokeStyle('transparent')
+				// 左上角
+				ctx.arc(x + r, y + r, r, Math.PI, Math.PI * 1.5)
+			
+				// border-top
+				ctx.moveTo(x + r, y)
+				ctx.lineTo(x + w - r, y)
+				ctx.lineTo(x + w, y + r)
+				// 右上角
+				ctx.arc(x + w - r, y + r, r, Math.PI * 1.5, Math.PI * 2)
+			
+				// border-right
+				ctx.lineTo(x + w, y + h - r)
+				ctx.lineTo(x + w - r, y + h)
+				// 右下角
+				ctx.arc(x + w - r, y + h - r, r, 0, Math.PI * 0.5)
+			
+				// border-bottom
+				ctx.lineTo(x + r, y + h)
+				ctx.lineTo(x, y + h - r)
+				// 左下角
+				ctx.arc(x + r, y + h - r, r, Math.PI * 0.5, Math.PI)
+			
+				// border-left
+				ctx.lineTo(x, y + r)
+				ctx.lineTo(x + r, y)
+			
+				// 这里是使用 fill 还是 stroke都可以，二选一即可，但是需要与上面对应
+				ctx.fill()
+				// ctx.stroke()
+				ctx.closePath()
+				// 剪切
+				console.log(111)
+				ctx.clip()
+				ctx.save()
+				ctx.restore(); //恢复之前保存的绘图上下文 恢复之前保存的绘图上下午即状态 可以继续绘制
+				ctx.draw(true)
 			},
 			
 			submit(){
 				this.canvasImage()
 			},
-
+			
+			canvasToTempFilePath() {
+				//const self = this;
+				uni.canvasToTempFilePath({
+					canvasId: 'mycanvas',
+					success: (res) => {
+						console.log(res)
+						this.imgurl = res.tempFilePath;
+						this.savePoster()
+						uni.hideLoading();
+					},
+				}, this);
+			},
 
 			savePoster() {
 				let self = this
@@ -369,20 +424,20 @@
 	}
 
 	.icon1 {
-		width: 28rpx;
-		height: 28rpx;
+		width: 28rpx!important;
+		height: 28rpx!important;
 		margin-right: 20rpx;
 	}
 
 	.icon2 {
-		width: 30rpx;
-		height: 32rpx;
+		width: 30rpx!important;
+		height: 32rpx!important;
 		margin-right: 10rpx;
 	}
 
 	.icon3 {
-		width: 22rpx;
-		height: 30rpx;
+		width: 22rpx!important;
+		height: 30rpx!important;
 		margin-right: 10rpx;
 	}
 

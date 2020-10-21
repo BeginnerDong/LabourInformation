@@ -7,9 +7,9 @@
 			<view>他人可通过点开图片长按识别小程序码，查看本条信息</view>
 		</view>
 		<view style="height: 20rpx;width: 100%;background-color: #f5f5f5;"></view>
-		<view class="pc-container" style="position: absolute;top: 0;z-index: -999;">
+		<view class="pc-container" style="position: fixed;left:0;top: 9999px" v-show="canvasShow">
 			<!-- <image :src="imgurl" mode="aspectFill" @longpress="saveImage"></image> -->
-			<canvas canvas-id="mycanvas" style="width: 690rpx;height: 820rpx;" v-show="canvasShow"></canvas>
+			<canvas canvas-id="mycanvas" :style="{width: width+'px',height:height+'px'}"></canvas>
 		</view>
 		
 		<view class="bg-white  px-3">
@@ -19,8 +19,11 @@
 				<view>
 					<view class="font-30 color2 d-flex a-center j-sb pr-2 pb-2">
 						<view>
-							<text class="sgin" v-if="mainData.behavior==1||mainData.behavior==2">
-								{{mainData.city.title}}工地
+							<text class="sgin" v-if="mainData.behavior==1">
+								招工人
+							</text>
+							<text class="sgin" v-if="mainData.behavior==2">
+								招队伍
 							</text>
 							<text class="sgin" v-if="mainData.behavior==3">
 								工人找活
@@ -28,25 +31,22 @@
 							<text class="sgin" v-if="mainData.behavior==4">
 								队伍找活
 							</text>
-							<text class="pl-2" v-if="mainData.behavior==1||mainData.behavior==2">需要</text>
+							
 						</view>
 						<view>发布日期：{{mainData.create_time?mainData.create_time:''}}</view>
 					</view>
-					<view class="font-32 color2 px-2 line-h-md" style="min-height: 150rpx;" v-if="mainData.behavior==1||mainData.behavior==2||mainData.behavior==4">
-						<view v-for="(item,index) of mainData.passage_array" :key="index">
-							<text class="Mcolor">{{item.name}}，
-							</text><text  v-if="mainData.behavior==1||mainData.behavior==2">{{item.num}}名，月工资{{item.money==''?'面议':item.money}}</text>
-						</view>
+<!-- 					<view class="font-32 color2 px-2 line-h-md" style="min-height: 150rpx;">
+						{{mainData.title?mainData.title:''}}
 					</view>
-					
-					<view class="font-32 color2 mx-2 line-h-md borderB-f5 pb-3" v-if="mainData.behavior==3">
-						<view class="font-36 Mcolor font-w text-center pb-2">{{mainData.description?mainData.description:''}}</view>
-						<view style="min-height: 150rpx;">{{mainData.title?mainData.title:''}}</view>
+					 -->
+					<view class="font-32 color2 mx-2 line-h-md borderB-f5 pb-3">
+						<!-- <view class="font-36 Mcolor font-w text-center pb-2">{{mainData.description?mainData.description:''}}</view> -->
+						<view  class="avoidOverflow3">{{mainData.title?mainData.title:''}}</view>
 					</view>
-					<view class="d-flex a-center j-sb mx-2 line-h py-3 borderB-f5 font-24 color2" v-if="mainData.price!=''">
+					<!-- <view class="d-flex a-center j-sb mx-2 line-h py-3 borderB-f5 font-24 color2" v-if="mainData.price!=''">
 						<view>更多>></view>
 						<view class="Rcolor">介绍成功给{{mainData.price?mainData.price:''}}介绍费</view>
-					</view>
+					</view> -->
 				</view>
 				<!-- 找活分享 -->
 			
@@ -76,7 +76,10 @@
 				imgurl: '',
 				canvasShow: true,
 				mainData: {},
-				qrUrl:''
+				qrUrl:'',
+				rpx: 0,
+				width: 0,
+				height: 0,
 			}
 		},
 
@@ -85,7 +88,14 @@
 			self.id = options.id;
 			self.qrUrl = uni.getStorageSync('labourQr');
 			self.$Utils.loadAll(['getMainData'], self);
-
+			wx.getSystemInfo({
+				success: function(res) {
+					self.rpx = res.windowWidth / 375;
+					self.width = 350 * self.rpx
+					self.height = 350 * self.rpx
+					console.log('self.width', self.width)
+				},
+			})
 		},
 
 		computed: {
@@ -148,6 +158,7 @@
 					if (res.info.data.length > 0) {
 						self.mainData = res.info.data[0];
 						self.mainData.create_time = self.mainData.create_time.substr(0,10)
+						//this.canvasImage()
 					};
 					self.$Utils.finishFunc('getMainData');
 				};
@@ -212,15 +223,17 @@
 				// 坐标(0,0) 表示从此处开始绘制，相当于偏移。
 				//背景色
 				myCanvas.fillStyle = "#FFFFFF";
-				myCanvas.fillRect(0, 0, 345, 400);
+				myCanvas.fillRect(0, 0, 350*self.rpx, 350*self.rpx);
 				myCanvas.fillStyle = "#D31114";
-				myCanvas.fillRect(0, 0, 80, 30);
+				myCanvas.fillRect(0, 0, 80*self.rpx, 30*self.rpx);
 				myCanvas.save()
 				myCanvas.restore(); //恢复之前保存的绘图上下文 恢复之前保存的绘图上下午即状态 可以继续绘制
 				myCanvas.draw(true)
 				//类型
-				if(this.mainData.behavior==1||this.mainData.behavior==2){
-					var text = this.mainData.city.title+'工地'
+				if(this.mainData.behavior==1){
+					var text = '招工人'
+				}else if(this.mainData.behavior==2){
+					var text = '招队伍'
 				}else if(this.mainData.behavior==3){
 					var text = '工人找活'
 				}else{
@@ -228,20 +241,22 @@
 				};
 				myCanvas.fillStyle = '#fff';
 				myCanvas.font = `15px Arial`;
-				myCanvas.fillText(text, 10, 22);
+				myCanvas.fillText(text, 10*self.rpx, 22*self.rpx);
 				myCanvas.save()
 				myCanvas.restore(); //恢复之前保存的绘图上下文 恢复之前保存的绘图上下午即状态 可以继续绘制
 				myCanvas.draw(true)
-				if(this.mainData.behavior==1||this.mainData.behavior==2){
-					myCanvas.fillStyle = '#000';
-					myCanvas.font = `15px Arial`;
-					myCanvas.fillText('需要', 90, 22);
-				};
-				myCanvas.save()
-				myCanvas.restore(); //恢复之前保存的绘图上下文 恢复之前保存的绘图上下午即状态 可以继续绘制
-				myCanvas.draw(true)
+				
 				//内容
-				var content1 = "";
+				myCanvas.fillStyle = '#000000';
+				myCanvas.font = `15px Arial`;
+				var content = this.mainData.title;
+				if(content.length>70){
+					this.writeTextOnCanvas(myCanvas, 25*self.rpx, 45*self.rpx, content.substr(0,70)+'...', 10*self.rpx, 60*self.rpx)
+				}else{
+					this.writeTextOnCanvas(myCanvas, 25*self.rpx, 45*self.rpx, content, 10*self.rpx, 60*self.rpx)
+				}
+				
+				/* var content1 = "";
 				var content2 = "";
 				var content3 = "";
 				myCanvas.font = `16px Arial`;
@@ -278,28 +293,18 @@
 				}else if(this.mainData.behavior==3){
 					myCanvas.textAlign = 'center' //文字居中
 					myCanvas.font = 'bold 18px Arial' //文字样式：加粗 16像素 字体Arial
-					 myCanvas.fillText(this.mainData.description,175.5,60,345);
-				}
+					 myCanvas.fillText(this.mainData.title,175.5,60,345);
+				} */
 				myCanvas.save()
 				myCanvas.restore(); //恢复之前保存的绘图上下文 恢复之前保存的绘图上下午即状态 可以继续绘制
 				myCanvas.draw(true)
-				console.log('content1',content1)
+				
 				myCanvas.textAlign="start";
 				myCanvas.fillStyle = '#000';
 				myCanvas.font = `15px Arial`;
 				//发布日期
 				var day = '发布日期：'+ this.mainData.create_time.substr(0,10)
-				myCanvas.fillText(day, 185, 22);
-				myCanvas.save()
-				myCanvas.restore(); //恢复之前保存的绘图上下文 恢复之前保存的绘图上下午即状态 可以继续绘制
-				myCanvas.draw(true)
-				//描述
-				if(this.mainData.behavior==3){
-					myCanvas.fillStyle = '#000000';
-					myCanvas.font = `15px Arial`;
-					var content = this.mainData.title;
-					this.writeTextOnCanvas(myCanvas, 20, 45, content, 10, 90)
-				};
+				myCanvas.fillText(day, 190*self.rpx, 22*self.rpx);
 				myCanvas.save()
 				myCanvas.restore(); //恢复之前保存的绘图上下文 恢复之前保存的绘图上下午即状态 可以继续绘制
 				myCanvas.draw(true)
@@ -308,7 +313,8 @@
 					url: this.qrUrl, //网络路径
 					success: function(res) {
 						console.log('qr', res)
-						myCanvas.drawImage(res.tempFilePath, 30, 230, 130, 130);
+						self.isCom = true
+						myCanvas.drawImage(res.tempFilePath, 30*self.rpx, 180*self.rpx, 130*self.rpx, 130*self.rpx);
 						myCanvas.save()
 						myCanvas.restore(); //恢复之前保存的绘图上下文 恢复之前保存的绘图上下午即状态 可以继续绘制
 						myCanvas.draw(true)
@@ -317,14 +323,14 @@
 						console.log('qr', res)
 					}
 				});
-				myCanvas.drawImage('../../static/images/used-to-sharel-img1.png', 185, 230, 144, 129);
+				myCanvas.drawImage('../../static/images/used-to-sharel-img1.png', 185*self.rpx, 180*self.rpx, 144*self.rpx, 129*self.rpx);
 				myCanvas.save()
 				myCanvas.restore(); //恢复之前保存的绘图上下文 恢复之前保存的绘图上下午即状态 可以继续绘制
 				myCanvas.draw(true)
 				//下划线
 				myCanvas.strokeStyle = "#e1e1e1";
-				myCanvas.moveTo(10, 160.5);
-				myCanvas.lineTo(335, 160.5);
+				myCanvas.moveTo(10*self.rpx, 130*self.rpx);
+				myCanvas.lineTo(340*self.rpx, 130*self.rpx);
 				myCanvas.stroke();
 				myCanvas.save()
 				myCanvas.restore(); //恢复之前保存的绘图上下文 恢复之前保存的绘图上下午即状态 可以继续绘制
@@ -332,39 +338,35 @@
 				myCanvas.textAlign = 'center' //文字居中
 				myCanvas.font = '12px Arial' 
 				myCanvas.fillStyle = '#222';
-				myCanvas.fillText('长按图片,识别图中小程序码',175.5,190,345);
-				myCanvas.font = 'bold 12px Arial' 
-				myCanvas.fillText('免费查看联系方式',175.5,210,345);
+				myCanvas.fillText('长按图片,识别图中小程序码,免费查看联系方式',175.5*self.rpx,160*self.rpx,350*self.rpx);
 				myCanvas.font = '11px Arial';
 				myCanvas.fillStyle = '#999';
-				myCanvas.fillText('没有识别出小程序信息，请重新点开图片，多试几次就行了',175.5,390,345);
+				myCanvas.fillText('没有识别出小程序信息，请重新点开图片，多试几次就行了',175.5*self.rpx,340*self.rpx,350*self.rpx);
 				myCanvas.save()
 				myCanvas.restore(); //恢复之前保存的绘图上下文 恢复之前保存的绘图上下午即状态 可以继续绘制
 				myCanvas.draw(true)
 				//开始绘画，必须调用这一步，才会把之前的一些操作实施
-				setTimeout(function() {
-					uni.canvasToTempFilePath({
-						canvasId: 'mycanvas',
-						success: (res) => {
-							// 在H5平台下，tempFilePath 为 base64
-							console.log(res)
-							self.imgurl = res.tempFilePath;
-							//self.canvasShow = false;
-							self.savePoster()
-						
-							uni.hideLoading();
-						
-							uni.setStorageSync('person-card', self.imgurl);
-						},
-						complete(res) {
-							console.log(res)
-						},
-						fail() {
-							console.log(res)
-						}
-					}, this);
-				}, 3000,this);
+				var interval = setInterval(function() {
+					if (self.isCom) {
+						clearInterval(interval)
 				
+						self.canvasToTempFilePath()
+					}
+				}, 1000);
+				
+			},
+			
+			canvasToTempFilePath() {
+				//const self = this;
+				uni.canvasToTempFilePath({
+					canvasId: 'mycanvas',
+					success: (res) => {
+						console.log(res)
+						this.imgurl = res.tempFilePath;
+						this.savePoster()
+						uni.hideLoading();
+					},
+				}, this);
 			},
 
 			savePoster() {

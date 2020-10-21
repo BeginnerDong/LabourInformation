@@ -4,7 +4,7 @@
 			<image src="../../static/images/logo.png" class="logo"></image>
 			<!-- <view class="font-36 colorf d-flex a-center py-2">桥隧之家</view> -->
 			<!-- <view class="colorf font-24 top overflow-h">欢迎来到桥隧之家，在这里您可以买卖二手设备，劳务招聘，在这里您可以买卖二手设备，劳务招聘</view> -->
-			<uni-notice-bar background-color="#51A9E9" color="#fff" single="true" scrollable="true" v-if="text!=''" :text="text"></uni-notice-bar>
+			<uni-notice-bar background-color="#51A9E9" color="#fff" single="true" scrollable="true"  :text="text"></uni-notice-bar>
 		</view>
 
 		<!-- banner -->
@@ -29,7 +29,7 @@
 						<view class="font-32 color2 flex-1 mb-2 avoidOverflow2">{{item.title}}</view>
 						<view class="d-flex a-center j-sb h-100">
 							<view class="font-22 d-flex a-center">
-								<view class="tag tag1" v-for="(c_item,c_index) of item.keywords" :key="c_index">{{c_item}}</view>
+								<view class="tag tag1" v-if="c_item.length>0&&c_item[0]!=''" v-for="(c_item,c_index) of item.keywords" :key="c_index">{{c_item}}</view>
 								<view class="tag tag2" v-if="item.top==1">推荐</view>
 							</view>
 							<view class="d-flex a-center">
@@ -52,7 +52,7 @@
 						<view class="font-32 color2 flex-1 mb-3 avoidOverflow2 tjTit">{{item.title}}</view>
 						<view class="d-flex a-center j-sb h-100 mt-3">
 							<view class="font-22 d-flex a-center">
-								<view class="tag tag1" v-for="(c_item,c_index) of item.keywords" :key="c_index">{{c_item}}</view>
+								<view class="tag tag1" v-if="c_item.length>0&&c_item[0]!=''" v-for="(c_item,c_index) of item.keywords" :key="c_index">{{c_item}}</view>
 								<view class="tag tag2" v-if="item.top==1">推荐</view>
 							</view>
 							<view class="d-flex a-center">
@@ -78,7 +78,7 @@
 					</view>
 					<view class="d-flex a-center j-sb h-100 mt-3">
 						<view class="font-22 d-flex a-center">
-							<view class="tag" v-for="(c_item,c_index) of item.keywords" :key="c_index">{{c_item}}</view>
+							<view class="tag" v-if="c_item.length>0&&c_item[0]!=''" v-for="(c_item,c_index) of item.keywords" :key="c_index">{{c_item}}</view>
 							<view class="tag tag2" v-if="item.top==1">推荐</view>
 						</view>
 						<view class="d-flex a-center">
@@ -274,8 +274,10 @@
 						
 						for (var i = 0; i < self.mainData.length; i++) {
 							self.mainData[i].keywords = self.mainData[i].keywords.split(',')
+							console.log('self.mainData[i].keywords',self.mainData[i].keywords)
 						}
 					};
+					
 					self.total = res.info.total;
 					if(self.total>self.mainData.length){
 						self.tip = '下拉加载更多'

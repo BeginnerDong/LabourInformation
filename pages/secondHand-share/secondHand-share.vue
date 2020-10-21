@@ -7,12 +7,12 @@
 			<view>他人可通过点开图片长按识别小程序码，查看本条信息</view>
 		</view>
 		<view style="height: 20rpx;width: 100%;background-color: #f5f5f5;"></view>
-		<view class="pc-container" style="position: absolute;top: 0;z-index: -999;">
+		<view class="pc-container" style="position: fixed;left:0;top: 9999px" v-show="canvasShow">
 			<!-- <image :src="imgurl" mode="aspectFill" @longpress="saveImage"></image> -->
-			<canvas canvas-id="mycanvas" style="width: 690rpx;height: 800rpx;" v-show="canvasShow"></canvas>
+			<canvas canvas-id="mycanvas" :style="{width: width+'px',height:height+'px'}"></canvas>
 		</view>
 
-	
+
 
 
 		<!-- 出售求购分享 -->
@@ -21,15 +21,15 @@
 			<view class="rounded10 overflow-h shadow pb-3">
 				<view class="d-flex flex-wrap pr-1">
 					<image :src="mainData.mainImg&&mainData.mainImg[0]?mainData.mainImg[0].url:''" class="img1"></image>
-					<view class="p-2 color6 w-50">
-					{{mainData.title?mainData.title:''}}</view>
+					<view class="p-2 color2 w-50">
+						{{mainData.title?mainData.title:''}}</view>
 					<view class="w-50 pt-3">
 						<image :src="qrUrl" class="img2"></image>
 						<view class="font-22 color6 px-5 text-center">长按识别图中小程序码查看详情</view>
 					</view>
 					<view class="w-50 pt-2">
 						<view class="font-32 Mcolor d-flex a-center pb-1">
-							<image src="../../static/images/second-handl-icon1.png" class="icon4"></image>{{mainData.city?mainData.city.title:''}}
+							<image src="../../static/images/second-handl-icon1.png" class="icon4"></image>{{mainData.city&&mainData.city.title?mainData.city.title:'未知'}}
 						</view>
 						<view class="font-28 color2 d-flex line-h a-center j-sb borderT-e1 py-2">
 							<view class="d-flex a-center">
@@ -67,7 +67,10 @@
 				imgurl: '',
 				canvasShow: true,
 				mainData: {},
-				qrUrl:''
+				qrUrl: '',
+				rpx: 0,
+				width: 0,
+				height: 0,
 			}
 		},
 
@@ -77,6 +80,14 @@
 			self.qrUrl = uni.getStorageSync('secondHandQr');
 			self.$Utils.loadAll(['getMainData'], self);
 
+			wx.getSystemInfo({
+				success: function(res) {
+					self.rpx = res.windowWidth / 375;
+					self.width = 345 * self.rpx
+					self.height = 400 * self.rpx
+					console.log('self.width', self.width)
+				},
+			})
 		},
 
 		computed: {
@@ -89,8 +100,8 @@
 
 
 		methods: {
-			
-			submit(){
+
+			submit() {
 				this.canvasImage()
 			},
 
@@ -148,8 +159,6 @@
 				const callback = (res) => {
 					if (res.info.data.length > 0) {
 						self.mainData = res.info.data[0];
-						//this.canvasImage();
-						//self.mainData.invalid_time = self.$Utils.timeto(self.mainData.invalid_time*1000,'ymd')
 					};
 					self.$Utils.finishFunc('getMainData');
 				};
@@ -196,11 +205,64 @@
 				}
 				for (var i = 1; getTrueLength(text) > 0; i++) {
 					var tl = cutString(text, bytelength);
-					ctx_2d.fillStyle = '#666';
+					ctx_2d.fillStyle = '#222';
 					ctx_2d.font = '14px Arial';
 					ctx_2d.fillText(text.substr(0, tl).replace(/^\s+|\s+$/, ""), startleft, (i - 1) * lineheight + starttop);
 					text = text.substr(tl);
 				}
+			},
+			/**
+			 * 
+			 * @param {CanvasContext} ctx canvas上下文
+			 * @param {number} x 圆角矩形选区的左上角 x坐标
+			 * @param {number} y 圆角矩形选区的左上角 y坐标
+			 * @param {number} w 圆角矩形选区的宽度
+			 * @param {number} h 圆角矩形选区的高度
+			 * @param {number} r 圆角的半径
+			 */
+			roundRect(ctx, x, y, w, h, r) {
+				// 开始绘制
+				ctx.beginPath()
+				// 因为边缘描边存在锯齿，最好指定使用 transparent 填充
+				// 这里是使用 fill 还是 stroke都可以，二选一即可
+				ctx.setFillStyle('transparent')
+				// ctx.setStrokeStyle('transparent')
+				// 左上角
+				ctx.arc(x + r, y + r, r, Math.PI, Math.PI * 1.5)
+
+				// border-top
+				ctx.moveTo(x + r, y)
+				ctx.lineTo(x + w - r, y)
+				ctx.lineTo(x + w, y + r)
+				// 右上角
+				ctx.arc(x + w - r, y + r, r, Math.PI * 1.5, Math.PI * 2)
+
+				// border-right
+				ctx.lineTo(x + w, y + h - r)
+				ctx.lineTo(x + w - r, y + h)
+				// 右下角
+				ctx.arc(x + w - r, y + h - r, r, 0, Math.PI * 0.5)
+
+				// border-bottom
+				ctx.lineTo(x + r, y + h)
+				ctx.lineTo(x, y + h - r)
+				// 左下角
+				ctx.arc(x + r, y + h - r, r, Math.PI * 0.5, Math.PI)
+
+				// border-left
+				ctx.lineTo(x, y + r)
+				ctx.lineTo(x + r, y)
+
+				// 这里是使用 fill 还是 stroke都可以，二选一即可，但是需要与上面对应
+				ctx.fill()
+				// ctx.stroke()
+				ctx.closePath()
+				// 剪切
+				console.log(111)
+				ctx.clip()
+				ctx.save()
+				ctx.restore(); //恢复之前保存的绘图上下文 恢复之前保存的绘图上下午即状态 可以继续绘制
+				ctx.draw(true)
 			},
 
 			canvasImage() {
@@ -215,137 +277,152 @@
 				// 坐标(0,0) 表示从此处开始绘制，相当于偏移。
 				//主图
 				myCanvas.fillStyle = "#FFFFFF";
-				myCanvas.fillRect(0, 0, 345, 400);
-				myCanvas.save()
+				myCanvas.fillRect(0, 0, 345 * self.rpx, 400 * self.rpx);
+				//myCanvas.drawImage('../../static/images/second-share.png', 0, 0, 345*self.rpx, 400*self.rpx);
+				
+				
 				myCanvas.restore(); //恢复之前保存的绘图上下文 恢复之前保存的绘图上下午即状态 可以继续绘制
 				myCanvas.draw(true)
-				if(this.mainData&&this.mainData.mainImg&&this.mainData.mainImg[0]){
+				myCanvas.save()
+				
+				if (this.mainData && this.mainData.mainImg && this.mainData.mainImg[0]) {
 					var mainImg = this.mainData.mainImg[0].url;
-					wx.downloadFile({
-						url: mainImg, //网络路径
-						success: function(res) {
-							console.log('mainImg',res)
-							myCanvas.drawImage(res.tempFilePath, 0, 0, 165, 165);
+					uni.getImageInfo({
+						src: mainImg,
+						success(res) {
+							console.log('res', res)
+							self.isCom = true;
+							myCanvas.drawImage(res.path, 0, 0, 165 * self.rpx, 165 * self.rpx);
 							myCanvas.save()
 							myCanvas.restore(); //恢复之前保存的绘图上下文 恢复之前保存的绘图上下午即状态 可以继续绘制
 							myCanvas.draw(true)
+						},
+						fail(res) {
+							self.$Utils.showToast('绘制主图失败' + res.errMsg, 'none');
+							self.isCom = true;
 						}
 					});
 				};
-				
+				//return
 				//myCanvas.drawImage(mainImg, 0, 0, 165, 165);
 				//参数：图片，左偏移，上偏移，宽，高
 				//二维码
 				wx.downloadFile({
 					url: this.qrUrl, //网络路径
 					success: function(res) {
-						console.log('qr',res)
-						myCanvas.drawImage(res.tempFilePath, 30, 180, 115, 115);
+						console.log('qr', res)
+						self.isCom1 = true;
+						myCanvas.drawImage(res.tempFilePath, 30 * self.rpx, 180 * self.rpx, 142.5 * self.rpx, 115 * self.rpx);
 						myCanvas.save()
 						myCanvas.restore(); //恢复之前保存的绘图上下文 恢复之前保存的绘图上下午即状态 可以继续绘制
 						myCanvas.draw(true)
 					},
-					fail(res) {
-						console.log('qr',res)
-					}
+					/* fail(res) {
+						self.$Utils.showToast('绘制二维码失败'+res.errMsg,'none');
+						self.isCom1 = true;
+					} */
 				});
 				//myCanvas.drawImage('../../static/images/used to sharel-img.png', 30, 180, 115, 115);
 				myCanvas.fillStyle = '#666';
 				myCanvas.font = `11px Arial`;
-				myCanvas.fillText('长按识别图中小程序码', 30, 310);
-				myCanvas.fillText('查看详情', 60, 330);
+				myCanvas.fillText('长按识别图中小程序码', 30 * self.rpx, 320 * self.rpx);
+				myCanvas.fillText('查看详情', 60 * self.rpx, 340 * self.rpx);
 				//描述
 				myCanvas.save()
 				myCanvas.restore(); //恢复之前保存的绘图上下文 恢复之前保存的绘图上下午即状态 可以继续绘制
 				myCanvas.draw(true)
 				var content = this.mainData.title;
-				this.writeTextOnCanvas(myCanvas, 20, 22, content, 180, 20)
+				this.writeTextOnCanvas(myCanvas, 25 * self.rpx, 22 * self.rpx, content, 180 * self.rpx, 20 * self.rpx)
 				myCanvas.save()
 				myCanvas.restore(); //恢复之前保存的绘图上下文 恢复之前保存的绘图上下午即状态 可以继续绘制
 				myCanvas.draw(true)
 				//所在地
-				
-				var location = this.mainData.city.title;
-				myCanvas.drawImage('../../static/images/second-handl-icon1.png', 175, 175, 11, 13);
+
+				var location = this.mainData.city.title ? this.mainData.city.title : '未知';
+				myCanvas.drawImage('../../static/images/second-handl-icon1.png', 175 * self.rpx, 175 * self.rpx, 11 * self.rpx, 13 *
+					self.rpx);
 				myCanvas.fillStyle = '#51A9E9';
 				myCanvas.font = '16px Arial';
-				myCanvas.fillText(location, 192, 186);
+				myCanvas.fillText(location, 192 * self.rpx, 186 * self.rpx);
 				myCanvas.save()
 				myCanvas.restore(); //恢复之前保存的绘图上下文 恢复之前保存的绘图上下午即状态 可以继续绘制
 				myCanvas.draw(true)
 				//下划线
-				
+
 				myCanvas.strokeStyle = "#e1e1e1";
-				myCanvas.moveTo(175, 195.5);
-				myCanvas.lineTo(330, 195.5);
+				myCanvas.moveTo(175 * self.rpx, 195.5 * self.rpx);
+				myCanvas.lineTo(330 * self.rpx, 195.5 * self.rpx);
 				myCanvas.stroke();
 				myCanvas.save()
 				myCanvas.restore(); //恢复之前保存的绘图上下文 恢复之前保存的绘图上下午即状态 可以继续绘制
 				myCanvas.draw(true)
 				//联系人信息
 				var name = this.mainData.name;
-				myCanvas.drawImage('../../static/images/second-handl-icon2.png', 175, 205, 11, 14);
+				myCanvas.drawImage('../../static/images/second-handl-icon2.png', 175 * self.rpx, 205 * self.rpx, 11 * self.rpx, 14 *
+					self.rpx);
 				myCanvas.save()
 				myCanvas.restore(); //恢复之前保存的绘图上下文 恢复之前保存的绘图上下午即状态 可以继续绘制
 				myCanvas.draw(true)
 				myCanvas.fillStyle = '#000';
 				myCanvas.font = '14px Arial';
-				myCanvas.fillText(name, 192, 217);
+				myCanvas.fillText(name, 192 * self.rpx, 217 * self.rpx);
 				myCanvas.save()
 				myCanvas.restore(); //恢复之前保存的绘图上下文 恢复之前保存的绘图上下午即状态 可以继续绘制
 				myCanvas.draw(true)
 				var phone = this.mainData.phone;
-				myCanvas.drawImage('../../static/images/second-handl-icon3.png', 240, 205, 11, 14);
+				myCanvas.drawImage('../../static/images/second-handl-icon3.png', 240 * self.rpx, 205 * self.rpx, 11 * self.rpx, 14 *
+					self.rpx);
 				myCanvas.save()
 				myCanvas.restore(); //恢复之前保存的绘图上下文 恢复之前保存的绘图上下午即状态 可以继续绘制
 				myCanvas.draw(true)
 				myCanvas.fillStyle = '#000';
 				myCanvas.font = '14px Arial';
-				myCanvas.fillText(phone, 253, 217);
+				myCanvas.fillText(phone, 253 * self.rpx, 217 * self.rpx);
 				myCanvas.save()
 				myCanvas.restore(); //恢复之前保存的绘图上下文 恢复之前保存的绘图上下午即状态 可以继续绘制
 				myCanvas.draw(true)
 				//平台介绍	
-				myCanvas.strokeRect(175.5, 230.5, 160, 117);
+				myCanvas.strokeRect(175.5 * self.rpx, 230.5 * self.rpx, 160 * self.rpx, 117 * self.rpx);
 				myCanvas.fillStyle = '#666';
 				myCanvas.font = '11px Arial';
-				myCanvas.fillText('桥隧之家-完全免费的信息平台', 180, 250);
-				myCanvas.fillText('您可以', 180, 270);
-				myCanvas.fillText('1.快速的出售/求购二手机械设备', 180, 290);
-				myCanvas.fillText('2.快速查询劳务相关资源供应商', 180, 310);
-				myCanvas.fillText('3.快速招民工/班组，或者求职', 180, 330);
+				myCanvas.fillText('桥隧之家-完全免费的信息平台', 180 * self.rpx, 250 * self.rpx);
+				myCanvas.fillText('您可以', 180 * self.rpx, 270 * self.rpx);
+				myCanvas.fillText('1.快速的出售/求购二手机械设备', 180 * self.rpx, 290 * self.rpx);
+				myCanvas.fillText('2.快速查询劳务相关资源供应商', 180 * self.rpx, 310 * self.rpx);
+				myCanvas.fillText('3.快速招民工/班组，或者求职', 180 * self.rpx, 330 * self.rpx);
 				myCanvas.save()
 				myCanvas.restore(); //恢复之前保存的绘图上下文 恢复之前保存的绘图上下午即状态 可以继续绘制
 				myCanvas.draw(true)
+				myCanvas.textAlign = 'center' //文字居中
 				myCanvas.fillStyle = '#999';
-				myCanvas.fillText('没有识别出小程序信息，请重新点开图片，多试几次就行了', 30, 380);
+				myCanvas.fillText('没有识别出小程序信息，请重新点开图片，多试几次就行了', 172.5 * self.rpx, 380 * self.rpx);
 				myCanvas.save()
 				myCanvas.restore(); //恢复之前保存的绘图上下文 恢复之前保存的绘图上下午即状态 可以继续绘制
 				myCanvas.draw(true)
+				self.roundRect(myCanvas,0,0,345 * self.rpx, 400 * self.rpx,10);
 				//开始绘画，必须调用这一步，才会把之前的一些操作实施
-				setTimeout(function() {
-					uni.canvasToTempFilePath({
-						canvasId: 'mycanvas',
-						success: (res) => {
-							// 在H5平台下，tempFilePath 为 base64
-							console.log(res)
-							self.imgurl = res.tempFilePath;
-							//self.canvasShow = false;
-							self.savePoster()
-						
-							uni.hideLoading();
-						
-							uni.setStorageSync('person-card', self.imgurl);
-						},
-						complete(res) {
-							console.log(res)
-						},
-						fail() {
-							console.log(res)
-						}
-					}, this);
-				}, 3000,this);
+				var interval = setInterval(function() {
+					if (self.isCom && self.isCom1) {
+						clearInterval(interval)
+
+						self.canvasToTempFilePath()
+					}
+				}, 1000);
 			},
+
+			canvasToTempFilePath() {
+				//const self = this;
+				uni.canvasToTempFilePath({
+					canvasId: 'mycanvas',
+					success: (res) => {
+						console.log(res)
+						this.imgurl = res.tempFilePath;
+						this.savePoster()
+						uni.hideLoading();
+					},
+				}, this);
+			},
+
 
 			savePoster() {
 				let self = this
@@ -494,8 +571,8 @@
 	}
 
 	.img2 {
-		width: 230rpx;
-		height: 230rpx;
+		width: 285rpx;
+		height: 285rpx;
 		margin: 0 auto;
 	}
 </style>

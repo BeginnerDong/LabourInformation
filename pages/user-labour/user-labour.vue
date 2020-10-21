@@ -1,7 +1,7 @@
 <template>
 	<view>
 		<!-- nav -->
-		<view class="font-28 color2 d-flex a-center j-sb borderB-e1 bg-f5 shadow-sm nav">
+		<view class="font-28 color2 d-flex a-center j-sb  bg-f5 shadow-sm nav">
 			<view class="item" :class="navCurr==1?'on':''" @click="changeNav(1)">全部</view>
 			<view class="item" :class="navCurr==2?'on':''" @click="changeNav(2)">招工人</view>
 			<view class="item" :class="navCurr==3?'on':''" @click="changeNav(3)">招队伍</view>
@@ -9,9 +9,9 @@
 			<view class="item" :class="navCurr==5?'on':''" @click="changeNav(5)">队伍找活</view>
 		</view>
 		
-		<view class="font-30 color2 p-3 d-flex a-center j-sb borderB-e1">
-			<view @click="chooseShow" v-if="!isShowChoose">选择</view>
-			<view @click="chooseShow" v-else>取消</view>
+		<view class="font-30 color2 p-3 d-flex a-center j-sb borderB-f5">
+			<view @click="chooseShow" v-if="!isShowChoose" class="btn2">选择</view>
+			<view @click="chooseShow" v-else class="btn2">取消</view>
 			<view class="Mcolor d-flex a-center" v-if="isShowChoose">
 				<view class="pr-5 borderR-f5" @click="chooseAll()">全选</view>
 				<view class="pr-5 borderR-f5" @click="deleteAll()">删除</view>
@@ -20,7 +20,7 @@
 		</view>
 		
 		<view>
-			<view class="borderB-e1 py-4" v-for = "(item,index) of mainData" :key="item.id">
+			<view class="borderB-f5 py-4" v-for = "(item,index) of mainData" :key="item.id">
 				<view class="d-flex a-center ml-3">
 					<image @click="choose(index)" v-if="isShowChoose" :src="item.choose?'../../static/images/i-releasel-icon1.png':'../../static/images/i-releasel-icon.png'" class="icon1"></image>
 					<!-- <image src="../../static/images/i-releasel-icon1.png" class="icon1"></image> -->
@@ -308,7 +308,7 @@
 <style>
 .nav .item{padding: 0 30rpx;line-height: 90rpx;text-align: center;}
 .nav .on{position: relative;color: #51A9E9;}
-.nav .on::before{content: ''; width: 100%;height: 2rpx;background-color: #51A9E9;position: absolute; bottom: 0;left: 0;}
+.nav .on::before{content: ''; width: 100%;height: 4rpx;background-color: #51A9E9;position: absolute; bottom: 0;left: 0;}
 
 .icon1{width: 40rpx;height: 40rpx;}
 
@@ -318,4 +318,5 @@
 .imgBox image:nth-child(4n){margin-right: 0;}
 .icon2{width: 21rpx;height: 25rpx;}
 .tagR{margin-right: 0;}
+.btn2{padding: 5px 10px;line-height: 1;border: 1px solid #e1e1e1;border-radius: 5px;}
 </style>

@@ -2,15 +2,15 @@
 	<view>
 
 		<!-- nav -->
-		<view class="font-28 color2 d-flex a-center j-sb borderB-e1 bg-f5 shadow-sm nav">
+		<view class="font-28 color2 d-flex a-center j-sb  bg-f5 shadow-sm nav">
 			<view class="item" :class="navCurr==1?'on':''" @click="changeNav(1)">资讯</view>
 			<view class="item" :class="navCurr==2?'on':''" @click="changeNav(2)">二手信息</view>
-			<view class="item" :class="navCurr==3?'on':''" @click="changeNav(3)">商务通</view>
+			
 			<view class="item" :class="navCurr==4?'on':''" @click="changeNav(4)">招聘信息</view>
-
+			<view class="item" :class="navCurr==3?'on':''" @click="changeNav(3)">商务通</view>
 		</view>
 
-		<view class="font-30 color2 p-3 d-flex a-center j-sb borderB-e1 choose">
+		<view class="font-30 color2 p-3 d-flex a-center j-sb borderB-f5 choose" style="background-color: #fff;">
 			<view @click="chooseShow" v-if="!isShowChoose">选择</view>
 			<view @click="chooseShow" v-else>取消</view>
 			<view class="Mcolor d-flex a-center" v-if="isShowChoose">
@@ -21,7 +21,7 @@
 		</view>
 
 		<!-- 咨询 -->
-		<view class="pt-3 bg-white borderB-e1" v-show="navCurr==1" v-for="(item,index) of mainData" :key="item.id">
+		<view class="pt-3 bg-white borderB-f5" v-show="navCurr==1" v-for="(item,index) of mainData" :key="item.id">
 			<view class="d-flex a-center px-3 pb-3"  v-if="item.style==2">
 				<!-- <image src="../../static/images/i-releasel-icon.png" class="icon5"></image> -->
 				<image @click="choose(index)" v-if="isShowChoose" 
@@ -141,7 +141,7 @@
 		</view>
 
 		<!-- 二手信息 -->
-		<view class="list borderB-e1" v-show="navCurr==2" v-for="(item,index) of mainData" :key="item.id">
+		<view class="list borderB-f5" v-show="navCurr==2" v-for="(item,index) of mainData" :key="item.id">
 			<view class="d-flex a-center px-3 pb-3 bg-white">
 				<image @click="choose(index)" v-if="isShowChoose" 
 				:src="item.choose?'../../static/images/i-releasel-icon1.png':'../../static/images/i-releasel-icon.png'" class="icon5"></image>
@@ -173,7 +173,7 @@
 
 
 		<!-- 招聘信息 -->
-		<view v-show="navCurr==4" class="bg-white borderB-e1" v-for="(item,index) of mainData" :key="item.id">
+		<view v-show="navCurr==4" class="bg-white borderB-f5" v-for="(item,index) of mainData" :key="item.id">
 			<view class="d-flex a-center px-3">
 				<image @click="choose(index)" v-if="isShowChoose"
 				:src="item.choose?'../../static/images/i-releasel-icon1.png':'../../static/images/i-releasel-icon.png'" class="icon5"></image>
@@ -212,14 +212,14 @@
 		</view>
 
 		<!-- 商务通 -->
-		<view v-show="navCurr==3" class="bg-white borderB-e1" v-for="(item,index) of mainData" :key="item.id">
+		<!-- <view v-show="navCurr==3" class="bg-white borderB-f5" v-for="(item,index) of mainData" :key="item.id">
 			<view class="d-flex a-center px-3">
 				<image @click="choose(index)" v-if="isShowChoose"
 				:src="item.choose?'../../static/images/i-releasel-icon1.png':'../../static/images/i-releasel-icon.png'" class="icon5"></image>
-				<!-- <image src="../../static/images/i-releasel-icon1.png" class="icon5"></image> -->
+				
 				<view class="flex-1 ml-2">
 					<view class="Mcolor font-30 py-3">{{item.title}}</view>
-					<view class="d-flex a-center j-sb line-h pb-3 borderB-e1">
+					<view class="d-flex a-center j-sb line-h pb-3 borderB-f5">
 						<view><text class="borderR-e1 pr-2 mr-2">{{item.name}}</text>{{item.phone}}</view>
 						<view class="d-flex a-center">
 							<image src="../../static/images/detailsl-icon3.png" class="icon4"></image>
@@ -245,9 +245,47 @@
 					<view class="font-22 color2 py-3" @click="Router.navigateTo({route:{path:'/pages/user-opinion/user-opinion'}})">不实信息投诉</view>
 				</view>
 			</view>
+		</view> -->
+		<view class="d-flex a-center px-3"  v-show="navCurr==3" v-for="(item,index) of mainData" :key="item.id">
+			<image @click="choose(index)" v-if="isShowChoose"
+			:src="item.choose?'../../static/images/i-releasel-icon1.png':'../../static/images/i-releasel-icon.png'" class="icon5"></image>
+			<view class="rounded shadow m-2 px-2  pb-3 pl-2 flex-1" style="background-color: #fff;">
+				<view class="Mcolor font-30 py-3">{{item.title}}</view>
+				<view class="d-flex a-center j-sb line-h pb-3 borderB-e1">
+					<view><text class="borderR-e1 pr-2 mr-2">{{item.name}}</text>{{item.phone}}</view>
+					<view class="d-flex a-center">
+						<image src="../../static/images/detailsl-icon3.png" class="icon3"></image>
+						<view class="font-24 color6 pl-1">{{item.city?item.city.title:''}}</view>
+					</view>
+				</view>
+				<view class="d-flex font-24 pt-3">
+					<view class="color6">业务范围：</view>
+					<view class="color2 flex-1">
+						<view class="w-100 overflow-h" style="word-break:break-all;">{{item.description}}</view>
+						<view class="d-flex font-24">
+							<view class="d-flex a-center flex-wrap" v-if="item.mainImg.length>0">
+								<image @click="imgPreview(index,c_index)" v-for="(c_item,c_index) of item.mainImg" :key="c_index" :src="c_item.url" class="img"></image>
+							</view>
+						</view>
+					</view>
+					
+				</view>
+				
+				
+				<view class="d-flex font-24 pt-3">
+					<view class="color6">销售区域：</view>
+					<view class="color2 mr-1" :key="c_item.id" v-for="(c_item,c_index) in item.relation">{{c_item.relation_two}}</view>
+				</view>
+				<view class="font-22 Mcolor text-center d-flex a-center j-end pt-3">
+					<view class="btn Mborder rounded" style="width: 150rpx;" @click="Router.navigateTo({route:{path:'/pages/user-opinion/user-opinion'}})">不实信息投诉</view>
+					<!-- <view class="btn Mborder rounded ml-5" @click="collect(index)">
+						{{item.log&&item.log.length>0&&item.log[0].status==1?'已收藏':'收藏'}}
+					</view> -->
+					<view class="btn Mborder rounded ml-5" @click="callPhone(index)">拨打电话</view>
+				</view>
+				
+			</view>
 		</view>
-
-
 		<view style="height: 50rpx;"></view>
 
 	</view>
@@ -593,7 +631,7 @@
 	.nav .on::before {
 		content: '';
 		width: 100%;
-		height: 2rpx;
+		height: 4rpx;
 		background-color: #51A9E9;
 		position: absolute;
 		bottom: 0;
