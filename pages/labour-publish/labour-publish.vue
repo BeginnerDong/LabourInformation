@@ -10,7 +10,7 @@
 		</view> -->
 		
 		<!-- nav -->
-		<view class="font-28 color2 d-flex a-center j-sb borderB-e1 bg-f5 shadow-sm nav">
+		<view class="font-28 color2 d-flex a-center j-sb  bg-f5 shadow-sm nav">
 			<view class="item" :class="navCurr==1?'on':''" @click="changeNav(1)">招工人</view>
 			<view class="item" :class="navCurr==2?'on':''" @click="changeNav(2)">招队伍</view>
 			<view class="item" :class="navCurr==3?'on':''" @click="changeNav(3)">工人找活</view>
@@ -18,9 +18,9 @@
 		</view>
 		
 		<!-- 添加图片 -->
-		<view class="upload font-24 color2 px-3 py-4 bg-white mb-2">
-			<view>添加图片（最多5张图片,选填）</view>
-			<view class="uploadImg d-flex a-center">
+		<view class="upload font-30 color2 px-3 py-4 bg-white mb-2">
+			<view>添加图片<span class="font-24">（最多上传5张图片，选填）</span></view>
+			<view class="uploadImg d-flex a-center flex-wrap">
 				<view class="position-relative" v-for="(item,index) of submitData.mainImg" :key="index">
 					<image :src="item.url" mode=""></image>
 					<image src="../../static/images/used-to-releasel-icon1.png" @click="deleteImg(index)" class="icon2"></image>
@@ -34,25 +34,26 @@
 			<view class="py-3 borderB-f5 px-3">
 				<view class="d-flex a-center j-sb color2 pb-4 line-h">
 					<view class="font-30">标题</view>
-					<view class="font-24">({{submitData.title.length}}/100)</view>
+					<view class="font-24">({{submitData.title.length>100?100:submitData.title.length}}/100)</view>
 				</view>
-				<textarea  maxlength="100" placeholder="请填写100个字以内的内容"  v-model="submitData.title"/>
+				<textarea  v-show="!city" style="height: 210rpx;" maxlength="100" placeholder="请填写100个字以内的内容"  v-model="submitData.title"/>
 			</view>
 			<view class="d-flex a-center j-sb py-3 borderB-f5 px-3">
 				<view class="font-30 color2">所在地区</view>
+			
 				<view class="d-flex a-center" @click="showChoose('city')">
-					<view class="font-24 color9 pr-1" :class="submitData.location!=''?'color2':''">{{submitData.location!=''?
+					<view class="font-30  pr-1" :class="submitData.location!=''?'color2':'color9'" >{{submitData.location!=''?
 					cityData[cityIndex].title+'/'+cityData[cityIndex].children[cityIdIndex].title:'请选择'}}</view>
-					<image src="../../static/images/used-to-releasel-icon3.png" class="icon1"></image>
+					<image src="../../static/images/used-to-releasel-icon3.png" class="icon4"></image>
 				</view>
 			</view>
 			<view class="d-flex a-center j-sb py-3 borderB-f5 px-3">
 				<view class="font-30 color2">联系人</view>
-				<input type="text" placeholder="请填写" v-model="submitData.name"/>
+				<input type="text" placeholder="请填写" v-model="submitData.name" style="color: #000000;"/>
 			</view>
 			<view class="d-flex a-center j-sb py-3 borderB-f5 px-3">
 				<view class="font-30 color2">手机号</view>
-				<input type="text" placeholder="请填写" v-model="submitData.phone"/>
+				<input type="text" placeholder="请填写" v-model="submitData.phone" style="color: #000000;"/>
 			</view>
 		</view>
 		
@@ -119,12 +120,13 @@
 				<input type="text" placeholder="请输入金额,可不填写" maxlength="5" v-model="submitData.price"/>
 			</view>
 			<view class="d-flex p-3 mb-5">
-				<view class="font-22 Rcolor">设置介绍说明：</view>
-				<view class="font-22 color6 line-h-md">
+				<view class="font-22" style="width: 40%;">设置介绍说明：</view>
+				<view class="font-22 line-h-md">设置介绍费促进他人帮你介绍，若介绍成功，你私底下给予对方介绍费（介绍费不用预交给平台）</view>
+				<!-- <view class="font-22 color6 line-h-md">
 					<view><text class="number">1</text>你可以设置介绍费，促进他人帮你介绍</view>
 					<view><text class="number">2</text>他人帮您介绍成功</view>
-					<view><text class="number">3</text>您直接支付介绍着的介绍费(介绍费不用交给平台)</view>
-				</view>
+					<view><text class="number">3</text>您直接支付介绍者的介绍费(介绍费不用交给平台)</view>
+				</view> -->
 			</view>
 			<view class="btn400" @click="Utils.stopMultiClick(submit)">确认发布</view>
 		</view>
@@ -137,17 +139,17 @@
 				</view>
 				<!-- 所在地 -->
 				<view class="classfiy font-26 color2 line-h text-center d-flex">
-					<view class="left">
+					<scroll-view class="left" :style="'height:'+windowHeight*0.7+'px'" scroll-y="true">
 						<view class="li py-3" v-for="(item,index) of cityData" :key="item.id"
 						 @click="changeCityIndex(index)" :class="cityIndex==index?'on':''">{{item.title}}</view>
-					</view>
-					<view class="right flex-1 bg-white">
+					</scroll-view>
+					<scroll-view class="right flex-1 bg-white"  :style="'height:'+windowHeight*0.7+'px'" scroll-y="true">
 						<view class="li" :class="cityIdIndex==index?'on':''" @click="chooseCityId(index)" 
 						v-for="(item,index) of cityData[cityIndex].children"
 						:key="item.id">{{item.title}}
 							<image src="../../static/images/used-to-releasel-icon5.png" class="icon5" v-if="cityIdIndex==index"></image>
 						</view>
-					</view>
+					</scroll-view>
 				</view>
 			</view>
 		</view>
@@ -199,7 +201,8 @@
 				],
 				Utils:this.$Utils,
 				isEdit:false,
-				kefu:''
+				kefu:'',
+				windowHeight:0
 			}
 		},
 		
@@ -208,10 +211,12 @@
 			const self = this;
 			self.kefu = uni.getStorageSync('kefu');
 			self.paginate = self.$Utils.cloneForm(self.$AssetsConfig.paginate);
+			var res = uni.getSystemInfoSync();
+			self.windowHeight = res.windowHeight;
 			self.$Utils.loadAll(['getCityData'], self);
 			if(options.id){
-				self.isEdit = true
-				self.getMessageData(options.id)
+				self.id = options.id;
+			
 			}
 		},
 		
@@ -234,6 +239,7 @@
 						self.submitData.mainImg = self.messageData.mainImg;
 						self.submitData.behavior = self.messageData.behavior;
 						self.submitData.location = self.messageData.location;
+						self.submitData.price = self.messageData.price;
 						//self.submitData.passage_array = self.messageData.passage_array;
 						//self.submitData.salary = self.messageData.salary;
 						//self.submitData.description = self.messageData.description;
@@ -421,6 +427,10 @@
 					if (res.info.data.length > 0) {
 						self.cityData = res.info.data;
 					}
+					if(self.id){
+						self.isEdit = true
+						self.getMessageData(self.id)
+					}
 					self.$Utils.finishFunc('getCityData');
 				};
 				self.$apis.labelGet(postData, callback);
@@ -436,7 +446,7 @@
 				self.navCurr = i;
 				self.submitData.behavior = self.navCurr
 			},
-			
+			 
 			upLoadImg(type) {
 				const self = this;			
 				const callback = (res) => {
@@ -479,6 +489,8 @@
 
 <style>
 page{background-color: #f5f5f5;}
+
+input,textarea{font-size: 30rpx;color: #222;}
 .borderBox{box-sizing: border-box;}
 .head{background-color: #FFF4D4;}
 .icon1{width: 19rpx!important;height: 18rpx!important;}
@@ -490,7 +502,7 @@ page{background-color: #f5f5f5;}
 .nav .on::before{content: ''; width: 100%;height: 2rpx;background-color: #51A9E9;position: absolute; bottom: 0;left: 0;}
 
 .icon2Box{position: absolute;right: 0;top: 10rpx;padding: 10rpx;}
-.icon2{width: 18rpx!important;height: 10rpx!important;}
+/* .icon2{width: 18rpx!important;height: 10rpx!important;} */
 .select{width: 220rpx;line-height: 60rpx;text-indent: 10rpx;margin-right: 30rpx;}
 .select1{width: 160rpx;line-height: 60rpx;margin-right: 30rpx;}
 .card1 .on{border: 1px solid #51A9E9;}

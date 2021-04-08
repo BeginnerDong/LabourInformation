@@ -1,19 +1,19 @@
 <template>
 	<view>
 		<!-- nav -->
-		<view class="font-28 color2 d-flex a-center j-sb  bg-f5 shadow-sm nav">
+		<view class="font-28 color2 d-flex a-center j-sb  bg-f5 shadow-sm nav position-fixed w-100 z-index1">
 			<view class="item" :class="navCurr==1?'on':''" @click="changeNav(1)">全部</view>
 			<view class="item" :class="navCurr==2?'on':''" @click="changeNav(2)">出售</view>
 			<view class="item" :class="navCurr==3?'on':''" @click="changeNav(3)">求购</view>
 		</view>
-		
-		<view class="font-30 color2 p-3 d-flex a-center j-sb borderB-f5">
+		<view style="height: 90rpx;"></view>
+		<view class="font-28 color2 p-3 d-flex a-center j-sb borderB-f5">
 			<view @click="chooseShow" v-if="!isShowChoose" class="btn2">选择</view>
 			<view @click="chooseShow"  class="btn2" v-else>取消</view>
-			<view class="Mcolor d-flex a-center" v-if="isShowChoose">
-				<view class="pr-5 borderR-f5" @click="chooseAll()">全选</view>
-				<view class="pr-5 borderR-f5" @click="deleteAll()">删除</view>
-				<view class="pl-5" @click="updateAll()">一键更新日期</view>
+			<view class="Mcolor d-flex a-center line-h" v-if="isShowChoose">
+				<view class="pr-4 borderR-e1" @click="chooseAll()">全选</view>
+				<view class="px-4 borderR-e1" @click="deleteAll()">删除</view>
+				<view class="pl-4" @click="updateAll()">一键更新日期</view>
 			</view>
 		</view>
 		
@@ -22,7 +22,7 @@
 				<view class="d-flex a-center mx-3">
 					<image @click="choose(index)" v-if="isShowChoose" :src="item.choose?'../../static/images/i-releasel-icon1.png':'../../static/images/i-releasel-icon.png'" class="icon1"></image>
 					<view class="ml-2 d-flex a-center j-sb flex-1">
-						<image :src="item.mainImg&&item.mainImg[0]?item.mainImg[0].url:''" class="img"></image>
+						<image :src="item.mainImg&&item.mainImg[0]?item.mainImg[0].url:(item.behavior==2?'../../static/images/qiugou.jpg':'')" class="img"></image>
 						<view class="itemCon flex-1 ml-2">
 							<view class="color3 font-28 avoidOverflow2 tit">
 								{{item.title}}
@@ -42,14 +42,14 @@
 					</view>
 				</view>
 				<view class="font-22 color9 py-3 mx-3 d-flex j-end">
-					<view>首发时间：{{item.create_time?item.create_time:''}}</view>
-					<view class="pl-2">最近更新时间：{{item.update_time?item.update_time:''}}</view>
+					<view>首发日期：{{item.create_time?item.create_time:''}}</view>
+					<view class="pl-2">最近更新日期：{{item.update_time?item.update_time:''}}</view>
 				</view>
-				<view class="Mcolor font-30 d-flex j-sb a-center text-center line-h oh">
+				<view class="Mcolor font-28 d-flex j-sb a-center text-center line-h oh">
 					<view  @click="deleteAll(index)">删除</view>
 					<view class="borderL-e1 borderR-e1" :data-id="item.id"
 					@click="Router.navigateTo({route:{path:'/pages/secondHand-publish/secondHand-publish?id='+$event.currentTarget.dataset.id}})">编辑</view>
-					<view @click="updateAll(index)">更新时间</view>
+					<view @click="updateAll(index)">更新日期</view>
 				</view>
 			</view>
 		</view>
@@ -291,7 +291,7 @@
 .nav .on{position: relative;color: #51A9E9;}
 .nav .on::before{content: ''; width: 100%;height: 4rpx;background-color: #51A9E9;position: absolute; bottom: 0;left: 0;}
 
-.icon1{width: 40rpx;height: 40rpx;}
+.icon1{width: 40rpx!important;height: 40rpx!important;}
 .img{width: 160rpx;height: 160rpx;}
 
 .oh view{width: 33.33%;}

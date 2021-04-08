@@ -2,8 +2,13 @@
 	<view>
 
 		<view class="font-24 color2 text-center bg-white py-3 head">
-			<view class="Rcolor font-w pb-3">分享到朋友圈步骤</view>
-			<view><text>1</text>先保存图片><text>2</text>将图片发送到朋友圈</view>
+			<view class="Rcolor font-w pb-1 font-30">分享到朋友圈步骤</view>
+			<view style="line-height: 50rpx;" class="d-flex a-center j-center">
+				<view style="color:red;width: 30rpx;height:30rpx;border-radius: 50%;overflow: hidden;font-size:10px;border: 1px solid red;display: flex;align-items: center;justify-content: center;">1</view>
+				<view class="pl-1 pr-1">先保存图片></view>
+				<view  style="color:red;width: 30rpx;height:30rpx;border-radius: 50%;overflow: hidden;font-size:10px;border: 1px solid red;display: flex;align-items: center;justify-content: center;">2</view>
+				<view class="pl-1 pr-1">将图片发送到朋友圈</view>
+			</view>
 			<view>他人可通过点开图片长按识别小程序码，查看本条信息</view>
 		</view>
 		<view style="height: 20rpx;width: 100%;background-color: #f5f5f5;"></view>
@@ -11,21 +16,12 @@
 		
 
 		<!-- 公司分享 -->
-		<view class="bg-white  px-3">
-			<view class="py-3 font-28 color2 d-flex a-center j-sa">
-				<view class="d-flex a-center" @click="change(1)">
-					<image :src="current==1?'../../static/images/used-to-sharel-icon1.png':'../../static/images/used-to-sharel-icon.png'"
-					 class="icon1"></image>图片样式1
-				</view>
-				<view class="d-flex a-center" @click="change(2)">
-					<image :src="current==2?'../../static/images/used-to-sharel-icon1.png':'../../static/images/used-to-sharel-icon.png'"
-					 class="icon1"></image>图片样式2
-				</view>
-			</view>
-			<view class="rounded10 overflow-h shadow pb-3">
-				<view class="colorf bg-colorR py-4">
-					<view class="font-50 text-center pb-3">更多二手供需信息</view>
-					<view class="font-34 text-center" v-if="current==1">进入我的主页查看</view>
+		<view class="bg-white">
+			<view class="py-3 font-32 color2 text-center">保存图片样式</view>
+			<view class="rounded10 overflow-h shadow  wh722" style="margin-left: 14rpx;">
+				<view class="colorf bg-colorR py-3">
+					<view class="font-70 text-center pb-3">更多二手供需信息</view>
+					<view class="font-50 text-center" v-if="current==1">进入我的主页浏览</view>
 					<view class="d-flex a-center j-center" v-if="current==2">
 						<view class="font-28 d-flex a-center">
 							<image src="../../static/images/used-to-sharel-icon2.png" class="icon2"></image>{{info.name?info.name:''}}
@@ -35,19 +31,27 @@
 						</view>
 					</view>
 				</view>
-				<view class="shareImg d-flex j-sb a-center px-3 pt-4">
+				<view class="shareImg d-flex j-sb a-center px-3 pt-1">
 					<image :src="qrUrl" mode=""></image>
 					<image src="../../static/images/used-to-sharel-img1.png" mode=""></image>
 				</view>
-				<view class="Rcolor font-36 text-center py-3">长按图片，识别图中小程序</view>
-				<view class="font-24 color6 text-right d-flex a-center j-sa">
-					<view class="borderR-e1 px-1">如果长安图片没有识别出小程序信息，<br />请重新点开图片，在长安识别，多试几次就行了</view>
+				<view class="Rcolor font-40  text-center pb-2 pt-1">长按图片，识别图中小程序</view>
+				<view class="font-24 color6 text-right d-flex a-center j-sa" style="color:#989a9c">
+					<view class="borderR-e1 px-1">如果长按图片没有识别出小程序信息<br />请重新点开图片，再长按识别，多试几次就行了</view>
 					<image src="../../static/images/used-to-sharel-img2.png" class="img"></image>
 				</view>
 			</view>
 
-			<view class="py-5">
+			<!-- <view class="py-5">
 				<view class="btn400" @click="submit">保存图片</view>
+			</view> -->
+			
+			<view class="py-5" v-if="isCom" @click="submit">
+				<view class="btn400">保存图片</view>
+			</view>
+			
+			<view class="py-5" v-else>
+				<view class="btn400" style="background-color: #999999;">保存图片</view>
 			</view>
 		</view>
 		
@@ -72,6 +76,7 @@
 				rpx: 0,
 				width: 0,
 				height: 0,
+				isCom:false
 			}
 		},
 
@@ -79,12 +84,20 @@
 			const self = this;
 			self.user_no = options.user_no;
 			self.qrUrl = uni.getStorageSync('userQr');
+			wx.downloadFile({
+				url: self.qrUrl, //网络路径
+				success: function(res) {
+					console.log('qr', res)
+					self.isCom = true;
+					self.qrCodeUrl = res.tempFilePath
+				},
+			});
 			self.$Utils.loadAll(['getUserData'], self);
 			wx.getSystemInfo({
 				success: function(res) {
 					self.rpx = res.windowWidth / 375;
-					self.width = 345 * self.rpx
-					self.height = 400 * self.rpx
+					self.width = 361 * self.rpx
+					self.height = 361 * self.rpx
 					console.log('self.width', self.width)
 				},
 			})
@@ -189,23 +202,25 @@
 				// 坐标(0,0) 表示从此处开始绘制，相当于偏移。
 				//背景色
 				myCanvas.fillStyle = "#FFFFFF";
-				myCanvas.fillRect(0, 0, 345*self.rpx, 400*self.rpx);
+				myCanvas.fillRect(0, 0, 361*self.rpx, 361*self.rpx);
 				myCanvas.fillStyle = "#D31114";
-				myCanvas.fillRect(0, 0, 345*self.rpx, 110*self.rpx);
+				myCanvas.fillRect(0, 0, 361*self.rpx, 120*self.rpx);
 				//类型
 				myCanvas.save()
 				myCanvas.restore(); //恢复之前保存的绘图上下文 恢复之前保存的绘图上下午即状态 可以继续绘制
 				myCanvas.draw(true)
 				myCanvas.textAlign = 'center' //文字居中
-				myCanvas.font = '25px Arial'
+				/* myCanvas.font = '34px Arial' */
+				myCanvas.font = `normal bold ${parseInt(self.rpx * 34)}px sans-serif`;
 				myCanvas.fillStyle = '#fff';
-				myCanvas.fillText('更多二手供需信息', 175.5*self.rpx, 50*self.rpx, 345*self.rpx);
+				myCanvas.fillText('更多二手供需信息', 180.5*self.rpx, 50*self.rpx, 361*self.rpx);
 				myCanvas.save()
 				myCanvas.restore(); //恢复之前保存的绘图上下文 恢复之前保存的绘图上下午即状态 可以继续绘制
 				myCanvas.draw(true)
 				if (this.current == 1) {
-					myCanvas.font = '17px Arial'
-					myCanvas.fillText('进入我的主页查看', 175.5*self.rpx, 90*self.rpx, 345*self.rpx);
+					//myCanvas.font = '17px Arial'
+					myCanvas.font = `normal bold ${parseInt(self.rpx * 25)}px sans-serif`;
+					myCanvas.fillText('进入我的主页浏览', 180.5*self.rpx, 100*self.rpx, 361*self.rpx);
 				} else {
 					myCanvas.drawImage('../../static/images/used-to-sharel-icon2.png', 80*self.rpx, 72*self.rpx, 15*self.rpx, 16*self.rpx);
 					myCanvas.font = '15px Arial'
@@ -218,7 +233,9 @@
 				myCanvas.save()
 				myCanvas.restore(); //恢复之前保存的绘图上下文 恢复之前保存的绘图上下午即状态 可以继续绘制
 				myCanvas.draw(true)
-				wx.getImageInfo({
+				myCanvas.drawImage(self.qrCodeUrl, 30*self.rpx,
+					140*self.rpx, 130*self.rpx, 130*self.rpx);
+				/* wx.getImageInfo({
 					src:this.qrUrl,
 					complete: (res) => {
 						self.isCom = true;
@@ -229,40 +246,40 @@
 							myCanvas.restore(); //恢复之前保存的绘图上下文 恢复之前保存的绘图上下午即状态 可以继续绘制
 							myCanvas.draw(true)
 					}
-				});
-				myCanvas.drawImage('../../static/images/used-to-sharel-img1.png', 170*self.rpx, 140*self.rpx, 161*self.rpx, 145*self.rpx);
+				}); */
+				myCanvas.drawImage('../../static/images/used-to-sharel-img1.png', 186*self.rpx, 140*self.rpx, 141*self.rpx, 131*self.rpx);
 				myCanvas.save()
 				myCanvas.restore(); //恢复之前保存的绘图上下文 恢复之前保存的绘图上下午即状态 可以继续绘制
 				myCanvas.draw(true)
 				myCanvas.textAlign = 'center' //文字居中
 				myCanvas.font = '18px Arial'
 				myCanvas.fillStyle = '#D31114';
-				myCanvas.fillText('长按图片，识别图中小程序', 175.5*self.rpx, 320*self.rpx, 345*self.rpx);
+				myCanvas.fillText('长按图片，识别图中小程序', 180.5*self.rpx, 305*self.rpx, 361*self.rpx);
 				myCanvas.save()
 				myCanvas.restore(); //恢复之前保存的绘图上下文 恢复之前保存的绘图上下午即状态 可以继续绘制
 				myCanvas.draw(true)
-				myCanvas.textAlign = 'start' //文字居中
+				myCanvas.textAlign = 'left' //文字居中
 				myCanvas.font = '12px Arial'
-				myCanvas.fillStyle = '#666';
-				myCanvas.fillText('如果长按图片没有识别出小程序信息，', 60*self.rpx, 355*self.rpx);
-				myCanvas.fillText('请重新点开图片，在长按识别，多试几次就行了', 5*self.rpx, 370*self.rpx);
+				myCanvas.fillStyle = '#989a9c';
+				myCanvas.fillText('如果长按图片没有识别出小程序信息', 60*self.rpx, 340*self.rpx);
+				myCanvas.fillText('请重新点开图片，再长按识别，多试几次就行了', 5*self.rpx, 355*self.rpx);
 				myCanvas.save()
 				myCanvas.restore(); //恢复之前保存的绘图上下文 恢复之前保存的绘图上下午即状态 可以继续绘制
 				myCanvas.draw(true)
 				myCanvas.strokeStyle = "#e1e1e1";
-				myCanvas.moveTo(265.5*self.rpx, 345*self.rpx);
-				myCanvas.lineTo(265.5*self.rpx, 375*self.rpx);
+				myCanvas.moveTo(265.5*self.rpx, 330*self.rpx);
+				myCanvas.lineTo(265.5*self.rpx, 360*self.rpx);
 				myCanvas.stroke();
 				myCanvas.save()
 				myCanvas.restore(); //恢复之前保存的绘图上下文 恢复之前保存的绘图上下午即状态 可以继续绘制
 				myCanvas.draw(true)
-				myCanvas.drawImage('../../static/images/used-to-sharel-img2.png', 270*self.rpx, 345*self.rpx, 75*self.rpx, 31*self.rpx);
+				myCanvas.drawImage('../../static/images/used-to-sharel-img2.png', 270*self.rpx, 328*self.rpx, 85*self.rpx, 28*self.rpx);
 				//开始绘画，必须调用这一步，才会把之前的一些操作实施
 				myCanvas.save()
 				myCanvas.restore(); //恢复之前保存的绘图上下文 恢复之前保存的绘图上下午即状态 可以继续绘制
 				myCanvas.draw(true)
 				//myCanvas.restore()
-				self.roundRect(myCanvas,0,0,345 * self.rpx, 400 * self.rpx,10);
+				self.roundRect(myCanvas,0,0,361 * self.rpx, 361 * self.rpx,10);
 				//开始绘画，必须调用这一步，才会把之前的一些操作实施
 				var interval = setInterval(function() {
 					if (self.isCom) {
@@ -324,8 +341,14 @@
 			},
 			
 			canvasToTempFilePath() {
-				//const self = this;
+				const self = this;
 				uni.canvasToTempFilePath({
+					x: 0,
+					y: 0,
+					width: 361*self.rpx,
+					height: 361*self.rpx,
+					/* destWidth: 361*self.rpx,
+					destHeight: 361*self.rpx, */
 					canvasId: 'mycanvas',
 					success: (res) => {
 						console.log(res)
@@ -373,6 +396,7 @@
 			savePhoto() {
 				let self = this
 				console.log()
+				//self.imgurl = self.imgurl.replace('png','gif')
 				wx.saveImageToPhotosAlbum({
 					filePath: self.imgurl,
 					success(res) {
@@ -386,6 +410,9 @@
 						myCanvas.clearRect(0, 0, 345, 380);
 						myCanvas.save()
 						myCanvas.restore()
+					},
+					fail(res) {
+						console.log(res)
 					}
 				})
 			},
@@ -402,7 +429,8 @@
 		display: block;
 		border-radius: 10rpx;
 	}
-
+	.font-70{font-size: 69rpx;}
+	.wh722{width: 722rpx;height: 722rpx;}
 	.pc-container {
 		width: 690rpx;
 		height: 760rpx;
@@ -465,12 +493,12 @@
 	}
 
 	.shareImg image:nth-child(2) {
-		width: 323rpx;
-		height: 290rpx;
+		width: 282rpx;
+		height: 263rpx;
 	}
 
 	.img {
-		width: 150rpx;
+		width: 170rpx;
 		height: 62rpx;
 		margin-left: 10rpx;
 	}

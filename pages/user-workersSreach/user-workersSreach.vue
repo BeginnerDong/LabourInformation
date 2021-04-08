@@ -1,7 +1,5 @@
 <template>
 	<view>
-		<view class="bg-white py-4 font-30 color2 text-center mb-2">工人不良行为查询</view>
-		
 		<view class="bg-white px-3 pb-4">
 			<view class="py-4 d-flex a-center j-sb">
 				<view class="font-24 color6 d-flex a-center" @click="set">
@@ -20,17 +18,17 @@
 					<view>请输入要查询的名字/身份证号或手机号</view>
 					<view>一行一条信息，否则查询不准</view>
 					<view>可批量查询，长按可粘贴</view>
-					<view class="pt-5">实例格式：</view>
+					<view class="pt-5">格式：</view>
 					<view>张三</view>
 					<view>李四</view>
-					<view>156829847586</view>
-					<view>40158248793951258</view>
+					<view>13788889999</view>
+					<view>401234199901011234</view>
 				</view>
 			</view>
 			
 		</view>
 			
-		<view class="btn400" @click="Utils.stopMultiClick(submit)">提交</view>
+		<view class="btn400" @click="Utils.stopMultiClick(submit)">查询</view>
 		
 	</view>
 </template>
@@ -75,12 +73,19 @@
 				const self = this;
 				uni.setStorageSync('canClick', false);
 				self.infoArray = self.text.split(/[(\r\n)\r\n]+/);
-				console.log('self.infoArray',self.infoArray)
-				if(self.infoArray.length==0||self.infoArray[0]==''){
+				console.log('self.infoArray',self.infoArray);
+				for (var i = 0; i < self.infoArray.length; i++) {
+					self.infoArray[i] = self.infoArray[i].replace(/\s*/g,"") 
+					self.infoArray[i] = self.infoArray[i].toLocaleLowerCase()
+				};
+				if(self.infoArray.length==0||(self.infoArray[0]==''&&self.infoArray.length==0)){
 					self.$Utils.showToast('信息填写不合规', 'none', 1000);
 					uni.setStorageSync('canClick', true);
 					return
 				};
+				if(self.infoArray[0]==''){
+					self.infoArray.splice(0,1)
+				}
 				self.searchBad();
 			},
 			

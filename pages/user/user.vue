@@ -24,18 +24,36 @@
 			v-else open-type="getUserInfo" @getuserinfo="Utils.stopMultiClick(submit)">点击登录</button>
 		</view>
 		<!-- 高级用户显示 -->
-		<view class="font-24 p-3 oh">
+		<!-- <view class="font-24 p-3 oh">
 			桥隧之家是一个完全免费的信息发布平台，只要您符合条件就可以免费开通相关权限和认证。
 			<text class="Mcolor"
 			@click="Router.navigateTo({route:{path:'/pages/platformInfor/platformInfor'}})">详情>></text>
-		</view>
+		</view> -->
 		<view v-if="userData.nickname">
+			
+			<!-- ----------高级用户显示------------- -->
+			<view v-if="userData.behavior==1">
+				<view class="font-30 Mcolor py-3 px-3 bg-white  borderB-f5 d-flex a-center">
+					<image src="../../static/images/about-icon1.png" class="icon3"></image>
+					<view class="pl-2">工人不良行为</view>
+				</view>
+				<view class="font-30 color2 d-flex j-sb a-center py-3 px-3 bg-white">
+					<view class="d-flex a-center w-50 j-center" @click="Router.navigateTo({route:{path:'/pages/user-workersRecord/user-workersRecord'}})">
+						<image src="../../static/images/about-icon2.png" class="icon4"></image>
+						<view class="pl-2">我要发布</view>
+					</view>
+					<view class="d-flex a-center w-50 j-center" @click="Router.navigateTo({route:{path:'/pages/user-workersSreach/user-workersSreach'}})">
+						<image src="../../static/images/about-icon3.png" class="icon5"></image>
+						<view class="pl-2">我要查询</view>
+					</view>
+				</view>
+			</view>
 			<!-- 普通用户显示 -->
-			<view class="font-28 color2 d-flex j-sb a-center py-4 px-3 bg-white mt-2" v-if="userData.behavior==0">
+			<view class="font-30 color2 d-flex j-sb a-center py-3 px-3 bg-white" v-if="userData.behavior==0">
 				<view>我的二手交易信息主页</view>
 				<view class="Mcolor" @click="changeHand()">免费开通</view>
 			</view>
-			<view class="font-30 color2 d-flex j-sb a-center py-4 px-3 bg-white borderB-f5" v-if="userData.behavior==2"
+			<view class="font-30 color2 d-flex j-sb a-center py-3 px-3 bg-white borderB-f5" v-if="userData.behavior==2"
 			@click="Router.navigateTo({route:{path:'/pages/user-secondHandIndex/user-secondHandIndex'}})">
 				<view>我的二手交易信息主页</view>
 				<image src="../../static/images/used-to-releasel-icon3.png" class="icon2"></image>
@@ -44,62 +62,46 @@
 				<image src="../../static/images/about-icon.png" class="icon1"></image>
 				<view class="pl-2">我发布的</view>
 			</view>
-			<view class="font-30 color2 d-flex j-sb a-center py-4 px-3 bg-white borderB-f5" @click="Router.navigateTo({route:{path:'/pages/user-secondHand/user-secondHand'}})">
-				<view>二手交易信息</view>
+			<view class="font-30 color2 d-flex j-sb a-center py-3 px-3 bg-white borderB-f5" @click="Router.navigateTo({route:{path:'/pages/user-secondHand/user-secondHand'}})">
+				<view>二手信息</view>
 				<image src="../../static/images/used-to-releasel-icon3.png" class="icon2"></image>
 			</view>
-			<view class="font-30 color2 d-flex j-sb a-center py-4 px-3 bg-white borderB-f5" @click="Router.navigateTo({route:{path:'/pages/user-labour/user-labour'}})">
-				<view>劳务招聘信息</view>
+			<view class="font-30 color2 d-flex j-sb a-center py-3 px-3 bg-white borderB-f5" @click="Router.navigateTo({route:{path:'/pages/user-labour/user-labour'}})">
+				<view>劳务信息</view>
 				<image src="../../static/images/used-to-releasel-icon3.png" class="icon2"></image>
 			</view>
-			<view class="font-30 color2 d-flex j-sb a-center py-4 px-3 bg-white" 
+			<view class="font-30 color2 d-flex j-sb a-center py-3 px-3 bg-white" 
 			@click="Router.navigateTo({route:{path:'/pages/business-publish/business-publish?type=isMe'}})">
-				<view>商务通名片</view>
+				<view>商务通-名片</view>
 				<image src="../../static/images/used-to-releasel-icon3.png" class="icon2"></image>
 			</view>
-			<view class="font-30 color2 d-flex j-sb a-center py-4 px-3 bg-white mt-2" @click="Router.navigateTo({route:{path:'/pages/user-collection/user-collection'}})">
+			<view class="font-30 color2 d-flex j-sb a-center py-3 px-3 bg-white mt-2" @click="Router.navigateTo({route:{path:'/pages/user-collection/user-collection'}})">
 				<view>我的收藏</view>
 				<image src="../../static/images/used-to-releasel-icon3.png" class="icon2"></image>
 			</view>
 
-			<!-- ----------高级用户显示------------- -->
-			<view v-if="userData.behavior==1">
-				<view class="font-30 Mcolor py-4 px-3 bg-white mt-2 borderB-f5 d-flex a-center">
-					<image src="../../static/images/about-icon1.png" class="icon3"></image>
-					<view class="pl-2">用工不良记录</view>
-				</view>
-				<view class="font-30 color2 d-flex j-sb a-center py-4 px-3 bg-white">
-					<view class="d-flex a-center w-50 j-center" @click="Router.navigateTo({route:{path:'/pages/user-workersRecord/user-workersRecord'}})">
-						<image src="../../static/images/about-icon2.png" class="icon4"></image>
-						<view class="pl-2">我要登记</view>
-					</view>
-					<view class="d-flex a-center w-50 j-center" @click="Router.navigateTo({route:{path:'/pages/user-workersSreach/user-workersSreach'}})">
-						<image src="../../static/images/about-icon3.png" class="icon5"></image>
-						<view class="pl-2">我要查询</view>
-					</view>
-				</view>
-			</view>
+			
 			<!-- --------------------- -->
 
-			<view class="font-30 color2 d-flex j-sb a-center py-4 px-3 bg-white mt-2 borderB-f5" @click="Router.navigateTo({route:{path:'/pages/user-opinion/user-opinion'}})">
+			<view class="font-30 color2 d-flex j-sb a-center py-3 px-3 bg-white mt-2 borderB-f5" @click="Router.navigateTo({route:{path:'/pages/user-opinion/user-opinion'}})">
 				<view>意见反馈</view>
 				<image src="../../static/images/used-to-releasel-icon3.png" class="icon2"></image>
 			</view>
-			<view class="font-30 color2 d-flex j-sb a-center py-4 px-3 bg-white" @click="Router.navigateTo({route:{path:'/pages/contentUs/contentUs'}})">
-				<view>联系我们</view>
+			<view class="font-30 color2 d-flex j-sb a-center py-3 px-3 bg-white" @click="Router.navigateTo({route:{path:'/pages/contentUs/contentUs'}})">
+				<view>关于我们</view>
 				<image src="../../static/images/used-to-releasel-icon3.png" class="icon2"></image>
 			</view>
 
 			<!-- 开通二手 -->
 			<view class="bg-mask px-4" v-show="hand_show">
 				<view class="font-28 color2 bg-white m-a text-center rounded10" style="margin-top: 370rpx;">
-					<view class="pb-2 pt-5">免费开通二手交易主页，请联系微信客服</view>
+					<view class="pb-2 pt-5">开通主页业务仅对专业从事二手机械设备的二手商开通，符合条件的请联系微信客服免费开通！</view>
 					<view class="Rcolor pb-2 d-flex j-center a-center">
 						<view>微信号：{{kefu}}</view>
 						<view @click="copy" style="width: 100rpx;line-height: 50rpx;height: 50rpx;background-color: #51A9E9;color: #fff;margin-left: 20rpx;">复制</view>
 					</view>
 					<view>加微信备注：开通主页</view>
-					<view class="Mcolor font-30 mt-5 py-4 borderT-e1" @click="changeHand()">确认</view>
+					<view class="Mcolor font-30 mt-5 py-3 borderT-e1" @click="changeHand()">确认</view>
 				</view>
 			</view>
 		</view>

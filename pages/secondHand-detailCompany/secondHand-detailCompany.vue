@@ -1,22 +1,22 @@
 <template>
 	<view>
 		
-		<view class="headBox px-3 bg-mcolor font-32 colorf z-index100" :style="{paddingTop:statusBar +'px'}">
+		<!-- <view class="headBox px-3 bg-mcolor font-32 colorf z-index100" :style="{paddingTop:statusBar+6 +'px'}">
 			<view class="d-flex a-center">
 				<view class="py-1 pr-2" @click="Router.back(1)">
 					<image src="../../static/images/back.png" class="back"></image>
 				</view>
 				<image src="../../static/images/logo.png" class="logo"></image>
 			</view>
-		</view>
+		</view> -->
 		
-		<view class="head position-relative">
+		<!-- <view class="head position-relative">
 			<image :src="info.mainImg&&info.mainImg[0]?info.mainImg[0].url:'../../static/images/bg.jpg'" mode=""></image>
 			<view class="txt px-3 font-32 colorf d-flex a-center">
 				<view class="name">{{info.company?info.company:''}}</view>
 				<view class="tag tagName1 ml-2">已实名认证</view>
 			</view>
-		</view>
+		</view> -->
 
 		<view class="px-3 bg-white">
 			<!-- <view class="font-26 color9 py-3 borderB-e1 position-relative">{{info.passage1?info.passage1:''}}
@@ -28,25 +28,25 @@
 					<!-- <view class="Rcolor text-center font-18 pt-1">热度98561</view> -->
 				</view>
 				<view class="ml-3 flex-1">
-					<view class="font-26 font-w color2 mb-2 flex-1 d-flex a-center" style="width: 58%;">
+					<view class="font-26 font-w color2 mb-2 flex-1 d-flex a-center">
 						<view class="pr-4">{{info.name?info.name:''}}</view>
 						<view class="d-flex a-center">
 							<image src="../../static/images/detailsl-icon4.png" class="icon2"></image>
 							<view>{{info.phone?info.phone:''}}</view>
 						</view>
 					</view>
-					<view class="font-24 color6">{{info.passage2?info.passage2:''}}</view>
+					<view class="font-24 color6">{{info.passage2?info.passage2.substr(0,80):''}}</view>
 				</view>
 			</view>
 			<view class="Mcolor font-24 text-center d-flex a-center j-sa pb-4 ">
-				<view class="Mborder rounded10 btn" @click="collect">{{userData.log&&userData.log.length>0&&userData.log[0].status==1?'已收藏':'我要收藏'}}</view>
+				<view class="Mborder rounded10 btn" @click="collect">{{userData.log&&userData.log.length>0&&userData.log[0].status==1?'已收藏':'收藏'}}</view>
 				<view class="Mborder rounded10 btn" @click="changeShare()">我要分享</view>
 				<view class="Mborder rounded10 btn" @click="callPhone">拨打电话</view>
 			</view>
 		</view>
 
 		<!-- nav -->
-		<view class="font-28 color2 d-flex a-center j-sb borderB-e1 shadow-sm mt-2 bg-white nav">
+		<view class="font-28 color2 d-flex a-center j-sb   mt-2 bg-white nav" style="box-shadow: 0 1px 1px 0px rgba(225, 225, 225, 0.7);position: sticky;">
 			<view class="item" :class="navCurr==1?'on':''" @click="changeNav(1)">全部</view>
 			<view class="item" :class="navCurr==2?'on':''" @click="changeNav(2)">出售</view>
 			<view class="item" :class="navCurr==3?'on':''" @click="changeNav(3)">求购</view>
@@ -56,24 +56,25 @@
 		<view class="list">
 			<view class="item d-flex a-center j-sb p-3 bg-white mb-2" v-for="(item,index) of relationData" :key="item.id"
 			 :data-id="item.id" @click="Router.navigateTo({route:{path:'/pages/secondHand-detail/secondHand-detail?id='+$event.currentTarget.dataset.id}})">
-				<image :src="item.mainImg&&item.mainImg[0]?item.mainImg[0].url:''" mode=""></image>
+				<image :src="item.mainImg&&item.mainImg[0]?item.mainImg[0].url:(item.behavior==2?'../../static/images/qiugou.jpg':'')" mode=""></image>
 				<view class="itemCon flex-1 ml-2">
-					<view class="color3 font-30 avoidOverflow2 tit">
+					<view class="color3 font-30 avoidOverflow2 tit"   style="height: 84rpx;">
 						{{item.title}}
 					</view>
-					<view class="font-24 color6 d-flex a-center j-sb mt-3 line-h">
+					<view class="font-24 color6 d-flex a-center j-sb mt-2 line-h">
 						<view class="d-flex a-center">{{item.name}}
-							<view class="tag tagName" v-if="item.user&&item.user[0]&&item.user[0].behavior==2">已实名认证</view>
+							<view class="tag tagName" v-if="item.user&&item.user[0]&&item.user[0].behavior==2">二手商</view>
 						</view>
 						<view>{{item.city?item.city.title:''}}</view>
 					</view>
-					<view class="d-flex a-center j-sb h-100 mt-3">
+					<view class="d-flex a-center j-sb h-100 mt-2">
 						<view class="font-22 d-flex a-center">
+							<!-- <view class="tag tag1" v-if="item.keywords&&item.keywords.length>0&&item.keywords[0].length>0" v-for="(c_item,c_index) of item.keywords" :key="c_index">{{c_item}}</view> -->
 							<view class="tag tagB" v-if="item.behavior==1">出售</view>
 							<view class="tag tagG" v-if="item.behavior==2">求购</view>
 							<view class="tag tagO">{{item.label?item.label.title:''}}</view>
-							<view class="tag tagR" v-if="item.top>0">置顶</view>
-							<view class="tag tagY" v-if="item.invalid_time<now">信息已失效</view>
+							<!-- <view class="tag tagR" v-if="item.description!=''">{{item.description}}</view> -->
+							<!-- <view class="tag tagY" v-if="item.invalid_time<now">信息已失效</view> -->
 						</view>
 						<view class="font-22 color9">{{Utils.formatMsgTime(item.update_time)}}</view>
 					</view>
@@ -129,6 +130,7 @@
 			} else {
 				self.user_no = options.user_no;
 			}
+			
 			self.paginate = self.$Utils.cloneForm(self.$AssetsConfig.paginate);
 			self.$Utils.loadAll(['getUserData', 'getQrCode'], self);
 		},
@@ -147,7 +149,7 @@
 			const self = this;
 			if (ops.from === 'button') {
 				return {
-					title: self.info.company ? self.info.company : '',
+					title: '二手信息交易主页',
 					path: '/pages/secondHand-detailCompany/secondHand-detailCompany?user_no=' + self.userData.user_no, //点击分享的图片进到哪一个页面
 					//imageUrl:self.mainData&&self.mainData.mainImg&&self.mainData.mainImg[0]&&self.mainData.mainImg[0].url?self.mainData.mainImg[0].url:'',
 					success: function(res) {
@@ -162,7 +164,7 @@
 				}
 			} else {
 				return {
-					title: self.info.company ? self.info.company : '',
+					title: '二手信息交易主页',
 					path: '/pages/secondHand-detailCompany/secondHand-detailCompany?user_no=' + self.userData.user_no, //点击分享的图片进到哪一个页面
 					//imageUrl:self.mainData&&self.mainData.mainImg&&self.mainData.mainImg[0]&&self.mainData.mainImg[0].url?self.mainData.mainImg[0].url:'',
 					success: function(res) {
@@ -337,7 +339,7 @@
 				postData.paginate = self.$Utils.cloneForm(self.paginate);
 				postData.searchItem = self.$Utils.cloneForm(self.searchItem)
 				postData.order = {
-					listorder: 'desc'
+					create_time: 'desc'
 				};
 				postData.searchItem.user_no = self.user_no
 				postData.getAfter = {
@@ -398,6 +400,7 @@
 
 	.head .txt {
 		line-height: 80rpx;
+		height: 80rpx;
 		position: absolute;
 		bottom: 0;
 		left: 0;
@@ -436,6 +439,8 @@
 		width: 13rpx;
 		height: 6rpx;
 		margin-left: 8rpx;
+		box-shadow: 0 1px 1px 0px rgba(225, 225, 225, 0.7);
+		
 	}
 
 	.nav .item {
@@ -444,12 +449,10 @@
 		text-align: center;
 	}
 
-	.nav .on {
-		position: relative;
-		color: #51A9E9;
-		box-shadow: 0 8px 6px -6px rgba(148, 232, 241, 0.5);
-	}
-
+	
+	
+	.nav .on{position: relative;color: #51A9E9;}
+	.nav .on::before{content: ''; width: 100%;height: 4rpx;background-color: #51A9E9;position: absolute; bottom: 0;left: 0;}
 	/* .nav .on::before {
 		content: '';
 		width: 100%;
@@ -459,15 +462,15 @@
 		bottom: 0;
 		left: 0;
 	} */
-
+	
 	.list .item image {
 		width: 180rpx;
-		height: 180rpx;
+		height: 175rpx;
 	}
 
 	.list .itemCon .tit {
 		width: 480rpx;
-		line-height: 1.2;
+		
 	}
 
 	.list .itemConL {

@@ -1,10 +1,9 @@
 <template>
 	<view>
 		
-		<view class="font-24 color2 p-3 head position-relative">
-			<text class="Rcolor">特别声明：</text>
-			本次查询的内容均为网友提交，不能代表信息的真实性，仅供参考，如有涉及不实信息请及时与我们联系，我们将第一时间进行删除
-			<text class="Mcolor" style="float: right;" @click="Router.navigateTo({route:{path:'/pages/user-opinion/user-opinion'}})">举报不实信息</text>
+		<view class="font-24 color2 p-3 head position-relative pb-5">
+			<view class="Rcolor">特别声明：<span class="color2">本次查询的内容均为网友提交，不能代表信息的真实性，仅供参考，如有涉及不实信息请及时与我们联系，我们将第一时间进行删除</span></view>
+			<view class="Mcolor" style="float: right;" @click="Router.navigateTo({route:{path:'/pages/user-opinion/user-opinion'}})">不实信息投诉</view>
 		</view>
 		<view style="height: 20rpx;" class="bg-f5"></view>
 		<view class="font-28 color2 py-3 text-center">
@@ -47,7 +46,8 @@
 		data() {
 			return {
 				mainData:[],
-				num:0
+				num:0,
+				Router:this.$Router
 			}
 		},
 		onLoad() {

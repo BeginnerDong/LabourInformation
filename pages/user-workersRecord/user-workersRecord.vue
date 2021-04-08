@@ -1,9 +1,9 @@
 <template>
 	<view>
-		<view class="bg-white py-4 font-30 color2 text-center">工人不良行为登记</view>
+		<view class="bg-white py-4 px-1 font-30 color2 text-center">一律禁止发布虚假、敏感、政治、煽动性、色、赌、毒等违法信息，一经发现，一律黑名单</view>
 		
 		<view class="d-flex a-center j-sb py-4 borderB-e1 px-3 bg-white mt-2">
-			<view class="font-30 color2">联系人</view>
+			<view class="font-30 color2">姓名</view>
 			<input type="text" placeholder-class="font-30" class="color2 font-30" placeholder="三项信息至少填写一项" v-model="submitData.title"/>
 		</view>
 		<view class="d-flex a-center j-sb py-4 borderB-e1 px-3 bg-white">
@@ -15,11 +15,15 @@
 			<input type="number" placeholder-class="font-30" class="color2 font-30" maxlength="11" placeholder="三项信息至少填写一项" v-model="submitData.phone"/>
 		</view>
 		<view class="py-4 borderB-f5 px-3 bg-white">
-			<view class="d-flex a-center j-sb color2 pb-4 line-h font-30" @click="Router.navigateTo({route:{path:'/pages/user-opinion/user-opinion'}})">不良行为说明({{submitData.content.length}}/100)</view>
-			<textarea placeholder-class="font-30" class="color2 font-30 w-100" v-model="submitData.content" maxlength="100" placeholder="请填写100个字以内的内容" />
+			<view class="d-flex a-center j-sb color2 pb-4 line-h font-30">不良行为说明({{submitData.content.length>100?100:submitData.content.length}}/100)</view>
+			<textarea style="height: 210rpx;" placeholder-class="font-30" class="color2 font-30 w-100" v-model="submitData.content" maxlength="100" placeholder="请填写100个字以内的内容" />
 		</view>
-		<view class="d-flex a-center py-4 px-3 bg-white" @click="upLoadImg('mainImg')">
-			<image :src="submitData.mainImg&&submitData.mainImg[0]?submitData.mainImg[0].url:'../../static/images/the-queryl-icon2.png'" class="icon"></image>
+		<view class="d-flex a-center py-4 px-3 bg-white uploadImg" @click="upLoadImg('mainImg')">
+			<view class="position-relative">
+				<image :src="submitData.mainImg&&submitData.mainImg[0]?submitData.mainImg[0].url:'../../static/images/the-queryl-icon2.png'" class="icon"></image>
+				<image v-if="submitData.mainImg&&submitData.mainImg[0]" src="../../static/images/used-to-releasel-icon1.png" @click="deleteImg()" class="icon2"></image>
+			</view>
+			
 			<view class="font-30 color2 pl-2">上传图片（选填）</view>
 		</view>
 		
@@ -49,6 +53,11 @@
 			uni.setStorageSync('canClick', true);
 		},
 		methods: {
+			
+			deleteImg(){
+				const self = this;
+				self.submitData.mainImg = [];
+			},
 			
 			submit() {
 				const self = this;

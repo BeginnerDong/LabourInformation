@@ -2,7 +2,7 @@
 	<view>
 		
 		<!-- nav -->
-		<view class="font-28 color2 d-flex a-center j-sb  bg-f5  nav" style="position: sticky;top: 0;">
+		<view class="font-28 color2 d-flex a-center j-sb  bg-f5  nav z-index100" style="position: sticky;top: 0;">
 			<view class="item" :class="navCurr==1?'on':''" @click="changeNav(1)">名片信息</view>
 			<view class="item" :class="navCurr==2?'on':''" @click="submit">名片分类</view>
 		</view>
@@ -16,7 +16,7 @@
 			<view class="d-flex a-center j-sb py-3 borderB-f5 px-3">
 				<view class="font-30 color2">所在地区</view>     
 				<view class="d-flex a-center" @click="showChoose('city')">
-					<view class="font-30  pr-1" style="color: #777;" :class="submitData.location!=''?'color2':''">{{submitData.location!=''?
+					<view class="font-30  pr-1" :style="submitData.location!=''?'color:#222':'color:#777'">{{submitData.location!=''?
 					cityData[cityIndex].title+'/'+cityData[cityIndex].children[cityIdIndex].title:'请选择'}}</view>
 					<image src="../../static/images/used-to-releasel-icon3.png" class="icon1"></image>
 				</view>
@@ -33,14 +33,15 @@
 			<view class="py-3 borderB-f5 px-3">
 				<view class="d-flex a-center j-sb color2 pb-4 line-h">
 					<view class="font-30">业务范围</view>
-					<view class="font-24">({{submitData.description.length}}/100)</view>
+					<view class="font-24">({{submitData.description.length>100?100:submitData.description.length}}/100)</view>
 				</view>
-				<textarea value="" placeholder-class="font-30" class="color2 font-30" maxlength="100" placeholder="请填写100个字以内的内容" v-model="submitData.description"/>
+				<textarea v-show="!city" style="height:275rpx" value="" placeholder-class="font-30" class="color2 font-30" maxlength="100" placeholder="请填写100个字以内的内容" 
+				v-model="submitData.description"/>
 			</view>
 			
 			<!-- 添加图片 -->
-			<view class="upload font-24 color2 px-3 py-3 bg-white borderB-f5">
-				<view>添加图片（最多上传3张图片，选填）</view>
+			<view class="upload font-30 color2 px-3 py-3 bg-white borderB-f5">
+				<view>添加图片<span class="font-24">（最多上传3张图片，选填）</span></view>
 				<view class="uploadImg d-flex a-center">
 					<view class="position-relative" v-for="(item,index) of submitData.mainImg" :key="index">
 						<image :src="item.url" mode=""></image>
@@ -70,7 +71,7 @@
 				<view class="font-28 color2 font-w text-center py-3">请选择名片分类（最多选择5个）
 					
 				</view>
-				<view style="padding-bottom: 30rpx;" class="px-2">您已选:<span v-for="(item,index) in hasChoose" :key="index">{{item}}<span v-if="index!=4">/</span></span></view>
+				<view style="padding-bottom: 30rpx;" class="px-2">您已选:<span v-for="(item,index) in hasChoose" :key="index">{{item}}<span v-if="index!=hasChoose.length-1">，</span></span></view>
 			</view>
 			
 			<view class="list font-24 color2 d-flex" style="margin-top: 4rpx;">
@@ -93,7 +94,7 @@
 			<view class="Rcolor font-22 text-center py-4">如果没有您想要的分类请添加微信客服（微信号：{{kefu}}）</view>
 			
 			<view class="my-5" @click="submitDataTwo">
-				<view class="btn400">{{!isEdit?'确认发布':'确认修改'}}</view>
+				<view class="btn400">{{!isEdit?'确认发布':'确认'}}</view>
 			</view>
 		</view>
 		
@@ -125,17 +126,17 @@
 				</view>
 				<!-- 所在地 -->
 				<view class="classfiy font-26 color2 line-h text-center d-flex">
-					<view class="left">
+					<scroll-view class="left" :style="'height:'+windowHeight*0.7+'px'" scroll-y="true">
 						<view class="li py-3" v-for="(item,index) of cityData" :key="item.id"
 						 @click="changeCityIndex(index)" :class="cityIndex==index?'on':''">{{item.title}}</view>
-					</view>
-					<view class="right flex-1 bg-white">
+					</scroll-view>
+					<scroll-view class="right flex-1 bg-white" :style="'height:'+windowHeight*0.7+'px'" scroll-y="true">
 						<view class="li" :class="cityIdIndex==index?'on':''" @click="chooseCityId(index)" 
 						v-for="(item,index) of cityData[cityIndex].children"
 						:key="item.id">{{item.title}}
 							<image src="../../static/images/used-to-releasel-icon5.png" class="icon5" v-if="cityIdIndex==index"></image>
 						</view>
-					</view>
+					</scroll-view>
 				</view>
 			</view>
 		</view>
@@ -177,7 +178,8 @@
 				menuIdArray:[],
 				isEdit:false,
 				kefu:'',
-				hasChoose:[]
+				hasChoose:[],
+				windowHeight:0
 			}
 		},
 		
@@ -185,9 +187,10 @@
 			const self = this;
 			self.$Utils.loadAll(['getMenuData','getCityData'], self);
 			self.kefu = uni.getStorageSync('kefu');
+			var res = uni.getSystemInfoSync();
+			self.windowHeight = res.windowHeight;
 			if(options.type){
-				self.isEdit = true
-				self.getMessageData()
+				self.type=options.type
 			}
 		},
 		
@@ -202,12 +205,12 @@
 				postData.searchItem ={
 					thirdapp_id: 2,
 					type:2,
-					user_type:0,
+					user_type:['in',[0,2]],
 					phone:self.submitData.phone
 				};
 				postData.noShowLoading = true;
 				const callback = (res) => {
-					if (res.info.data.length > 0) {
+					if (res.info.data.length > 0&&res.info.data[0].user_no!=uni.getStorageSync('user_info').user_no) {
 						uni.showModal({
 							title:'提示',
 							content:'你所填写的手机号'+self.submitData.phone+'已被使用，请更换手机号，或者联系平台客服（微信号:'+ self.kefu +'）进行处理',
@@ -270,7 +273,8 @@
 				postData.tokenFuncName = 'getProjectToken';
 				postData.data = {};
 				postData.data = self.$Utils.cloneForm(self.submitData);
-				postData.saveAfter = [];
+				/* postData.saveAfter = []; */
+				postData.data.label = self.menuIdArray;
 				/* for (var i = 0; i < self.conSalecityTitleArray.length; i++) {
 					postData.saveAfter.push(
 						{
@@ -285,7 +289,7 @@
 						},
 					)	
 				}; */
-				if(self.conSalecityTitleArray.length==0){
+				/* if(self.conSalecityTitleArray.length==0){
 					postData.saveAfter.push(
 						{
 							tableName: 'Relation',
@@ -298,8 +302,8 @@
 							},
 						},
 					)	
-				};
-				if(self.willDeleteArray.length>0){
+				}; */
+				/* if(self.willDeleteArray.length>0){
 					for (var i = 0; i < self.willDeleteArray.length; i++) {
 						postData.saveAfter.push(
 							{
@@ -328,7 +332,7 @@
 							},
 						},
 					)	
-				};
+				}; */
 				const callback = (data) => {				
 					if (data.solely_code == 100000) {					
 						self.$Utils.showToast('修改成功', 'none', 1000)
@@ -357,8 +361,9 @@
 				postData.tokenFuncName = 'getProjectToken';
 				postData.data = {};
 				postData.data = self.$Utils.cloneForm(self.submitData);
-				postData.saveAfter = [];
-				for (var i = 0; i < self.conSalecityTitleArray.length; i++) {
+				/* postData.saveAfter = []; */
+				postData.data.label = self.menuIdArray;
+				/* for (var i = 0; i < self.conSalecityTitleArray.length; i++) {
 					postData.saveAfter.push(
 						{
 							tableName: 'Relation',
@@ -371,8 +376,8 @@
 							},
 						},
 					)	
-				};
-				if(self.conSalecityTitleArray.length==0){
+				}; */
+				/* if(self.conSalecityTitleArray.length==0){
 					postData.saveAfter.push(
 						{
 							tableName: 'Relation',
@@ -385,8 +390,8 @@
 							},
 						},
 					)	
-				};
-				for (var i = 0; i < self.menuIdArray.length; i++) {
+				}; */
+				/* for (var i = 0; i < self.menuIdArray.length; i++) {
 					postData.saveAfter.push(
 						{
 							tableName: 'Relation',
@@ -399,7 +404,7 @@
 							},
 						},
 					)	
-				};
+				}; */
 				const callback = (data) => {				
 					if (data.solely_code == 100000) {					
 						self.$Utils.showToast('发布成功', 'none', 1000)
@@ -548,6 +553,11 @@
 				const callback = (res) => {
 					if (res.info.data.length > 0) {
 						self.cityData = res.info.data;
+						
+					}
+					if(self.type){
+						
+						self.getMessageData()
 					}
 					self.$Utils.finishFunc('getCityData');
 				};
@@ -588,7 +598,7 @@
 						key:'relation_one',
 						searchItem:{
 							status:1,
-							//type:2
+							type:2
 						},
 						condition:'='
 					}
@@ -604,21 +614,26 @@
 						self.submitData.location = self.messageData.location;
 						self.cityIndex = self.$Utils.findItemInTwoArray(self.cityData,self.submitData.location)[0];
 						self.cityIdIndex = self.$Utils.findItemInTwoArray(self.cityData,self.submitData.location)[1];
+						console.log('self.cityIndex',self.cityIndex)
+						console.log('self.cityIdIndex',self.cityIdIndex)
 						self.willDeleteArray = [];
 						for (var i = 0; i < self.messageData.relation.length; i++) {
 							self.willDeleteArray.push(self.messageData.relation[i].id)
 							if(self.messageData.relation[i].type == 2){
 								self.menuIdArray.push(parseInt(self.messageData.relation[i].relation_two))
+								self.hasChoose.push(self.$Utils.findItemInOfId(self.menuData,self.messageData.relation[i].relation_two))
 							}
-							if(self.messageData.relation[i].type == 1&&self.messageData.relation[i].relation_two!='全国'){
+							console.log('self.hasChoose',self.hasChoose)
+							/* if(self.messageData.relation[i].type == 1&&self.messageData.relation[i].relation_two!='全国'){
 								self.salecityTitleArray.push(self.messageData.relation[i].relation_two)
-							}
+							} */
 						}
-						self.conSalecityTitleArray = self.salecityTitleArray;
+						/* self.conSalecityTitleArray = self.salecityTitleArray;
 						for (var i = 0; i < self.salecityTitleArray.length; i++) {
 							self.salecityIdArray.push(self.$Utils.findItemInOfText(self.cityData,self.salecityTitleArray[i]))
-						};
+						}; */
 						console.log('self.menuIdArray',self.menuIdArray)
+						self.isEdit = true
 					};
 					self.$Utils.finishFunc('getMessageData');
 				};
@@ -630,13 +645,13 @@
 </script>
 
 <style>
-	.nav{z-index: 2000;box-shadow: 0 1px 1px 0px rgba(225, 225, 225, 1);}
+	/* .nav{z-index: 2000;box-shadow: 0 1px 1px 0px rgba(225, 225, 225, 1);} */
 .nav .item{width: 50%;line-height: 90rpx;text-align: center;}
 .nav .on{position: relative;color: #51A9E9;}
 .nav .on::before{content: ''; width: 100%;height: 2rpx;background-color: #51A9E9;position: absolute; bottom: 0;left: 0;}
 
 .icon1{width: 12rpx!important;height: 22rpx!important;}
-.icon2{width: 19rpx!important;height: 18rpx!important;}
+/* .icon2{width: 19rpx!important;height: 18rpx!important;} */
 textarea{border: 1px solid #e1e1e1; padding: 30rpx;width: 100%;box-sizing: border-box;}
 
 

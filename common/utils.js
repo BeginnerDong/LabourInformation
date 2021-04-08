@@ -88,7 +88,7 @@ export default {
 			};
 		};
 		wx.uploadFile({
-			url: 'https://test.solelyfinance.com/labour/public/index.php/api/v1/Base/FtpFile/upload',
+			url: 'https://www.qszj2020.com/api/public/index.php/api/v1/Base/FtpFile/upload',
 			filePath: filePath,
 			name: name,
 			formData: formData,
@@ -476,24 +476,45 @@ export default {
 	findItemInOfText(array, text) {
 		console.log('array',array)
 		for (var i = 0; i < array.length; i++) {
-			for (var j = 0; j < array[i].children.length; j++) {
-				if(array[i].children[j].title == text){
-					return array[i].children[j].id;
+			if(array[i].children){
+				for (var j = 0; j < array[i].children.length; j++) {
+					if(array[i].children[j].title == text){
+						return array[i].children[j].id;
+					}
 				}
 			}
+			
 		};
 		return false;
+	},
+	
+	findItemInOfId(array, id) {
+		console.log('array',array)
+		for (var i = 0; i < array.length; i++) {
+			if(array[i].children){
+				for (var j = 0; j < array[i].children.length; j++) {
+					if(array[i].children[j].id == id){
+						return array[i].title+'-'+array[i].children[j].title;
+					}
+				}
+			}
+			
+		};
+		//return false;
 	},
 	
 	findItemInTwoArray(array, field) {
 		console.log('array',array)
 		console.log('field',field)
 		for (var i = 0; i < array.length; i++) {
-			for (var j = 0; j < array[i].children.length; j++) {
-				if(array[i].children[j].id == field){
-					return [i,j];
+			if(array[i].children){
+				for (var j = 0; j < array[i].children.length; j++) {
+					if(array[i].children[j].id == field){
+						return [i,j];
+					}
 				}
 			}
+			
 		};
 		return false;
 	},

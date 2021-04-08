@@ -2,34 +2,57 @@
 	<view>
 		<!-- banner -->
 		<view class="banner" v-if="mainData.mainImg&&mainData.mainImg.length>0">
-			<swiper class="swiper-box h-100" autoplay="autoplay" interval="4000" :current="currIndex" @change="changeCurrent">
+			<swiper class="swiper-box h-100" autoplay="autoplay" circular interval="4000" :current="currIndex" @animationfinish="changeCurrent">
 				<block v-for="(item,index) in mainData.mainImg" :key="index">
 					<swiper-item class="swiper-item">
-						<image :src="item.url" @click="preview(index)"/>
+						<image mode="aspectFill" :src="item.url" @click="preview(index)"/>
 					</swiper-item>
 				</block>
 			</swiper>
-			<view class="swiper-sign colorf font-22 line-h-md px-1 rounded10">{{currIndex+1}}/{{mainData.mainImg?mainData.mainImg.length:0}}</view>
+			<view class="swiper-sign colorf font-28 line-h-md px-1 rounded10">{{currIndex+1}}/{{mainData.mainImg?mainData.mainImg.length:0}}</view>
 		</view>
 		
 		<view class="px-3 bg-white">
-			<view class="font-30 color3 pt-5">
-				{{mainData.title?mainData.title:''}}
+			<view class="font-32  color3 pt-4  line-h-md">
+				{{mainData.title?mainData.title.substr(0,100):''}}
 			</view>
-			<view class="d-flex a-center">
+			<!-- <view class="d-flex a-center">
 				<image src="../../static/images/detailsl-icon.png" class="icon1"></image>
 				<view class="font-24 color6 pl-1 py-3">{{mainData.view_count}}</view>
+			</view> -->
+			
+			<view class="color6 font-24  pb-3 borderB-f5 py-4">
+				<view class="d-flex j-sb a-start">
+					<view class="font-22 d-flex a-center">
+						
+						<view class="tag tagB" v-if="mainData.behavior==1">招工人</view>
+						<view class="tag tagB" v-if="mainData.behavior==2">招队伍</view>
+						<view class="tag tagG" v-if="mainData.behavior==3">工人找活</view>
+						<view class="tag tagG" v-if="mainData.behavior==4">队伍找活</view>
+						<!-- <view class="tag tagY" v-if="mainData.invalid_time<now">信息已失效</view> -->
+						<view v-if="mainData.price!=''"><text class="tag tagR" style="border-radius: 5rpx 0 0 5rpx;">介绍费</text><text class="tag tagO" style="border-radius: 0 5rpx 5rpx 0;">{{mainData.price}}</text></view>
+					</view>
+					
+					<view class="d-flex a-center">
+						<image src="../../static/images/detailsl-icon3.png" class="icon4"></image>
+						<view class="font-24 color6 pl-1">{{mainData.city?mainData.city.title:''}}</view>
+					</view>
+				</view>
+				
+				
+				<view v-if="mainData.price!=''" style="width: 100%;background-color: #FAF4D1;font-size: 22rpx;padding: 10rpx 10rpx;margin-top: 20rpx;">若介绍成功，信息发布者愿意私底下给予介绍费（平台不提供担保）</view>
 			</view>
-			<view class="color6 font-24 d-flex j-sb a-start pb-3 borderB-f5">
+			<view class="color6 font-24 d-flex j-sb a-start py-4">
 				<view class="line-h">
-					<view class="pb-2">首发时间：{{mainData.create_time?mainData.create_time:''}}</view>
-					<view>更新时间：{{mainData.update_time&&mainData.update_time!=mainData.create_time?mainData.update_time:'-'}}</view>
+					<view class="pb-2">首发日期：{{mainData.create_time?mainData.create_time:''}}</view>
+					<view>更新日期：{{mainData.update_time&&mainData.update_time!=mainData.create_time?mainData.update_time:'-'}}</view>
 					<!-- <view v-if="now < mainData.invalid_time">更新时间：{{mainData.update_time?mainData.update_time:''}}</view>
 					<view class="Rcolor" v-else>本条信息已失效</view> -->
 				</view>
-				<view class="d-flex a-center">
+				<view class="d-flex a-center"  style="margin-top: 15rpx;">
 					<view class="d-flex a-center"  @click="Utils.stopMultiClick(collect)">
-						<image :src="mainData.log&&mainData.log.length>0&&mainData.log[0].status==1?'../../static/images/detailsl-icon1.png':'../../static/images/detailsl-icon5.png'" class="icon2"></image>
+						<image :src="mainData.log&&mainData.log.length>0&&mainData.log[0].status==1?'../../static/images/detailsl-icon1.png':'../../static/images/detailsl-icon5.png'" 
+						class="icon6"></image>
 						<view class="pl-1">{{mainData.log&&mainData.log.length>0&&mainData.log[0].status==1?'已收藏':'收藏'}}</view>
 					</view>
 					<view class="d-flex a-center ml-5" @click="changeShare()">
@@ -38,29 +61,14 @@
 					</view>
 				</view>
 			</view>
-			<view class="d-flex a-center j-sb h-100 pt-4 pb-4">
-				<view class="font-22 d-flex a-center">
-					
-					<view class="tag tagB" v-if="mainData.behavior==1">招工人</view>
-					<view class="tag tagB" v-if="mainData.behavior==2">招队伍</view>
-					<view class="tag tagG" v-if="mainData.behavior==3">工人找活</view>
-					<view class="tag tagG" v-if="mainData.behavior==4">队伍找活</view>
-					<view class="tag tagY" v-if="mainData.invalid_time<now">信息已失效</view>
-					<view v-if="mainData.price!=''"><text class="tag tagR">介绍费</text><text class="tag tagO">{{mainData.price}}</text></view>
-				</view>
-				<view class="d-flex a-center">
-					<image src="../../static/images/detailsl-icon3.png" class="icon4"></image>
-					<view class="font-24 color6 pl-1">{{mainData.city?mainData.city.title:''}}</view>
-				</view>
-			</view>
-			<view class="font-22 Rcolor pt-2 pb-4" v-if="mainData.price!=''">信息发布者愿意支付给帮忙成功介绍者介绍费（平台不提供担保）</view>
+			<!-- <view class="font-22 Rcolor pt-2 pb-4" v-if="mainData.price!=''">信息发布者愿意支付给帮忙成功介绍者介绍费（平台不提供担保）</view> -->
 		</view>
 		
 		<!-- 个人详情信息 -->
 		<view class="bg-white px-3 mt-2">
 			<view class="py-4 d-flex a-center userBox">
-				<image :src="mainData.user&&mainData.user[0]&&mainData.user[0].headImgUrl!=''?mainData.user[0].headImgUrl:''" class="userImg"></image>
-				<view class="font-26 color2 ml-3 flex-1">
+				<image :src="mainData.user&&mainData.user[0]&&mainData.user[0].headImgUrl!=''?mainData.user[0].headImgUrl:'../../static/images/head.jpg'" class="userImg"></image>
+				<view class="font-26 color2 ml-3 flex-1" v-if="mainData.invalid_time">
 					<view class="pb-3">{{mainData.name?mainData.name:''}}</view>
 					<view class="d-flex a-center">
 						<image src="../../static/images/detailsl-icon4.png" class="icon5"></image>
@@ -160,7 +168,10 @@
 				}
 			}
 		},
-		
+		onShow() {
+			const self = this;
+			self.currIndex = 0
+		},
 		methods: {
 			
 			changeCurrent(e){
@@ -175,7 +186,7 @@
 				postData.tokenFuncName = 'getProjectToken'
 				postData.qrInfo = {
 					scene: self.id,
-					page: 'pages/labour-share/labour-share',
+					page: 'pages/labour-detail/labour-detail',
 				};
 				postData.output = 'url';
 				postData.ext = 'png';
@@ -356,7 +367,7 @@ page{background-color: #f5f5f5;}
 .icon3{width: 36rpx!important;height: 34rpx!important;}
 .icon4{width: 21rpx!important;height: 25rpx!important;}
 .icon5{width: 20rpx!important;height: 26rpx;margin-right: 10rpx!important;}
-
+.icon6{width: 36rpx!important;height: 36rpx!important;}
 .userImg{width: 100rpx;height: 100rpx;}
 
 .tj .item image{width: 180rpx;height: 180rpx;}

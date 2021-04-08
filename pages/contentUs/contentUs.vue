@@ -1,23 +1,6 @@
 <template>
 	<view>
-		
-		<view class="px-3">
-			<view class="py-4 borderB-e1 d-flex a-center">
-				<image src="../../static/images/contact-usl-icon.png" class="icon"></image>
-				<view class="font-28 color2 pl-1">{{mainData.phone}}</view>
-			</view>
-			<view class="py-4 d-flex a-center">
-				<image src="../../static/images/contact-usl-icon1.png" class="icon"></image>
-				<view class="font-28 color2 pl-1">{{mainData.description}}</view>
-			</view>
-		</view>
-		<view style="background: #f5f5f5;height: 20rpx;"></view>
-		<view class="px-3 mt-2">
-			<view class="font-30 color2 pt-4">公司简介</view>
-			<view class="font-26 color6 py-3 line-h-md">
-				<view class="content ql-editor" style="padding:0;" v-html="mainData.content">
-				</view>
-			</view>
+		<view class="content ql-editor" style="padding:0;" v-html="mainData.content">
 		</view>
 		
 	</view>
@@ -46,7 +29,7 @@
 				const postData = {};
 				postData.searchItem = {
 					thirdapp_id:2,
-					menu_id:2
+					title:['in','关于我们']
 				};
 				const callback = (res) => {
 					if (res.info.data.length > 0) {

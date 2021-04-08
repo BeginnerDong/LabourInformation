@@ -4,20 +4,20 @@
 		<view class="py-4 borderB-f5 px-3 bg-white">
 			<view class="d-flex a-center j-sb color2 pb-4 line-h font-32">
 				
-				<view>提意见或建议</view>
-				<view class="font-24">({{submitData.description.length}}/200)</view>
+				<view>您的意见或建议、相关投诉</view>
+				<view class="font-24">({{submitData.description.length>200?200:submitData.description.length}}/200)</view>
 			</view>
 			<textarea maxlength="200" v-model="submitData.description" placeholder="请填写200个字以内的内容" class="border-e1 p-2 font-30"/>
 		</view>
 		<view class="font-30 color2 py-4 px-3 bg-white">
-			<view>添加图片</view>
+			<view>添加图片（选填）</view>
 			<!-- 添加图片 -->
 			<view class="uploadImg d-flex a-center">
 				<view class="position-relative" v-for="(item,index) of submitData.mainImg" :key="index">
 					<image :src="item.url" mode=""></image>
 					<image src="../../static/images/used-to-releasel-icon1.png" @click="deleteImg(index)" class="icon2"></image>
 				</view>
-				<image v-if="submitData.mainImg.length<5" @click="upLoadImg('mainImg')" src="../../static/images/used-to-releasel-icon.png"
+				<image v-if="submitData.mainImg.length<3" @click="upLoadImg('mainImg')" src="../../static/images/used-to-releasel-icon.png"
 				 mode=""></image>
 			</view>
 			
@@ -44,6 +44,7 @@
 		
 		onLoad() {
 			const self = this;
+			uni.setStorageSync('canClick', true);
 			//self.$Utils.loadAll(['getMainData'], self);
 		},
 		
@@ -64,7 +65,7 @@
 					}
 				};				
 				uni.chooseImage({
-					count: 5-self.submitData.mainImg.length,
+					count: 3-self.submitData.mainImg.length,
 					success: function(res) {
 						var tempFilePaths = res.tempFilePaths;
 						for (var i = 0; i < tempFilePaths.length; i++) {
@@ -118,7 +119,9 @@
 				const self = this;
 				
 				uni.setStorageSync('canClick', false);
-				const pass = self.$Utils.checkComplete(self.submitData);
+				var newObject = self.$Utils.cloneForm(self.submitData);
+				delete newObject.mainImg;
+				const pass = self.$Utils.checkComplete(newObject);
 				console.log('pass', pass);
 				console.log('self.submitData',self.submitData)
 				
@@ -141,7 +144,7 @@
 
 <style>
 page{background-color: #f5f5f5;}
-textarea{width: 100%;box-sizing: border-box;height: 600rpx;}
+textarea{width: 100%;box-sizing: border-box;height: 465rpx;}
 .icon1{width: 12rpx;height: 21rpx;}
 .btn400{margin: 130rpx auto 80rpx;}
 </style>

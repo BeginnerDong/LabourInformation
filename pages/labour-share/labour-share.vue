@@ -2,8 +2,13 @@
 	<view>
 
 		<view class="font-24 color2 text-center bg-white py-3 head">
-			<view class="Rcolor font-w pb-3">分享到朋友圈步骤</view>
-			<view><text>1</text>先保存图片><text>2</text>将图片发送到朋友圈</view>
+			<view class="Rcolor font-w pb-1 font-30">分享到朋友圈步骤</view>
+			<view style="line-height: 50rpx;" class="d-flex a-center j-center">
+				<view style="color:red;width: 30rpx;height:30rpx;border-radius: 50%;overflow: hidden;font-size:10px;border: 1px solid red;display: flex;align-items: center;justify-content: center;">1</view>
+				<view class="pl-1 pr-1">先保存图片></view>
+				<view  style="color:red;width: 30rpx;height:30rpx;border-radius: 50%;overflow: hidden;font-size:10px;border: 1px solid red;display: flex;align-items: center;justify-content: center;">2</view>
+				<view class="pl-1 pr-1">将图片发送到朋友圈</view>
+			</view>
 			<view>他人可通过点开图片长按识别小程序码，查看本条信息</view>
 		</view>
 		<view style="height: 20rpx;width: 100%;background-color: #f5f5f5;"></view>
@@ -12,13 +17,13 @@
 			<canvas canvas-id="mycanvas" :style="{width: width+'px',height:height+'px'}"></canvas>
 		</view>
 		
-		<view class="bg-white  px-3">
+		<view class="bg-white">
 			<view class="py-3 font-32 color2 text-center">保存图片样式</view>
-			<view class="rounded10 overflow-h shadow pb-3">
+			<view class="rounded10 overflow-h shadow pb-3 wh722" style="margin-left: 14rpx;">
 				<!-- 招聘分享 -->
 				<view>
-					<view class="font-30 color2 d-flex a-center j-sb pr-2 pb-2">
-						<view>
+					<view class="font-30 color2 d-flex a-center j-sb pr-2 pb-3">
+						<view class="font-34 font-w">
 							<text class="sgin" v-if="mainData.behavior==1">
 								招工人
 							</text>
@@ -39,9 +44,9 @@
 						{{mainData.title?mainData.title:''}}
 					</view>
 					 -->
-					<view class="font-32 color2 mx-2 line-h-md borderB-f5 pb-3">
+					<view class=" color2 mx-2 line-h-md borderB-f5 pb-3">
 						<!-- <view class="font-36 Mcolor font-w text-center pb-2">{{mainData.description?mainData.description:''}}</view> -->
-						<view  class="avoidOverflow3">{{mainData.title?mainData.title:''}}</view>
+						<view  class="avoidOverflow3 font-34">{{mainData.title?mainData.title:''}}</view>
 					</view>
 					<!-- <view class="d-flex a-center j-sb mx-2 line-h py-3 borderB-f5 font-24 color2" v-if="mainData.price!=''">
 						<view>更多>></view>
@@ -51,7 +56,7 @@
 				<!-- 找活分享 -->
 			
 
-				<view class="font-24 color2 text-center py-3">长按图片，识别图中小程序码，<text class="font-w">免费查看联系方式</text></view>
+				<view class="font-28 color2 text-center py-3">长按图片，识别图中小程序码，<text class="font-w">免费查看联系方式</text></view>
 				<view class="shareImg d-flex j-sb a-center px-3">
 					<image :src="qrUrl" mode=""></image>
 					<image src="../../static/images/used-to-sharel-img1.png" mode=""></image>
@@ -59,8 +64,16 @@
 				<view class="font-22 color9 text-center pt-3">没有识别出小程序信息，请重新点开图片，多试几次就行了</view>
 			</view>
 
-			<view class="py-5">
+			<!-- <view class="py-5">
 				<view class="btn400"  @click="submit">保存图片</view>
+			</view> -->
+			
+			<view class="py-5" v-if="isCom" @click="submit">
+				<view class="btn400">保存图片</view>
+			</view>
+			
+			<view class="py-5" v-else>
+				<view class="btn400" style="background-color: #999999;">保存图片</view>
 			</view>
 		</view>
 
@@ -80,6 +93,7 @@
 				rpx: 0,
 				width: 0,
 				height: 0,
+				isCom:false
 			}
 		},
 
@@ -87,12 +101,21 @@
 			const self = this;
 			self.id = options.id;
 			self.qrUrl = uni.getStorageSync('labourQr');
+			wx.downloadFile({
+				url: self.qrUrl, //网络路径
+				success: function(res) {
+					console.log('qr', res)
+					self.isCom = true;
+					self.qrCodeUrl = res.tempFilePath
+				},
+			});
 			self.$Utils.loadAll(['getMainData'], self);
 			wx.getSystemInfo({
 				success: function(res) {
 					self.rpx = res.windowWidth / 375;
-					self.width = 350 * self.rpx
-					self.height = 350 * self.rpx
+					self.width = 361 * self.rpx
+					self.height = 361 * self.rpx
+					
 					console.log('self.width', self.width)
 				},
 			})
@@ -205,7 +228,8 @@
 				}
 				for (var i = 1; getTrueLength(text) > 0; i++) {
 					var tl = cutString(text, bytelength);
-					
+					ctx_2d.textAlign="left";
+					ctx_2d.font = '17px Arial';
 					ctx_2d.fillText(text.substr(0, tl).replace(/^\s+|\s+$/, ""), startleft, (i - 1) * lineheight + starttop);
 					text = text.substr(tl);
 				}
@@ -223,7 +247,7 @@
 				// 坐标(0,0) 表示从此处开始绘制，相当于偏移。
 				//背景色
 				myCanvas.fillStyle = "#FFFFFF";
-				myCanvas.fillRect(0, 0, 350*self.rpx, 350*self.rpx);
+				myCanvas.fillRect(0, 0, 361*self.rpx, 361*self.rpx);
 				myCanvas.fillStyle = "#D31114";
 				myCanvas.fillRect(0, 0, 80*self.rpx, 30*self.rpx);
 				myCanvas.save()
@@ -240,8 +264,10 @@
 					var text = '队伍找活'
 				};
 				myCanvas.fillStyle = '#fff';
-				myCanvas.font = `15px Arial`;
-				myCanvas.fillText(text, 10*self.rpx, 22*self.rpx);
+				//myCanvas.font = `17px Arial 600`;
+				myCanvas.textAlign="center";
+				myCanvas.font = `normal bold ${parseInt(self.rpx * 17)}px sans-serif`;
+				myCanvas.fillText(text, 40*self.rpx, 22*self.rpx);
 				myCanvas.save()
 				myCanvas.restore(); //恢复之前保存的绘图上下文 恢复之前保存的绘图上下午即状态 可以继续绘制
 				myCanvas.draw(true)
@@ -251,9 +277,9 @@
 				myCanvas.font = `15px Arial`;
 				var content = this.mainData.title;
 				if(content.length>70){
-					this.writeTextOnCanvas(myCanvas, 25*self.rpx, 45*self.rpx, content.substr(0,70)+'...', 10*self.rpx, 60*self.rpx)
+					this.writeTextOnCanvas(myCanvas, 25*self.rpx, 40*self.rpx, content.substr(0,55)+'...', 10*self.rpx, 60*self.rpx)
 				}else{
-					this.writeTextOnCanvas(myCanvas, 25*self.rpx, 45*self.rpx, content, 10*self.rpx, 60*self.rpx)
+					this.writeTextOnCanvas(myCanvas, 25*self.rpx, 40*self.rpx, content, 10*self.rpx, 60*self.rpx)
 				}
 				
 				/* var content1 = "";
@@ -299,7 +325,7 @@
 				myCanvas.restore(); //恢复之前保存的绘图上下文 恢复之前保存的绘图上下午即状态 可以继续绘制
 				myCanvas.draw(true)
 				
-				myCanvas.textAlign="start";
+				myCanvas.textAlign="left";
 				myCanvas.fillStyle = '#000';
 				myCanvas.font = `15px Arial`;
 				//发布日期
@@ -309,7 +335,8 @@
 				myCanvas.restore(); //恢复之前保存的绘图上下文 恢复之前保存的绘图上下午即状态 可以继续绘制
 				myCanvas.draw(true)
 				//二维码
-				wx.downloadFile({
+				myCanvas.drawImage(self.qrCodeUrl, 40*self.rpx, 180*self.rpx, 130*self.rpx, 130*self.rpx);
+				/* wx.downloadFile({
 					url: this.qrUrl, //网络路径
 					success: function(res) {
 						console.log('qr', res)
@@ -322,7 +349,7 @@
 					fail(res) {
 						console.log('qr', res)
 					}
-				});
+				}); */
 				myCanvas.drawImage('../../static/images/used-to-sharel-img1.png', 185*self.rpx, 180*self.rpx, 144*self.rpx, 129*self.rpx);
 				myCanvas.save()
 				myCanvas.restore(); //恢复之前保存的绘图上下文 恢复之前保存的绘图上下午即状态 可以继续绘制
@@ -336,12 +363,13 @@
 				myCanvas.restore(); //恢复之前保存的绘图上下文 恢复之前保存的绘图上下午即状态 可以继续绘制
 				myCanvas.draw(true)
 				myCanvas.textAlign = 'center' //文字居中
-				myCanvas.font = '12px Arial' 
+			
+				myCanvas.font = `normal bold ${parseInt(self.rpx * 12)}px sans-serif`;
 				myCanvas.fillStyle = '#222';
-				myCanvas.fillText('长按图片,识别图中小程序码,免费查看联系方式',175.5*self.rpx,160*self.rpx,350*self.rpx);
+				myCanvas.fillText('长按图片，识别图中小程序码，免费查看联系方式',175.5*self.rpx,160*self.rpx,361*self.rpx);
 				myCanvas.font = '11px Arial';
 				myCanvas.fillStyle = '#999';
-				myCanvas.fillText('没有识别出小程序信息，请重新点开图片，多试几次就行了',175.5*self.rpx,340*self.rpx,350*self.rpx);
+				myCanvas.fillText('没有识别出小程序信息，请重新点开图片，多试几次就行了',175.5*self.rpx,340*self.rpx,361*self.rpx);
 				myCanvas.save()
 				myCanvas.restore(); //恢复之前保存的绘图上下文 恢复之前保存的绘图上下午即状态 可以继续绘制
 				myCanvas.draw(true)
@@ -357,8 +385,14 @@
 			},
 			
 			canvasToTempFilePath() {
-				//const self = this;
+				const self = this;
 				uni.canvasToTempFilePath({
+					x: 0,
+					y: 0,
+					width: 361*self.rpx,
+					height: 361*self.rpx,
+					/* destWidth: 361*self.rpx,
+					destHeight: 361*self.rpx, */
 					canvasId: 'mycanvas',
 					success: (res) => {
 						console.log(res)
@@ -429,7 +463,7 @@
 	page {
 		background-color: #f5f5f5;
 	}
-
+	.wh722{width: 722rpx;height: 722rpx;}
 	.pc-container image {
 		width: 100%;
 		min-height: 820rpx;

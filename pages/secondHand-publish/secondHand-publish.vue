@@ -1,6 +1,6 @@
 <template>
 	<view>
-		<view class="text-center font-24 color2 line-h p-3 head position-relative" v-show="tips_show">
+		<!-- <view class="text-center font-24 color2 line-h p-3 head position-relative" v-show="tips_show">
 			<view class="Rcolor pb-3">温馨提示</view>
 			<view class="pb-1"><text class="Rcolor">自己发布太麻烦？</text>请添加劳务信息官方微信：{{kefu}}</view>
 			<view class="pb-1">我们完全免费帮您发布（平台不收取任何费用）</view>
@@ -8,18 +8,18 @@
 			<view class="close p-3" @click="changeTips()">
 				<image src="../../static/images/used-to-releasel-icon2.png" class="icon1"></image>
 			</view>
-		</view>
+		</view> -->
 
 		<!-- nav -->
-		<view class="font-28 color2 d-flex a-center j-sb borderB-e1 shadow-sm bg-white nav">
+		<view class="font-28 color2 d-flex a-center j-sb  bg-f5 nav headBox">
 			<view class="item" :class="submitData.behavior==1?'on':''" @click="changeBehavior(1)">发布出售</view>
 			<view class="item" :class="submitData.behavior==2?'on':''" @click="changeBehavior(2)">发布需求</view>
 		</view>
 
 		<!-- 添加图片 -->
-		<view class="upload font-24 color2 px-3 py-4 bg-white mb-2">
-			<view v-if="submitData.behavior==1">添加图片（最多上传5张图片，至少上传一张图片）</view>
-			<view v-if="submitData.behavior==2">添加图片（最多上传5张图片，选填）</view>
+		<view class="upload font-30 color2 px-3 py-4 bg-white mb-2">
+			<view v-if="submitData.behavior==1">添加图片<span class="font-24">（最多上传5张图片，至少上传一张图片）</span></view>
+			<view v-if="submitData.behavior==2">添加图片<span class="font-24">（最多上传5张图片，选填）</span></view>
 			<view class="uploadImg d-flex a-center" style="flex-wrap: wrap;">
 				<view class="position-relative" v-for="(item,index) of submitData.mainImg" :key="index">
 					<image :src="item.url" mode=""></image>
@@ -31,29 +31,27 @@
 		</view>
 
 		<view class="bg-white">
+			
+			<view class="py-3 borderB-e1 px-3">
+				<view class="d-flex a-center j-sb color2 pb-4 line-h">
+					<view class="font-30">标题/{{submitData.behavior==1?'出售':'求购'}}描述</view>
+					<view class="font-24">({{submitData.title.length>100?100:submitData.title.length}}/100)</view>
+				</view>
+				<textarea style="height: 210rpx;" v-show="!menu&&!city" value="" maxlength="100" placeholder="请填写100个字以内的内容" v-model="submitData.title" />
+			</view>
 			<view class="d-flex a-center j-sb py-3 borderB-e1 px-3">
 				<view class="font-30 color2">分类</view>
 				<view class="d-flex a-center" @click="showChoose('menu')">
-					<view class="font-30 color9 pr-1" :class="submitData.menu_id!=''?'color2':''">{{submitData.menu_id!=''?
+					<view class="font-30  pr-1" :class="submitData.menu_id!=''?'color2':'color9'">{{submitData.menu_id!=''?
 					menuData[menuIndex].title+'/'+menuData[menuIndex].children[menuIdIndex].title:'请选择'}}</view>
 					<image src="../../static/images/used-to-releasel-icon3.png" class="icon3"></image>
 				</view>
 			</view>
-			<view class="py-3 borderB-e1 px-3">
-				<view class="d-flex a-center j-sb color2 pb-4 line-h">
-					<view class="font-30">标题/{{submitData.behavior==1?'出售':'求购'}}出售描述</view>
-					<view class="font-24">({{submitData.title.length}}/100)</view>
-				</view>
-				<textarea v-show="!menu&&!city" value="" maxlength="100" placeholder="请填写100个字以内的内容" v-model="submitData.title" />
-				</view>
+			
 			<view class="d-flex a-center j-sb py-3 borderB-e1 px-3">
-				<view class="font-30 color2">{{submitData.behavior==1?'出售价格':'求购价格'}} </view>
-				<input type="text" placeholder="此项不填为面议" v-model="submitData.price"/>
-			</view>
-			<view class="d-flex a-center j-sb py-3 borderB-e1 px-3">
-				<view class="font-30 color2">所在地区</view>
+				<view class="font-30 color2">{{submitData.behavior==1?'所在地':'需求地'}} </view>
 				<view class="d-flex a-center" @click="showChoose('city')">
-					<view class="font-30 color9 pr-1" :class="submitData.location!=''?'color2':''" >{{submitData.location!=''?
+					<view class="font-30  pr-1" :class="submitData.location!=''?'color2':'color9'" >{{submitData.location!=''?
 					cityData[cityIndex].title+'/'+cityData[cityIndex].children[cityIdIndex].title:'请选择'}}</view>
 					<image src="../../static/images/used-to-releasel-icon3.png" class="icon3"></image>
 				</view>
@@ -65,6 +63,10 @@
 			<view class="d-flex a-center j-sb py-3 borderB-e1 px-3">
 				<view class="font-30 color2">手机号</view>
 				<input type="number" placeholder="请填写" v-model="submitData.phone"/>
+			</view>
+			<view class="d-flex a-center j-sb py-3 borderB-e1 px-3">
+				<view class="font-30 color2">{{submitData.behavior==1?'出售价格':'求购价格'}} </view>
+				<input type="text" placeholder="此项不填为面议" v-model="submitData.price"/>
 			</view>
 		</view>
 		
@@ -87,16 +89,16 @@
 				
 				<view class="Rcolor px-3 py-2 bg-white font-22 text-center">没有您要的分类请联系客服进行增加分类（微信号：{{kefu}}）</view>
 				<view class="classfiy font-26 color2 line-h text-center d-flex">
-					<view class="left">
+					<scroll-view class="left" :style="'height:'+windowHeight*0.7+'px'" scroll-y="true">
 						<view class="li py-3" v-for="(item,index) of menuData" :key="item.id"
 						 @click="changeMenuIndex(index)" :class="menuIndex==index?'on':''">{{item.title}}</view>
-					</view>
-					<view class="right flex-1 bg-white">
+					</scroll-view>
+					<scroll-view class="right flex-1 bg-white" :style="'height:'+windowHeight*0.7+'px'" scroll-y="true">
 						<view class="li" :class="menuIdIndex==index?'on':''" @click="chooseMenuId(index)" v-for="(item,index) of menuData[menuIndex].children" 
 						:key="item.id">{{item.title}}
 							<image src="../../static/images/used-to-releasel-icon5.png" class="icon5" v-if="menuIdIndex==index"></image>
 						</view>
-					</view>
+					</scroll-view>
 				</view>
 			</view>
 			
@@ -107,17 +109,17 @@
 				</view>
 				<!-- 所在地 -->
 				<view class="classfiy font-26 color2 line-h text-center d-flex">
-					<view class="left">
+					<scroll-view class="left" :style="'height:'+windowHeight*0.7+'px'" scroll-y="true">
 						<view class="li py-3" v-for="(item,index) of cityData" :key="item.id"
 						 @click="changeCityIndex(index)" :class="cityIndex==index?'on':''">{{item.title}}</view>
-					</view>
-					<view class="right flex-1 bg-white">
+					</scroll-view>
+					<scroll-view class="right flex-1 bg-white" :style="'height:'+windowHeight*0.7+'px'" scroll-y="true">
 						<view class="li" :class="cityIdIndex==index?'on':''" @click="chooseCityId(index)" 
 						v-for="(item,index) of cityData[cityIndex].children"
 						:key="item.id">{{item.title}}
 							<image src="../../static/images/used-to-releasel-icon5.png" class="icon5" v-if="cityIdIndex==index"></image>
 						</view>
-					</view>
+					</scroll-view>
 				</view>
 			</view>
 		</view>
@@ -156,17 +158,20 @@
 				cityIdIndex:-1,
 				Utils:this.$Utils,
 				isEdit:false,
-				kefu:''
+				kefu:'',
+				windowHeight:''
 			}
 		},
 		
 		onLoad(options) {
 			const self = this;
 			self.$Utils.loadAll(['getUserInfoData','getMenuData','getCityData'], self);
+			var res = uni.getSystemInfoSync();
+			self.windowHeight = res.windowHeight;
 			self.kefu = uni.getStorageSync('kefu');
 			if(options.id){
-				self.isEdit = true
-				self.getMessageData(options.id)
+				self.id = options.id;
+				
 			}
 		},
 		
@@ -178,11 +183,11 @@
 				self.submitData.invalid_time = Date.parse(new Date()) / 1000 + 7*86400 ;
 				var newObject = self.$Utils.cloneForm(self.submitData);
 				delete newObject.price;
-				if(self.submitData.bahavior==2){
+				if(self.submitData.behavior==2){
 					delete newObject.mainImg;
 				};
 				const pass = self.$Utils.checkComplete(newObject);
-				console.log('self.submitData',self.submitData)
+				console.log('self.submitData',newObject)
 				if (pass) {	
 					if (self.submitData.phone.trim().length != 11 || !/^1[3|4|5|6|7|8|9]\d{9}$/.test(self.submitData.phone)) {
 						uni.setStorageSync('canClick', true);
@@ -330,6 +335,7 @@
 							var file = res.tempFiles[i];
 							var obj = res.tempFiles[i].path.lastIndexOf(".");
 							var ext = res.tempFiles[i].path.substr(obj+1);
+							console.log('ext',ext)
 							console.log(callback)
 							self.$Utils.uploadFile(tempFilePaths[i], 'file', {
 								tokenFuncName: 'getProjectToken',ext:ext,md5:'md5',totalSize:file.size,start:0,chunkSize:file.size,originName:'headImg'
@@ -398,6 +404,10 @@
 					if (res.info.data.length > 0) {
 						self.cityData = res.info.data;
 					}
+					if(self.id){
+						self.isEdit = true
+						self.getMessageData(self.id)
+					};
 					self.$Utils.finishFunc('getCityData');
 				};
 				self.$apis.labelGet(postData, callback);
@@ -448,7 +458,7 @@ page{background-color: #f5f5f5;}
 .head{background-color: #FFF4D4;}
 .icon1{width: 19rpx!important;height: 18rpx!important;}
 .close{position: absolute;top: 0;right: 0;}
-
+.nav{box-shadow: 0 1px 1px 0px rgba(225, 225, 225, 0.7);}
 .nav .item{width: 50%;line-height: 90rpx;text-align: center;}
 .nav .on{position: relative;color: #51A9E9;}
 .nav .on::before{content: ''; width: 100%;height: 2rpx;background-color: #55aae9;position: absolute; bottom: 0;left: 0;}

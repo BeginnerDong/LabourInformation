@@ -1,44 +1,26 @@
 <template>
 	<view>
 		<!-- banner -->
-		<view class="banner">
-			<swiper class="swiper-box h-100" autoplay="autoplay" interval="4000" :current="currIndex" @change="changeCurrent">
+		<view class="banner" v-if="mainData.mainImg&&mainData.mainImg.length>0">
+			<swiper class="swiper-box h-100" circular autoplay="autoplay"  interval="4000" :current="currIndex"   @animationfinish="changeCurrent">
 				<block v-for="(item,index) in mainData.mainImg" :key="index">
 					<swiper-item class="swiper-item">
 						<image mode="aspectFill" :src="item.url" @click="preview(index)"/>
 					</swiper-item>
 				</block>
 			</swiper>
-			<view class="swiper-sign colorf font-22 line-h-md px-1 rounded10">{{currIndex+1}}/{{mainData.mainImg?mainData.mainImg.length:0}}</view>
+			<view class="swiper-sign colorf font-28 line-h-md px-1 rounded10">{{currIndex+1}}/{{mainData.mainImg?mainData.mainImg.length:0}}</view>
 		</view>
 		
 		<view class="px-3 bg-white line-h">
-			<view class="font-30 font-w color3 pt-5 avoidOverflow4 line-h-md">{{mainData.title}}</view>
-			<view class="d-flex a-center">
+			<view class="font-32  color3 pt-4  line-h-md">{{mainData.title?mainData.title.substr(0,100):''}}</view>
+			<!-- <view class="d-flex a-center">
 				<image src="../../static/images/detailsl-icon.png" class="icon1"></image>
 				<view class="font-24 color6 pl-1 py-4">{{mainData.view_count}}</view>
-			</view>
-			<view class="color6 font-24 d-flex j-sb a-start pb-4 borderB-f5">
-				<view class="line-h">
-					<view class="pb-2">首发时间：{{mainData.create_time?mainData.create_time:''}}</view>
-					<view>更新时间：{{mainData.update_time&&mainData.update_time!=mainData.create_time?mainData.update_time:'-'}}</view>
-					<!-- <view v-if="now < mainData.invalid_time">更新时间：{{mainData.update_time?mainData.update_time:''}}</view> -->
-					<!-- <view class="Rcolor" v-else>本条信息已失效</view> -->
-				</view>
-				<view class="d-flex a-center">
-					<view class="d-flex a-center"  @click="Utils.stopMultiClick(collect)">
-						<image :src="mainData.log&&mainData.log.length>0&&mainData.log[0].status==1?'../../static/images/detailsl-icon1.png':'../../static/images/detailsl-icon5.png'" class="icon2"></image>
-						<view class="pl-1">{{mainData.log&&mainData.log.length>0&&mainData.log[0].status==1?'已收藏':'我要收藏'}}</view>
-					</view>
-					<view class="d-flex a-center ml-5" @click="changeShare()">
-						<image src="../../static/images/detailsl-icon2.png" class="icon2"></image>
-						<view class="pl-1">分享</view>
-					</view>
-				</view>
-			</view>
-			<view class="d-flex a-center j-sb h-100 py-4">
+			</view> -->
+			<view class="d-flex a-center j-sb h-100 py-4 borderB-f5">
 				<view class="font-22 d-flex a-center">
-					<view class="tag tag1" v-if="mainData.keywords&&mainData.keywords.length>0&&mainData.keywords[0].length>0" v-for="(c_item,c_index) of mainData.keywords" :key="c_index">{{c_item}}</view>
+					<!-- <view class="tag tag1" v-if="mainData.keywords&&mainData.keywords.length>0&&mainData.keywords[0].length>0" v-for="(c_item,c_index) of mainData.keywords" :key="c_index">{{c_item}}</view> -->
 					<view class="tag tagB" v-if="mainData.behavior==1">出售</view>
 					<view class="tag tagG" v-if="mainData.behavior==2">求购</view>
 					<view class="tag tagO">{{mainData.label?mainData.label.title:''}}</view>
@@ -49,37 +31,61 @@
 					<view class="font-24 color6 pl-1">{{mainData.city?mainData.city.title:''}}</view>
 				</view>
 			</view>
+			<view class="color6 font-24 d-flex j-sb a-start py-4">
+				<view class="line-h">
+					<view class="pb-2">首发日期：{{mainData.create_time?mainData.create_time:''}}</view>
+					<view>更新日期：{{mainData.update_time&&mainData.update_time!=mainData.create_time?mainData.update_time:'-'}}</view>
+					<!-- <view v-if="now < mainData.invalid_time">更新时间：{{mainData.update_time?mainData.update_time:''}}</view> -->
+					<!-- <view class="Rcolor" v-else>本条信息已失效</view> -->
+				</view>
+				<view class="d-flex a-center" style="margin-top: 15rpx;">
+					<view class="d-flex a-center"  @click="Utils.stopMultiClick(collect)">
+						<image :src="mainData.log&&mainData.log.length>0&&mainData.log[0].status==1?'../../static/images/detailsl-icon1.png':'../../static/images/detailsl-icon5.png'" 
+						class="icon6"></image>
+						<view class="pl-1">{{mainData.log&&mainData.log.length>0&&mainData.log[0].status==1?'已收藏':'收藏'}}</view>
+					</view>
+					<view class="d-flex a-center ml-5" @click="changeShare()">
+						<image src="../../static/images/detailsl-icon2.png" class="icon2"></image>
+						<view class="pl-1">分享</view>
+					</view>
+				</view>
+			</view>
+			
 		</view>
 		
 		<!-- 个人详情信息 -->
-		<view class="bg-white py-4 px-3 mt-2 d-flex a-center userBox" 
-		v-if="mainData.user&&mainData.user[0]&&mainData.user[0].behavior==0||mainData.user[0].behavior==1">
-			<image style="overflow: hidden;border-radius: 50%;" :src="mainData.user&&mainData.user[0]&&mainData.user[0].headImgUrl!=''?mainData.user[0].headImgUrl:''" class="userImg"></image>
-			<view class="font-26 color2 ml-3 flex-1">
-				<view class="pb-3">{{mainData.name?mainData.name:''}}</view>
-				<view class="d-flex a-center">
-					<image src="../../static/images/detailsl-icon4.png" class="icon5"></image>
-					<view v-if="now < mainData.invalid_time">{{mainData.phone?mainData.phone:''}}</view>
-					<view v-if="now > mainData.invalid_time">信息已超过7天，联系方式不可见</view>
+		<view class="bg-white px-3 mt-2" v-if="mainData.user&&mainData.user[0]&&mainData.user[0].behavior==0||mainData.user[0].behavior==1">
+			<view class="d-flex a-center py-4 borderB-f5 color2 font-w">个人发布</view>
+			<view class="bg-white py-4  d-flex a-center userBox">
+				<image style="overflow: hidden;border-radius: 50%;" :src="mainData.user&&mainData.user[0]&&mainData.user[0].headImgUrl!=''?mainData.user[0].headImgUrl:''" class="userImg"></image>
+				<view class="font-26 color2 ml-3 flex-1">
+					<view class="pb-3">{{mainData.name?mainData.name:''}}</view>
+					<view class="d-flex a-center">
+						<image src="../../static/images/detailsl-icon4.png" class="icon5"></image>
+						<view v-if="now < mainData.invalid_time">{{mainData.phone?mainData.phone:''}}</view>
+						<view v-if="now > mainData.invalid_time">信息已超过7天，联系方式不可见</view>
+					</view>
 				</view>
+				<view class="Mcolor line-h-sm Mborder px-3 py-1 rounded" v-if="now < mainData.invalid_time" @click="callPhone">拨打电话</view>
 			</view>
-			<view class="Mcolor line-h-sm Mborder px-3 py-1 rounded" v-if="now < mainData.invalid_time" @click="callPhone">拨打电话</view>
 		</view>
+		<!-- {{mainData.user&&mainData.user[0]&&mainData.user[0]?mainData.user[0].info.company:''}}<view class="tag tagName">二手商</view> -->
+		
 		<!-- 公司详情信息 -->
 		<view class="bg-white px-3 mt-2" v-if="mainData.user&&mainData.user[0]&&mainData.user[0].behavior==2">
-			<view class="d-flex a-center py-4 borderB-f5 color2">
-			{{mainData.user&&mainData.user[0]&&mainData.user[0]?mainData.user[0].info.company:''}}<view class="tag tagName">已实名认证</view></view>
+			<view class="d-flex a-center py-4 borderB-f5 color2 font-w">二手商发布
+			<!-- {{mainData.user&&mainData.user[0]&&mainData.user[0]?mainData.user[0].info.company:''}}<view class="tag tagName">二手商</view> --></view>
 			<view class="bg-white py-4 d-flex a-start">
 				<image :src="mainData.user&&mainData.user[0]&&mainData.user[0]?mainData.user[0].headImgUrl:''" class="userImg"></image>
 				<view class="ml-3 flex-1">
 					<view class="font-26 color2 mb-2 flex-1 d-flex a-center" style="width: 58%;">
-						<view class="pr-4 font-w">{{mainData.name?mainData.name:''}}</view>
+						<view class="pr-4">{{mainData.name?mainData.name:''}}</view>
 						<view class="d-flex a-center">
 							<image src="../../static/images/detailsl-icon4.png" class="icon5"></image>
-							<view class="font-w">{{mainData.phone?mainData.phone:''}}</view>
+							<view class="">{{mainData.phone?mainData.phone:''}}</view>
 						</view>
 					</view>
-					<view class="font-24 color6">{{mainData.user&&mainData.user[0]&&mainData.user[0]?mainData.user[0].info.passage2:''}}</view>
+					<view class="font-24 color6">{{mainData.user&&mainData.user[0]&&mainData.user[0]?mainData.user[0].info.passage2.substr(0,80):''}}</view>
 				</view>
 			</view>
 			<view class="Mcolor font-24 text-center d-flex a-center j-sa pb-4 ">
@@ -97,22 +103,22 @@
 			<view class="item d-flex a-center j-sb py-3"  v-for="(item,index) of relationData"
 			:key="item.id" :data-id="item.id"
 			@click="Router.navigateTo({route:{path:'/pages/secondHand-detail/secondHand-detail?id='+$event.currentTarget.dataset.id}})">
-				<image mode="aspectFill" :src="item.mainImg&&item.mainImg[0]?item.mainImg[0].url:''" ></image>
+				<image mode="aspectFill" :src="item.mainImg&&item.mainImg[0]?item.mainImg[0].url:(item.behavior==2?'../../static/images/qiugou.jpg':'')" ></image>
 				<view class="itemCon flex-1 ml-2">
-					<view class="color3 font-30 avoidOverflow2 tit">
+					<view class="color3 font-30 avoidOverflow2 tit"  style="height: 84rpx;">
 						{{item.title}}
 					</view>
-					<view class="font-24 color6 d-flex a-center j-sb mt-3 line-h">
-						<view class="d-flex a-center">{{item.name}}<view class="tag tagName" v-if="item.user&&item.user[0]&&item.user[0].behavior==2">已实名认证</view></view>
+					<view class="font-24 color6 d-flex a-center j-sb mt-2 line-h">
+						<view class="d-flex a-center">{{item.name}}<view class="tag tagName" v-if="item.user&&item.user[0]&&item.user[0].behavior==2">二手商</view></view>
 						<view>{{item.city?item.city.title:''}}</view>
 					</view>
-					<view class="d-flex a-center j-sb h-100 mt-3">
+					<view class="d-flex a-center j-sb  mt-2">
 						<view class="font-22 d-flex a-center">
-							<view class="tag tag1" v-if="item.keywords&&item.keywords.length>0&&item.keywords[0].length>0" v-for="(c_item,c_index) of item.keywords" :key="c_index">{{c_item}}</view>
+							<!-- <view class="tag tag1" v-if="item.keywords&&item.keywords.length>0&&item.keywords[0].length>0" v-for="(c_item,c_index) of item.keywords" :key="c_index">{{c_item}}</view> -->
 							<view class="tag tagB" v-if="item.behavior==1">出售</view>
 							<view class="tag tagG" v-if="item.behavior==2">求购</view>
 							<view class="tag tagO">{{item.label?item.label.title:''}}</view>
-							<view class="tag tagR" v-if="item.top>0">置顶</view>
+							<!-- <view class="tag tagR" v-if="item.description!=''">{{item.description}}</view> -->
 							<!-- <view class="tag tagY" v-if="item.invalid_time<now">信息已失效</view> -->
 						</view>
 						<view class="font-22 color9">{{Utils.formatMsgTime(item.update_time)}}</view>
@@ -131,7 +137,7 @@
 						<image src="../../static/images/sharel-icon.png" class="img1"></image>
 						<view>微信好友</view>
 					</button>
-					<view class="font-26 pb-1" @click="Router.navigateTo({route:{path:'/pages/secondHand-share/secondHand-share?id='+mainData.id}})">
+					<view class="font-26 pb-1" style="line-height: 1.4;" @click="Router.navigateTo({route:{path:'/pages/secondHand-share/secondHand-share?id='+mainData.id}})">
 						<image src="../../static/images/sharel-icon1.png" class="img2"></image>
 						<view>微信朋友圈</view>
 					</view>
@@ -168,7 +174,10 @@
 			self.now = Date.parse(new Date()) / 1000;
 			self.$Utils.loadAll(['getMainData','getQrCode'], self);
 		},
-		
+		onShow() {
+			const self = this;
+			self.currIndex = 0
+		},
 		onShareAppMessage(ops) {
 			console.log(ops)
 			const self = this;
@@ -365,7 +374,8 @@
 						self.mainData.create_time = self.mainData.create_time.substr(0,10)
 						self.mainData.update_time = self.mainData.update_time.substr(0,10)
 						
-						self.mainData.keywords = self.mainData.keywords.split(',')
+						self.mainData.keywords = self.mainData.keywords.split(',');
+						self.mainData.user[0].passage2 = self.mainData.user[0].passage2
 						
 					};
 					self.$Utils.finishFunc('getMainData');
@@ -386,12 +396,14 @@
 				postData.searchItem = {
 					thirdapp_id: 2,
 					user_type:0,
-					type:1
+					type:1,
+					behavior:self.mainData.behavior
 				};
 				postData.order  = {
-					listorder:'desc'
+					update_time:'desc'
 				};
 				if(self.mainData.user[0].behavior==2){
+					delete postData.searchItem.behavior;
 					postData.searchItem.user_no = self.mainData.user_no
 				}else{
 					postData.getBefore = {
@@ -486,11 +498,11 @@ page{background-color: #f5f5f5;}
 .icon3{width: 36rpx;height: 34rpx;}
 .icon4{width: 21rpx;height: 25rpx;}
 .icon5{width: 20rpx;height: 26rpx;margin-right: 10rpx;}
-
+.icon6{width: 36rpx;height: 36rpx;}
 .userImg{width: 100rpx;height: 100rpx;}
 
-.tj .item image{width: 180rpx;height: 180rpx;}
-.tj .itemCon .tit{width: 480rpx;line-height: 1.2;}
+.tj .item image{width: 180rpx;height: 175rpx;}
+.tj .itemCon .tit{width: 480rpx;}
 .tj .itemConL{width: 180rpx;height: 180rpx;line-height: 180rpx;background-color: #9DD6FF;}
 
 .btn{width: 260rpx;line-height: 50rpx;}
@@ -499,6 +511,6 @@ page{background-color: #f5f5f5;}
 button{line-height: 1.4;}
 .share>view{display: flex;flex-direction: column;align-items: center;}
 .share>button{display: flex;flex-direction: column;align-items: center;background-color: #fff;}
-.img1{width: 83rpx;height: 70rpx;margin-bottom: 35rpx}
-.img2{width: 76rpx;height: 77rpx;margin-bottom: 35rpx}
+.img1{width: 84rpx;height: 77rpx;margin-bottom: 35rpx}
+.img2{width: 77rpx;height: 77rpx;margin-bottom: 35rpx}
 </style>

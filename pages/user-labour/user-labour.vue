@@ -1,21 +1,21 @@
 <template>
 	<view>
 		<!-- nav -->
-		<view class="font-28 color2 d-flex a-center j-sb  bg-f5 shadow-sm nav">
+		<view class="font-28 color2 d-flex a-center j-sb  bg-f5 shadow-sm nav position-fixed w-100 z-index1">
 			<view class="item" :class="navCurr==1?'on':''" @click="changeNav(1)">全部</view>
 			<view class="item" :class="navCurr==2?'on':''" @click="changeNav(2)">招工人</view>
 			<view class="item" :class="navCurr==3?'on':''" @click="changeNav(3)">招队伍</view>
 			<view class="item" :class="navCurr==4?'on':''" @click="changeNav(4)">工人找活</view>
 			<view class="item" :class="navCurr==5?'on':''" @click="changeNav(5)">队伍找活</view>
 		</view>
-		
-		<view class="font-30 color2 p-3 d-flex a-center j-sb borderB-f5">
+		<view style="height: 90rpx;"></view>
+		<view class="font-28 color2 p-3 d-flex a-center j-sb borderB-f5">
 			<view @click="chooseShow" v-if="!isShowChoose" class="btn2">选择</view>
 			<view @click="chooseShow" v-else class="btn2">取消</view>
-			<view class="Mcolor d-flex a-center" v-if="isShowChoose">
-				<view class="pr-5 borderR-f5" @click="chooseAll()">全选</view>
-				<view class="pr-5 borderR-f5" @click="deleteAll()">删除</view>
-				<view class="pl-5" @click="updateAll()">一键更新日期</view>
+			<view class="Mcolor d-flex a-center line-h" v-if="isShowChoose">
+				<view class="pr-4 borderR-e1" @click="chooseAll()">全选</view>
+				<view class="px-4 borderR-e1" @click="deleteAll()">删除</view>
+				<view class="pl-4" @click="updateAll()">一键更新日期</view>
 			</view>
 		</view>
 		
@@ -25,39 +25,42 @@
 					<image @click="choose(index)" v-if="isShowChoose" :src="item.choose?'../../static/images/i-releasel-icon1.png':'../../static/images/i-releasel-icon.png'" class="icon1"></image>
 					<!-- <image src="../../static/images/i-releasel-icon1.png" class="icon1"></image> -->
 					<view class="bg-white px-3 flex-1" @click="Router.redirectTo({route:{path:'/pages/labour-detail/labour-detail'}})">
-						<view class="font-30 color2 pt-4">{{item.title}}</view>
+						<view class="font-30 color2">{{item.title}}</view>
 						<view class="d-flex flex-wrap pt-3 imgBox">
 							<image v-for="(c_item,c_index) in item.mainImg" :key="c_index"  :src="c_item.url" mode=""></image>
 						</view>
 						<view class="d-flex a-center j-sb py-3">
-							<view>
+							<view class="d-flex a-center">
 								<view class="tag tagB" v-if="item.behavior==1">招工人</view>
 								<view class="tag tagB" v-if="item.behavior==2">招队伍</view>
 								<view class="tag tagG" v-if="item.behavior==3">工人找活</view>
 								<view class="tag tagG" v-if="item.behavior==4">队伍找活</view>
 								<view class="tag tagY" v-if="item.invalid_time<now">信息已失效</view>
-								<view v-if="item.price!=''"><text class="tag tagR">介绍费</text><text class="tag tagO">{{item.price}}</text></view>
+								<view class="d-flex a-center" v-if="item.price!=''">
+									<span class="tag tagR" style="border-radius: 5rpx 0 0 5rpx;">介绍费</span>
+									<span class="tag tagO" style="border-radius: 0 5rpx 5rpx 0;" >{{item.price}}</span>
+								</view>
 							</view>
 							<view class="d-flex a-center">
 								<image src="../../static/images/detailsl-icon3.png" class="icon2"></image>
 								<view class="font-24 color6 pl-1">{{item.city?item.city.title:''}}</view>
 							</view>
 						</view>
-						<view class="line-h-md  font-24 color6 dashedBorder">
+						<!-- <view class="line-h-md  font-24 color6 dashedBorder">
 							<view v-if="item.behavior==1" v-for="(c_item,c_index) in item.passage_array" :key="index">{{c_item.name}}，{{c_item.num}}名，
 							{{c_item.money!=''?'月工资'+c_item.money:'待遇面议'}}</view>
 							<view v-if="item.behavior==2" v-for="(c_item,c_index) in item.passage_array" :key="index">{{c_item.name}}，{{c_item.num}}支队伍，
 							{{c_item.money!=''?'月工资'+c_item.money:'待遇面议'}}</view>
 							<view v-if="item.behavior==3">求职岗位：{{item.description}},期待工资：{{item.salary}}</view>
 							<view v-if="item.behavior==4">我能承包：<span :key="index" v-for="(c_item,c_index) in item.passage_array">{{c_item.name}}</span></view>
-						</view>
+						</view> -->
 					</view>
 				</view>
-				<view class="font-22 color9 py-3 mx-3 d-flex j-end">
-					<view>首发时间：{{item.create_time?item.create_time:''}}</view>
-					<view class="pl-2">最近更新时间：{{item.update_time?item.update_time:''}}</view>
+				<view class="font-22 color9 py-3 mx-3 d-flex j-end pt-0">
+					<view>首发日期：{{item.create_time?item.create_time:''}}</view>
+					<view class="pl-2">最近更新日期：{{item.update_time?item.update_time:''}}</view>
 				</view>
-				<view class="Mcolor font-30 d-flex j-sb a-center text-center line-h oh">
+				<view class="Mcolor font-28 d-flex j-sb a-center text-center line-h oh">
 					<view @click="deleteAll(index)">删除</view>
 					<view class="borderL-e1 borderR-e1" :data-id="item.id"
 					@click="Router.navigateTo({route:{path:'/pages/labour-publish/labour-publish?id='+$event.currentTarget.dataset.id}})">编辑</view>
@@ -310,13 +313,13 @@
 .nav .on{position: relative;color: #51A9E9;}
 .nav .on::before{content: ''; width: 100%;height: 4rpx;background-color: #51A9E9;position: absolute; bottom: 0;left: 0;}
 
-.icon1{width: 40rpx;height: 40rpx;}
+.icon1{width: 40rpx!important;height: 40rpx!important;}
 
 .oh view{width: 33.33%;}
 
-.imgBox image{width: 145rpx;height: 145rpx;margin-right: 20rpx;}
-.imgBox image:nth-child(4n){margin-right: 0;}
-.icon2{width: 21rpx;height: 25rpx;}
+.imgBox image{width: 145rpx;height: 145rpx;margin-right: 20rpx;margin-bottom: 10rpx;}
+/* .imgBox image:nth-child(4n){margin-right: 0;} */
+.icon2{width: 21rpx!important;height: 25rpx!important;}
 .tagR{margin-right: 0;}
 .btn2{padding: 5px 10px;line-height: 1;border: 1px solid #e1e1e1;border-radius: 5px;}
 </style>

@@ -6,12 +6,13 @@
 				"navigationBarTitleText": "桥隧之家", //设置页面标题文字
 				"onReachBottomDistance": 100,
 				"navigationStyle": "custom"
+				
 			}
 		}, {
 			"path": "pages/secondHand/secondHand",
 			"style": {
-				"navigationStyle": "custom",
-				"enablePullDownRefresh":true
+				"navigationStyle": "custom"
+				//"enablePullDownRefresh":true
 			}
 			
 		}, {
@@ -32,13 +33,13 @@
 		}, {
 			"path": "pages/secondHand-share/secondHand-share",
 			"style": {
-				"navigationBarTitleText": "分享"
+				"navigationBarTitleText": "分享到朋友圈"
 			}
 		}, {
 			"path": "pages/secondHand-detailCompany/secondHand-detailCompany",
 			"style": {
-				"navigationBarTitleText": "详情",
-				"navigationStyle": "custom"
+				"navigationBarTitleText": "桥隧之家"
+				//"navigationStyle": "custom"
 			}
 		}, {
 			"path": "pages/secondHand-detailCompany-share/secondHand-detailCompany-share",
@@ -69,7 +70,7 @@
 		}, {
 			"path": "pages/contentUs/contentUs",
 			"style": {
-				"navigationBarTitleText": "联系我们"
+				"navigationBarTitleText": "关于我们"
 			}
 		}, {
 			"path": "pages/information/information",
@@ -79,7 +80,7 @@
 		}, {
 			"path": "pages/newsDetail/newsDetail",
 			"style": {
-				"navigationBarTitleText": "返回咨询列表"
+				"navigationBarTitleText": "返回"
 			}
 		}, {
 			"path": "pages/business/business",
@@ -100,7 +101,7 @@
 		}, {
 			"path": "pages/user-secondHand/user-secondHand",
 			"style": {
-				"navigationBarTitleText": "二手交易信息"
+				"navigationBarTitleText": "二手信息"
 			}
 		}, {
 			"path": "pages/user-secondHandIndex/user-secondHandIndex",
@@ -110,7 +111,7 @@
 		}, {
 			"path": "pages/user-labour/user-labour",
 			"style": {
-				"navigationBarTitleText": "劳务招聘信息"
+				"navigationBarTitleText": "劳务信息"
 			}
 		}, {
 			"path": "pages/user-business/user-business",
@@ -130,7 +131,7 @@
 		}, {
 			"path": "pages/user-workersRecord/user-workersRecord",
 			"style": {
-				"navigationBarTitleText": "用工不良记录"
+				"navigationBarTitleText": "工人不良行为发布"
 			}
 		}, {
 			"path": "pages/user-workersSreach/user-workersSreach",

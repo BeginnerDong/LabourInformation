@@ -212,7 +212,7 @@ body{
 .borderL-e1{border-left: 1px solid #e1e1e1;}
 .borderR-e1{border-right: 1px solid #e1e1e1;}
 .borderB-e1{border-bottom: 1px solid #e1e1e1;}
-
+.borderB-de1{border-bottom: 1px dashed #e1e1e1;}
 .border-f5{border: 1px solid #f5f5f5;}
 .borderT-f5{border-top: 1px solid #f5f5f5;}
 .borderL-f5{border-left: 1px solid #f5f5f5;}
@@ -337,6 +337,7 @@ body{
 .py-0 { padding-top: 0;padding-bottom: 0;}
 .py { padding-top: 5rpx;padding-bottom: 5rpx;}
 .py-1 { padding-top: 10rpx;padding-bottom: 10rpx;}
+.py-15 { padding-top: 15rpx;padding-bottom: 15rpx;}
 .py-2 { padding-top: 20rpx;padding-bottom: 20rpx;}
 .py-3 { padding-top: 30rpx;padding-bottom: 30rpx;}
 .py-4 { padding-top: 40rpx;padding-bottom: 40rpx;}

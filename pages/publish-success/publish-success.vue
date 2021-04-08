@@ -4,8 +4,8 @@
 		<view class="font-36 Rcolor pt-5 pb-4 text-center bg-white">恭喜您，发布成功！</view>
 		<view class="bg-white">
 			<view class="d-flex a-start font-24 color2 mb-3 mx-3">
-				<view class="sgin"></view>
-				<view>本条信息有效期至：{{mainData.invalid_time?mainData.invalid_time:''}}（7天），可在[我的-发布的二手信息]里刷新有效期</view>
+				
+				<view class="font-30">本条信息有效期至：{{mainData.invalid_time?mainData.invalid_time:''}}（7天），可在[我的-发布的二手信息]里刷新有效期</view>
 			</view>
 			<!-- <view class="d-flex a-start font-24 color2 mb-3 mx-3">
 				<view class="sgin"></view>
@@ -50,9 +50,10 @@
 				const self = this;
 				const postData = {};
 				postData.searchItem = {
-					thirdapp_id:2
+					thirdapp_id:2,
+					title:'常见问题'
 				};
-				postData.getBefore = {
+				/* postData.getBefore = {
 					article:{
 						tableName:'Label',
 						middleKey:'menu_id',
@@ -62,7 +63,7 @@
 						},
 						condition:'in'
 					}
-				};
+				}; */
 				const callback = (res) => {
 					if (res.info.data.length > 0) {
 						self.artData = res.info.data[0];

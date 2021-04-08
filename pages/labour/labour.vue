@@ -9,13 +9,13 @@
 			
 			<!-- 搜索 -->
 			<view class="bg-f5 px-3 pt-2">
-				<view class="border-e1 rounded bg-white font-28 mx-3 py-2 d-flex a-center j-sb ss">
-					<input type="text" v-model="keywords"/>
-					<view class="px-2" @click="search">搜索</view>
+				<view class="border-e1 rounded bg-white font-28  py-15 d-flex a-center j-sb ss" style="padding-left:20rpx;">
+					<input type="text"  placeholder="请输入关键词" v-model="keywords" style="color: #000000;" @confirm="shabi"/>
+					<view class="px-4 color6" @click="search">搜索</view>
 				</view>
 			</view>
 			
-			<view class="iconBox d-flex a-center j-sb px-3 pt-4 bg-f5">
+			<view class="iconBox d-flex a-center j-sb px-3 pt-2 bg-f5">
 				<image @click="changeBehavior(1)" :src="navType==1?'../../static/images/laborl-icon.png':'../../static/images/laborl-icon5.png'" mode=""></image>
 				<image @click="changeBehavior(2)" :src="navType==2?'../../static/images/laborl-icon9.png':'../../static/images/laborl-icon1.png'" mode=""></image>
 				<image @click="changeBehavior(3)" :src="navType==3?'../../static/images/laborl-icon8.png':'../../static/images/laborl-icon2.png'" mode=""></image>
@@ -25,11 +25,11 @@
 			
 			<!-- nav -->
 			<view class="font-28 color2 d-flex a-center j-sb  bg-f5 nav">
-				<view class="item" :class="navCurr==1?'on':''" @click="changeNav(1)">默认</view>
-				<view class="item" :class="navCurr==2?'on':''" @click="changeNav(2)">介绍费</view>
-				<view class="item d-flex a-center j-center" :class="navCurr==3?'on':''" @click="changeNav(3)">
-					{{cityIndex>=0&&cityIdIndex<0?cityData[cityIndex].title:(cityIndex>=0&&cityIdIndex>=0?cityData[cityIndex].children[cityIdIndex].title:'所在地')}}
-					<image src="../../static/images/second-handl-icon4.png" v-if="navCurr==3"></image>
+				<view class="item" :class="navCurr==1?'on':''" @click="changeNav(1)">全部</view>
+				<view class="item" :class="searchItem.price?'on':''" @click="changeNav(2)">介绍费</view>
+				<view class="item d-flex a-center j-center" :class="searchItem.location?'on':''" @click="changeNav(3)">
+					{{cityText!=''?cityText:'所在地'}}
+					<image src="../../static/images/second-handl-icon4.png" v-if="searchItem.location"></image>
 					<image src="../../static/images/second-handl-icon.png" v-else></image>
 				</view>
 			</view>
@@ -40,7 +40,7 @@
 			@click="Router.navigateTo({route:{path:'/pages/labour-detail/labour-detail?id='+$event.currentTarget.dataset.id}})">
 				<view class="font-30 color2 pt-4 avoidOverflow2">{{item.title}}</view>
 				<view class="d-flex flex-wrap py-3 imgBox">
-					<image v-for="(c_item,c_index) in item.mainImg" :key="c_index"  :src="c_item.url" mode=""></image>
+					<image v-for="(c_item,c_index) in item.mainImg" :key="c_index"  :src="c_item.url" mode="aspectFill"></image>
 					
 				</view>
 				<view class="d-flex a-center j-sb pb-3">
@@ -50,7 +50,10 @@
 						<view class="tag tagG" v-if="item.behavior==3">工人找活</view>
 						<view class="tag tagG" v-if="item.behavior==4">队伍找活</view>
 						<!-- <view class="tag tagY" v-if="item.invalid_time<now">信息已失效</view> -->
-						<view v-if="item.price!=''"><text class="tag tagR" style="border-radius: 5rpx 0 0 5rpx;">介绍费</text><text class="tag tagO" style="border-radius: 0 5rpx 5rpx 0;" >{{item.price}}</text></view>
+						<view class="d-flex a-center" v-if="item.price!=''">
+							<span class="tag tagR" style="border-radius: 5rpx 0 0 5rpx;">介绍费</span>
+							<span class="tag tagO" style="border-radius: 0 5rpx 5rpx 0;" >{{item.price}}</span>
+						</view>
 					</view>
 					<view class="d-flex a-center">
 						<image src="../../static/images/detailsl-icon3.png" class="dw"></image>
@@ -80,27 +83,26 @@
 		</view> -->
 		
 		
-		<view class="oh bg-mask position-fixed d-flex flex-column"   :style="{marginTop:showHeight+'px'}"
+		<view class="oh bg-mask position-fixed d-flex flex-column"  @click="closeMask"  :style="{marginTop:showHeight+'px'}"
 		 v-show="cityShow">
 			<!-- 所在地 -->
 			<view class="classfiy font-26 color2 line-h text-center d-flex">
-				<view class="left">
-					<view class="li py-3" v-for="(item,index) of cityData" :key="item.id"
-					 @click="changeCityIndex(index)" :class="cityIndex==index?'on':''">{{item.title}}</view>
-				</view>
-				<view class="right flex-1 bg-white">
+				<scroll-view class="left" :style="'height:'+(windowHeight*0.8-217)+'px'" scroll-y="true">
 					<view class="li py-3"
-					 @click="chooseCityId(-1)" :class="cityIdIndex==-1?'on':''">全部</view>
-					<view class="li" :class="cityIdIndex==index?'on':''" @click="chooseCityId(index)" 
+					 @click="changeCityIndex(-1)" :class="cityIndex==-1?'on':''">全部</view>
+					<view class="li py-3" v-for="(item,index) of cityData" :key="item.id"
+					 @click.stop="changeCityIndex(index)" :class="cityIndex==index?'on':''">{{item.title}}</view>
+				</scroll-view>
+				<scroll-view class="right flex-1 bg-white" :style="'height:'+(windowHeight*0.8-217)+'px'" scroll-y="true">
+					<view class="li py-3" @click="chooseCityId(-1)" :class="cityIdIndex==-2?'on':''">全部地区</view>
+					<view class="li" :class="searchItem.location==item.id?'on':''" @click="chooseCityId(index)" 
 					v-for="(item,index) of cityData[cityIndex].children"
 					:key="item.id">{{item.title}}
-						<image src="../../static/images/used-to-releasel-icon5.png" class="icon5" v-if="cityIdIndex==index"></image>
+						<image src="../../static/images/used-to-releasel-icon5.png" class="icon5" v-if="searchItem.location==item.id"></image>
 					</view>
-				</view>
+				</scroll-view>
 			</view>
-			
-			<view class="flex-1" @click="closeMask"></view>
-			
+
 		</view>
 		
 		
@@ -144,7 +146,7 @@
 				searchItem:{
 					thirdapp_id: 2,
 					type: 3,
-					user_type:0
+					user_type:['in',[0,2]]
 				},
 				mainData:[],
 				now:0,
@@ -157,13 +159,17 @@
 				cityData:[],
 				keywords:'',
 				tip:'加载中...',
-				showHeight:0
+				showHeight:0,
+				windowHeight:0,
+				cityText: '',
 			}
 		},
 		
 		onLoad() {
 			const self = this;
 			self.now = Date.parse(new Date()) / 1000;
+			var res = uni.getSystemInfoSync();
+			self.windowHeight = res.windowHeight;
 			self.paginate = self.$Utils.cloneForm(self.$AssetsConfig.paginate);
 			self.$Utils.loadAll(['getMainData','getCityData'], self);
 		},
@@ -191,6 +197,17 @@
 				const self = this;
 				self.cityShow = false
 			},
+			
+			shabi(){
+				const self = this;
+				if(self.keywords==''){
+					delete self.searchItem.price;
+					delete self.searchItem.location;
+					self.cityText = '';
+					self.getMainData(true)
+				}
+			},
+			
 			
 			search(){
 				const self = this;
@@ -249,14 +266,13 @@
 				if(type==1){
 					delete self.searchItem.price;
 					delete self.searchItem.location;
+					self.cityText = '';
 					self.cityIndex = -1;
 					self.cityIdIndex = -2;
 					self.cityShow = false;
 					self.getMainData(true)
 				}else if(type==2){
 					self.searchItem.price = ['not in',[]]
-					self.cityIndex = -1;
-					self.cityIdIndex = -2;
 					self.cityShow = false;
 					self.getMainData(true)
 				}else if(type==3){
@@ -264,31 +280,44 @@
 				}
 			},
 			
-			changeCityIndex(index){
+			changeCityIndex(index) {
 				const self = this;
 				self.cityIndex = index
+				if (self.cityIndex == -1) {
+					delete self.searchItem.location;
+					self.cityText ='';
+					self.closeMask();
+					self.getMainData(true)
+				}
 			},
 			
-			chooseCityId(index){
+			chooseCityId(index) {
 				const self = this;
 				uni.setStorageSync('canClick', false);
+			
 				self.cityIdIndex = index;
-				if(index<0){
-					var idArray = [];
-					if(self.cityData[self.cityIndex].children.length>0){
-						for (var i = 0; i < self.cityData[self.cityIndex].children.length; i++) {
-							idArray.push(self.cityData[self.cityIndex].children[i].id)
-						};
-						self.searchItem.location = ['in',idArray];
+				if (index < 0) {
+					if(self.cityIndex==-1){
+						delete self.searchItem.location
+						self.cityText = '';
 					}else{
-						self.searchItem.location = [];
+						var idArray = [];
+						if (self.cityData[self.cityIndex].children) {
+							for (var i = 0; i < self.cityData[self.cityIndex].children.length; i++) {
+								idArray.push(self.cityData[self.cityIndex].children[i].id)
+							};
+						}
+						
+						self.searchItem.location = ['in', idArray];
+						self.cityText = self.cityData[self.cityIndex].title
 					}
-				}else{
+					
+					self.cityIdIndex = -2;
+				} else {
 					self.searchItem.location = self.cityData[self.cityIndex].children[self.cityIdIndex].id;
+					self.cityText = self.cityData[self.cityIndex].children[self.cityIdIndex].title;
 				};
-				delete self.searchItem.price;
-				self.navCurr = 3;
-				self.cityShow = false;
+				
 				self.getMainData(true)
 			},
 			
@@ -374,20 +403,22 @@ page{height: 100%;background-color: #F5F5F5;}
 .headBox{position: sticky;top: 0;z-index: 1000;}
 .none{height: 100%;overflow: hidden;}
 .bg-f5{background-color: #f5f5f5;}
-.head{line-height: 80rpx;}
+.head{line-height: 74rpx;}
 /* .head{position: sticky;top: 0;left: 0;right: 0;line-height: 70rpx;} */
 .add{width: 23rpx;height: 23rpx;margin-right: 10rpx;}
 
 
-.ss input{border-right: 1px solid #e1e1e1;flex: 1;text-indent: 20rpx;font-size: 28rpx;text-align: left;}
+.ss input{border-right: 1px solid #e1e1e1;flex: 1;font-size: 28rpx;text-align: left;}
 .ss input::-webkit-input-placeholder{color: #222!important;}
 
 .iconBox image{width: 110rpx;height: 110rpx ;}
-.nav{z-index: 2000;box-shadow: 0 1px 1px 0px rgba(225, 225, 225, 1);}
-.nav image{width: 13rpx;height: 6rpx;margin-left: 8rpx;}
+.nav{z-index: 2000;box-shadow: 0 1px 1px 0px rgba(225, 225, 225, 0.7);}
+.nav image{width: 18rpx;
+		height: 9rpx;
+		margin-left: 8rpx;}
 .nav .item{width: 33.33%;line-height: 90rpx;text-align: center;}
 .nav .on{position: relative;color: #51A9E9;}
-.nav .on::before{content: ''; width: 100%;height: 2rpx;background-color: #51A9E9;position: absolute; bottom: 0;left: 0;}
+/* .nav .on::before{content: ''; width: 100%;height: 2rpx;background-color: #51A9E9;position: absolute; bottom: 0;left: 0;} */
 
 .imgBox image{width: 160rpx;height: 160rpx;margin-right: 17rpx;}
 .imgBox image:nth-child(4n){margin-right: 0;}

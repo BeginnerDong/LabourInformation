@@ -1,7 +1,7 @@
 <template>
 	<view>
 		
-		<view class="font-30 color2 d-flex j-sb a-center py-4 px-3 bg-white borderB-f5">
+		<!-- <view class="font-30 color2 d-flex j-sb a-center py-4 px-3 bg-white borderB-f5">
 			<view>主页顶部图片</view>
 			<view class="d-flex a-center" @click="upLoadImg('mainImg')">
 				<image :src="submitData.mainImg&&submitData.mainImg[0]?submitData.mainImg[0].url:'../../static/images/bg.jpg'" class="icon1"></image>
@@ -13,11 +13,8 @@
 			<input placeholder-class="font-30" class="color2 font-30" type="text" v-if="submitData.company==''" placeholder="请填写" v-model="submitData.company"/>
 			<view>{{submitData.company}}</view>
 		</view>
-		<!-- <view class="py-4 borderB-f5 px-3 bg-white">
-			<view class="d-flex a-center j-sb color2 pb-4 line-h font-24">业务范围</view>
-			<textarea value="" placeholder="请填写100个字以内的内容" class="border-e1 p-2" v-model="submitData.passage1"/>
-		</view> -->
-		<view style="color: red;text-align: right;line-height: 80rpx;" class="font-22 px-2">修改认证名称请联系客服：{{kefu}}</view>
+		
+		<view style="color: red;text-align: right;line-height: 80rpx;" class="font-22 px-2">修改认证名称请联系客服：{{kefu}}</view> -->
 		<view class="d-flex a-center j-sb py-4 borderB-f5 px-3 bg-white">
 			<view class="font-28 color2">联系人</view>
 			<input type="text" class="color2 font-30" placeholder="请填写" v-model="submitData.name"/>
@@ -28,12 +25,17 @@
 		</view>
 		<view class="py-4 borderB-f5 px-3 bg-white">
 			<view class="d-flex a-center j-sb color2 pb-4 line-h">业务介绍</view>
-			<textarea maxlength="40" class="color2 font-30 border-e1 p-2" placeholder="请填写40个字以内的内容"  v-model="submitData.passage2"/>
+			<textarea maxlength="80" class="color2 font-30 border-e1 p-2" placeholder="请填写80个字以内的内容"  v-model="submitData.passage2"/>
 		</view>
 		
 		<view class="py-5"  @click="Utils.stopMultiClick(submit)">
 			<view class="btn400">保存</view>
 		</view>
+		
+		<view class="text-center coolrM mt-2" style="color:#51A9E9"
+		
+		@click="Router.navigateTo({route:{path:'/pages/secondHand-detailCompany/secondHand-detailCompany?user_no='+userInfoData.user_no}})"
+		>预览我的主页</view>
 	</view>
 </template>
 
@@ -43,14 +45,17 @@
 			return {
 				submitData:{
 					name:'',
-					company:'',
+					//company:'',
 					phone:'',
-					mainImg:[],
+					//mainImg:[],
 					//passage1:'',
-					passage2:''
+					passage2:'',
+					
 				},
 				Utils:this.$Utils,
-				kefu:''
+				kefu:'',
+				userInfoData:{},
+				Router:this.$Router
 			}
 		},
 		
@@ -96,7 +101,10 @@
 			
 			submit() {
 				const self = this;
+				console.log(self.submitData.passage2,self.submitData.passage2.length);
+				
 				var newObject = self.$Utils.cloneForm(self.submitData);
+				
 				const pass = self.$Utils.checkComplete(newObject);
 				console.log('self.submitData',self.submitData)
 				if (pass) {	
@@ -144,8 +152,8 @@
 						self.userInfoData = res.info.data[0]
 						self.submitData.name = self.userInfoData.name;
 						self.submitData.phone = self.userInfoData.phone;
-						self.submitData.company = self.userInfoData.company;
-						self.submitData.mainImg = self.userInfoData.mainImg;
+						//self.submitData.company = self.userInfoData.company;
+						//self.submitData.mainImg = self.userInfoData.mainImg;
 						//self.submitData.passage1 = self.userInfoData.passage1;
 						self.submitData.passage2 = self.userInfoData.passage2;
 					}
@@ -163,5 +171,5 @@ page{background-color: #f5f5f5;}
 
 .icon1{width: 90rpx!important;height: 90rpx!important;margin-right: 20rpx!important;}
 .icon2{width: 12rpx!important;height: 21rpx!important;}
-textarea{width: 100%;box-sizing: border-box;}
+textarea{width: 100%;box-sizing: border-box;height: 210rpx;}
 </style>

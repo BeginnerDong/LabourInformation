@@ -14,7 +14,7 @@
 				<view class="d-flex a-center" @click="Utils.stopMultiClick(collect)">
 					<!-- <image src="../../static/images/detailsl-icon1.png" class="icon2"></image> -->
 					<image :src="mainData.log&&mainData.log.length>0&&mainData.log[0].status==1?'../../static/images/detailsl-icon1.png':'../../static/images/detailsl-icon5.png'"
-					 class="icon2"></image>
+					 class="icon4"></image>
 					<view class="pl-1">{{mainData.log&&mainData.log.length>0&&mainData.log[0].status==1?'已收藏':'未收藏'}}</view>
 				</view>
 				<button class="d-flex a-center ml-5" open-type="share">
@@ -24,9 +24,9 @@
 			</view>
 		</view>
 
-		<view class="font-28 color6 bg-f5 px-1 d-flex a-center rounded10">
-			<image src="../../static/images/home-icon2.png" class="icon3"></image>
-			<view class="pl-1 py-2">文章摘要</view>
+		<view class="font-28 color6 bg-f5 px-1 d-flex a-center rounded10" v-if="mainData.description!=''">
+			<!-- <image src="../../static/images/home-icon2.png" class="icon3"></image> -->
+			<view class="pl-1 py-2 flex-1">{{mainData.description}}</view>
 		</view>
 
 		<view class="font-28 color2 py-5">
@@ -176,6 +176,7 @@
 				const callback = (res) => {
 					if (res.info.data.length > 0) {
 						self.mainData = res.info.data[0];
+						self.mainData.view_count = self.mainData.view_count+1
 						const regex = new RegExp('<img', 'gi');
 						self.mainData.content = self.mainData.content.replace(regex, `<img style="max-width: 100%;"`);
 						self.mainData.create_time = self.mainData.create_time.substr(0,10)
@@ -195,8 +196,8 @@
 	}
 
 	.icon1 {
-		width: 40rpx;
-		height: 28rpx;
+		width: 33rpx!important;
+		height: 23rpx!important;
 	}
 
 	.icon2 {
@@ -205,8 +206,12 @@
 	}
 
 	.icon3 {
-		width: 38rpx;
-		height: 38rpx;
+		width: 33rpx!important;
+		height: 34rpx!important;
+	}
+	.icon4 {
+		width: 36rpx;
+		height: 36rpx;
 	}
 	.img {
 		width: 690rpx;
@@ -219,7 +224,7 @@
 		margin-left: 0;
 		margin-right: 0;
 		border-radius: 0;
-		font-size: 14px
+		font-size: 13px
 	}
 
 	button::after {
